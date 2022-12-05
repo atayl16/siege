@@ -24,6 +24,13 @@ class PlayersController < ApplicationController
   # POST /players or /players.json
   def create
     @player = Player.new(player_params)
+      require 'httparty'
+        @url = HTTParty.get(
+          "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=#{@player.name}",
+          :headers =>{'Content-Type' => 'application/json'}
+        )
+        @player.update( current_xp: @url.split("\n")[0].split(",").map(&:to_i).last )
+        @player.update( current_lvl: @url.split("\n")[0].split(",").map(&:to_i).second )
 
     respond_to do |format|
       if @player.save

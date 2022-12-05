@@ -4,9 +4,9 @@
   <%= render @player %>
 
   <div class="container-fluid">
-    <%= button_to "Edit this player", edit_player_path(@player), :class => "btn btn-warning" %>
-    <%= button_to "Back to players", players_path, :class => "btn btn-info" %>
-    <%= button_to "Add a new member", new_player_path, :class => "btn btn-secondary" %>
+    <%= link_to "Edit this player", edit_player_path(@player), :class => "btn btn-warning" %>
+    <%= link_to "Back to players", root_path, method: :get, :class => "btn btn-info" %>
+    <%= link_to "Add a new member", new_player_path, :class => "btn btn-secondary" %>
   </div>
 
   <div class="container-fluid">

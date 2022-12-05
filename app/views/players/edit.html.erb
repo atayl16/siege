@@ -9,4 +9,8 @@
     <%= button_to "Back to members", players_path, :class => "btn btn-secondary" %>
     <%= button_to "Add a new member", new_player_path, :class => "btn btn-secondary" %>
   </div>
+
+  <div class="container-fluid">
+    <%= button_to "Delete this player", @player, method: :delete, :class => "btn btn-danger" %>
+  </div>
 </div>
