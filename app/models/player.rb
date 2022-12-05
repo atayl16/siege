@@ -29,7 +29,7 @@ class Player < ApplicationRecord
     case clan_xp
     when 0..3000000
       # "Opal"
-      "yellow"
+      "moccasin"
     when 3000000..7999999
       # "Sapphire"
       "blue"
