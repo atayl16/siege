@@ -1,0 +1,12 @@
+<div class="container-fluid">
+  <h1>Editing player</h1>
+
+  <%= render "form", player: @player %>
+
+  <br>
+
+  <div class="container-fluid">
+    <%= button_to "Back to members", players_path, :class => "btn btn-secondary" %>
+    <%= button_to "Add a new member", new_player_path, :class => "btn btn-secondary" %>
+  </div>
+</div>

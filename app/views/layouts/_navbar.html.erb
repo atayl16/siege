@@ -1,0 +1,14 @@
+<nav class="navbar navbar-dark bg-dark" style="background-color: black">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><%= image_tag "siege_hat_1.png", size: "50x50" %> Siege Clan XP Tracker</a>
+    <div class="btn-group">
+        <% if user_signed_in? %>
+        <%= link_to "Add a new member", new_player_path, :class => "btn btn-dark" %>
+        <%= button_to "Sign out", destroy_user_session_path, method: :delete, :class => "btn btn-dark" %>
+      <% else %>
+        <%= button_to "Admin?", new_user_session_path, :class => "btn btn-secondary" %>
+      <% end %>
+    </div>
+    </div>
+  </div>
+</nav>

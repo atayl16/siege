@@ -1,0 +1,160 @@
+<div class="container-fluid" style="background-color: black">
+	<div class="row">
+		<div class="col-md-8">
+			<table class="table table-striped table-dark table-hover table-sm table-responsive">
+				<thead>
+					<tr>
+						<th style="text-align: center">
+							Name
+						</th>
+            <th style="text-align: center">
+              Clan Rank
+            </th>
+            <% if user_signed_in? %>
+              <th style="text-align: center">
+                OSRS Rank
+              </th>
+            <% end %>
+						<th style="text-align: center">
+							Starting XP
+						</th>
+						<th style="text-align: center">
+							Starting Level
+						</th>
+            <th style="text-align: center">
+							Clan XP Gained
+						</th>
+            <th style="text-align: center">
+							Clan Level Gained
+						</th>
+            <% if user_signed_in? %>
+              <th style="text-align: center">
+                Update Player
+              </th>
+            <% end %>
+					</tr>
+				</thead>
+				<tbody>
+          <% @officers.each do |player| %>
+            <tr>
+              <td style="text-align: center">
+                <%= player.name %>
+              </td>
+              <td style="text-align: center">
+                <%= player.clan_title %>
+              </td>
+              <% if user_signed_in? %>
+                <td style="text-align: center">
+                  <%= player.rank %>
+                </td>
+              <% end %>
+              <td style="text-align: center">
+                <%= number_with_delimiter(player.xp, :delimiter => ',') %>
+              </td>
+              <td style="text-align: center">
+                <%= number_with_delimiter(player.lvl, :delimiter => ',') %>
+              </td>
+              <td style="text-align: center">
+                <%= number_with_delimiter(player.clan_xp, :delimiter => ',') %>
+              </td>
+              <td style="text-align: center">
+                <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
+              </td>
+              <% if user_signed_in? %>
+                <td style="text-align: center">
+                  <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+
+          <% @players.each do |player| %>
+            <tr>
+              <td style="text-align: center">
+                <%= player.clan_title %> <%= player.name %>
+              </td>
+              <td style="text-align: center">
+                <i class="bi-gem" style="font-size: 1rem; color: <%= player.clan_rank %>"></i>
+              </td>
+              <% if user_signed_in? %>
+                <td style="text-align: center">
+                  <%= player.rank %>
+                </td>
+                <% end%>
+              <td style="text-align: center">
+                <%= number_with_delimiter(player.xp, :delimiter => ',') %>
+              </td>
+              <td style="text-align: center">
+                <%= number_with_delimiter(player.lvl, :delimiter => ',') %>
+              </td>
+              <td style="text-align: center">
+                <%= number_with_delimiter(player.clan_xp, :delimiter => ',') %>
+              </td>
+              <td style="text-align: center">
+                <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
+              </td>
+              <% if user_signed_in? %>
+                <td style="text-align: center">
+                  <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-4">
+			<table class="table table-dark table-hover table-sm table-responsive">
+        <thead>
+          <tr>
+            <th style="text-align: center">
+              Clan Ranks
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center">
+              <i class="bi-gem" style="font-size: 1rem; color: yellow">   Opal - New Member</i>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center">
+              <i class="bi-gem" style="font-size: 1rem; color: blue">   Sapphire - 3,000,000</i>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center">
+              <i class="bi-gem" style="font-size: 1rem; color: green">   Emerald - 8,000,000</i>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center">
+              <i class="bi-gem" style="font-size: 1rem; color: red">   Ruby - 15,000,000</i>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center">
+              <i class="bi-gem" style="font-size: 1rem; color: white">   Diamond - 40,000,000</i>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center">
+              <i class="bi-gem" style="font-size: 1rem; color: purple">   Dragonstone - 90,000,000</i>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center">
+              <i class="bi-gem" style="font-size: 1rem; color: grey">   Onyx - 150,000,000</i>
+            </td>
+          </tr>
+          <tr>
+            <td style="text-align: center">
+              <i class="bi-gem" style="font-size: 1rem; color: orange">   Zenyte - 500,000,000</i>
+            </td>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+</div>

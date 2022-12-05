@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Siege</title>
+    <%= favicon_link_tag asset_path('siege_hat_1.png') %>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+
+  <div class="container-fluid" style="background-color: black">
+    <span class="notice text-white"><%= notice %></span>
+    <span class="alert text-white"><%= alert %></span>
+
+    <%= render "layouts/navbar" %>
+
+    <div class="row">
+      <div class="col-md-12">
+          <%= yield %>
+      </div>
+  </div>
+</html>
