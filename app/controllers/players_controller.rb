@@ -3,7 +3,8 @@ class PlayersController < ApplicationController
 
   # GET /players or /players.json
   def index
-    @players = Player.where(title: nil).sort_by {|player| player.clan_xp }.reverse
+    @players = Player.all
+    @clan = Player.where(title: nil).sort_by {|player| player.clan_xp }.reverse
     @officers = Player.where.not(title: nil).order(created_at: :asc)
   end
 
@@ -66,6 +67,6 @@ class PlayersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def player_params
-      params.require(:player).permit(:name, :xp, :lvl, :title, :rank)
+      params.require(:player).permit(:name, :xp, :lvl, :title, :rank, :current_xp, :current_lvl)
     end
 end

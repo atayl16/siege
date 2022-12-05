@@ -2,32 +2,12 @@ class Player < ApplicationRecord
   NULL_ATTRS = %w( title )
   before_save :nil_if_blank
 
-  # Use external API with HTTParty to get player's current XP
-  def current_xp
-    require 'httparty'
-    @url = HTTParty.get(
-      "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=#{self.name}",
-      :headers =>{'Content-Type' => 'application/json'}
-    )
-    @url.split("\n")[0].split(",").map(&:to_i).last
-  end
-
-  # Use external API with HTTParty to get player's current lvl
-  def current_lvl
-    require 'httparty'
-    @url = HTTParty.get(
-      "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=#{self.name}",
-      :headers =>{'Content-Type' => 'application/json'}
-    )
-    @url.split("\n")[0].split(",").map(&:to_i).second
-  end
-
   def clan_xp
-    current_xp - self.xp
+    self.current_xp - self.xp
   end
 
   def clan_lvl
-    current_lvl - self.lvl
+    self.current_lvl - self.lvl
   end
 
   # Set clan title icon
