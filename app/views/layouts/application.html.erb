@@ -7,19 +7,24 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
   </head>
 
-  <div class="container-fluid" style="background-color: black">
-    <span class="notice text-white"><%= notice %></span>
+  <body class="h-100 text-center text-white bg-dark">
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+  <header class="mb-auto">
+    <div>
+      <%= render "layouts/navbar" %>
+    </div>
     <span class="alert text-white"><%= alert %></span>
+  </header>
 
-    <%= render "layouts/navbar" %>
 
-    <div class="row">
-      <div class="col-md-12">
-          <%= yield %>
-      </div>
+    <main class="px-3">
+      <%= yield %>
+    </main>
+
   </div>
+  </body>
 </html>

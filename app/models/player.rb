@@ -19,6 +19,8 @@ class Player < ApplicationRecord
       "🔑"
     when "Admin"
       "🌟"
+    when "Staff"
+      "🛠"
     else
       ""
     end
