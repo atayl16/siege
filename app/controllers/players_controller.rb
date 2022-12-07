@@ -1,5 +1,5 @@
 class PlayersController < ApplicationController
-  before_action :set_player, only: %i[ show edit update destroy ]
+  before_action :set_player, only: %i[ show edit update destroy delete ]
 
   # GET /players or /players.json
   def index
@@ -64,6 +64,9 @@ class PlayersController < ApplicationController
       format.html { redirect_to players_url, notice: "Player was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def delete
   end
 
   private

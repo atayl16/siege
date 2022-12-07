@@ -7,6 +7,5 @@
 
   <div class="container-fluid">
   <br>
-    <%= button_to "Delete this player", @player, method: :delete, :class => "btn btn-danger" %>
-  </div>
+  <%= button_to "Delete this player", delete_player_path(@player), method: :get, :class => "btn btn-danger" %>
 </div>
