@@ -37,7 +37,7 @@ class Player < ApplicationRecord
       "blue"
     when 8000000..14999999
       # "Emerald"
-      "green"
+      "lime"
     when 15000000..39999999
       # "Ruby"
       "red"
@@ -46,7 +46,7 @@ class Player < ApplicationRecord
       "white"
     when 90000000..149999999
       # "Dragonstone"
-      "purple"
+      "magenta"
     when 150000000..499999999
       # "Onyx"
       "grey"
