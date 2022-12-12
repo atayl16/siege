@@ -69,6 +69,13 @@ class PlayersController < ApplicationController
   def delete
   end
 
+  # method to run rake task to update clan members from api
+  def update_players
+    @players = Player.all
+    Rake::Task['update_players'].invoke
+    redirect_to players_url , notice: "Players updating."
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_player
