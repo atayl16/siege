@@ -3,11 +3,16 @@ class Player < ApplicationRecord
   before_save :nil_if_blank
 
   def clan_xp
-    self.current_xp - self.xp
+    if self.current_xp.to_i > 0
+      self.current_xp - self.xp
+    else
+      0
+    end
+
   end
 
   def clan_lvl
-    self.current_lvl - self.lvl
+    self.current_lvl ? self.current_lvl - self.lvl : "OSRS API is down"
   end
 
   # Set clan title icon
