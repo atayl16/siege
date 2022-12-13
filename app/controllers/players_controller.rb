@@ -25,6 +25,14 @@ class PlayersController < ApplicationController
   def create
     @player = Player.new(player_params)
 
+    require 'httparty'
+    @url = HTTParty.get(
+      "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=#{@player.name}",
+      :headers =>{'Content-Type' => 'application/json'}
+    )
+    if @player.xp == nil then @player.xp = @url.split("\n")[0].split(",").map(&:to_i).last  end
+    if @player.lvl == nil then @player.lvl = @url.split("\n")[0].split(",").map(&:to_i).second  end
+
     call_osrs_api
 
     respond_to do |format|
@@ -59,7 +67,7 @@ class PlayersController < ApplicationController
     @player.destroy
 
     respond_to do |format|
-      format.html { redirect_to players_url, notice: "Player was successfully destroyed." }
+      format.html { redirect_to players_url, notice: "Player was successfully deleted." }
       format.json { head :no_content }
     end
   end

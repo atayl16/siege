@@ -1,23 +1,36 @@
 <div class="container-fluid class="text-white"">
   <div id="<%= dom_id player %>">
     <p>
-      <strong>Name:</strong>
-      <%= player.name %>
+      <strong>Starting XP:</strong>
+      <%=  number_with_delimiter(player.xp, :delimiter => ',') %>
     </p>
 
     <p>
-      <strong>Xp:</strong>
-      <%= player.xp %>
+      <strong>Starting Level:</strong>
+      <%=  number_with_delimiter(player.lvl, :delimiter => ',') %>
     </p>
 
     <p>
-      <strong>Lvl:</strong>
-      <%= player.lvl %>
+      <strong>Clan XP:</strong>
+      <%=  number_with_delimiter(player.clan_xp, :delimiter => ',') %>
     </p>
+
+    <p>
+      <strong>Clan Level:</strong>
+      <%=  number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
+    </p>
+
+    <p>
+      <strong>Rank:</strong>
+      <%= player.rank %>
+    </p>
+
+    <% if player.title? %>
       <p>
-      <strong>Title:</strong>
-      <%= player.title %>
-    </p>
+        <strong>Title:</strong>
+        <%= player.title %>
+      </p>
+    <% end %>
 
   </div>
 </div>
