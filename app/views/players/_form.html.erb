@@ -1,5 +1,38 @@
 <%= form_with(model: player) do |form| %>
-  <% if player.errors.any? %>
+
+  <div class="card-body">
+    <div class="text-white d-flex flex-column ">
+      <div class="mb-3">
+        <%= form.label :name, { class: "form-label"} %>
+        <%= form.text_field :name %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :xp, "XP", { class: "form-label"} %>
+        <%= form.number_field :xp, placeholder: "Optional" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :lvl, "Level", { class: "form-label"} %>
+        <%= form.number_field :lvl, placeholder: "Optional" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :rank, { class: "form-label"} %>
+        <%= form.select :rank, ['Opal', 'Sapphire', 'Emerald', 'Ruby', 'Diamond', 'Dragonstone', 'Onyx', 'Zenyte'] %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :title, { class: "form-label"} %>
+        <%= form.text_field :title %>
+      </div>
+
+      <div>
+        <%= form.submit :class => "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+    <% if player.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(player.errors.count, "error") %> prohibited this player from being saved:</h2>
 
@@ -10,35 +43,4 @@
       </ul>
     </div>
   <% end %>
-
-  <div class="text-white">
-    <div>
-      <%= form.label :name, style: "display: block" %>
-      <%= form.text_field :name %>
-    </div>
-
-    <div>
-      <%= form.label :xp, style: "display: block" %>
-      <%= form.number_field :xp %>
-    </div>
-
-    <div>
-      <%= form.label :lvl, style: "display: block" %>
-      <%= form.number_field :lvl %>
-    </div>
-
-    <div>
-      <%= form.label :rank, style: "display: block" %>
-      <%= form.select :rank, ['Opal', 'Sapphire', 'Emerald', 'Ruby', 'Diamond', 'Dragonstone', 'Onyx', 'Zenyte'] %>
-    </div>
-
-    <div>
-      <%= form.label :title, style: "display: block" %>
-      <%= form.text_field :title %>
-    </div>
-    <br>
-    <div>
-      <%= form.submit :class => "btn btn-primary" %>
-    </div>
-  </div>
 <% end %>

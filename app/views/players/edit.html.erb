@@ -1,11 +1,9 @@
-<div class="container-fluid">
-  <h1 class="text-white">Editing player</h1>
+<div class="card p-1 position-absolute top-50 start-50 translate-middle bg-dark text-white border">
+  <h2 class="card-header text-white">Edit member</h2>
 
   <%= render "form", player: @player %>
-  <br>
-  </div>
 
-  <div class="container-fluid">
-  <br>
-  <%= button_to "Delete this player", delete_player_path(@player), method: :get, :class => "btn btn-danger" %>
+  <div class="card-footer">
+   <%= button_to "Delete this player", delete_player_path(@player), method: :get, :class => "btn btn-danger" %>
+   </div>
 </div>

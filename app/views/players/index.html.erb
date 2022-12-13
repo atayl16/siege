@@ -63,6 +63,8 @@
               <% if user_signed_in? %>
                 <td style="text-align: center">
                   <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <%= link_to "", delete_player_path(player), method: :get, :class => "bi-trash text-danger" %>
                 </td>
               <% end %>
             </tr>
@@ -96,6 +98,8 @@
               <% if user_signed_in? %>
                 <td style="text-align: center">
                   <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <%= link_to "", delete_player_path(player), method: :get, :class => "bi-trash text-danger" %>
                 </td>
               <% end %>
             </tr>

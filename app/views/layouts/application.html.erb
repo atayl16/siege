@@ -16,8 +16,13 @@
   <header class="mb-auto">
     <div>
       <%= render "layouts/navbar" %>
+      <%= render "layouts/notifications" %>
+      <% if Rails.env.development? %>
+        <div class="alert alert-warning" role="alert">
+          You are in development mode!
+        </div>
+      <% end %>
     </div>
-    <span class="alert text-white"><%= alert %></span>
   </header>
 
 
