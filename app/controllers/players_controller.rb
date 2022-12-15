@@ -34,6 +34,7 @@ class PlayersController < ApplicationController
     if @player.lvl == nil then @player.lvl = @url.split("\n")[0].split(",").map(&:to_i).second  end
 
     call_osrs_api
+    add_member_to_wom
 
     respond_to do |format|
       if @player.save
@@ -73,6 +74,7 @@ class PlayersController < ApplicationController
   end
 
   def delete
+    remove_member_from_wom
   end
 
   def call_osrs_api
@@ -83,6 +85,63 @@ class PlayersController < ApplicationController
     )
     @player.update( current_xp: @url.split("\n")[0].split(",").map(&:to_i).last )
     @player.update( current_lvl: @url.split("\n")[0].split(",").map(&:to_i).second )
+  end
+
+  def add_member_to_wom
+    require 'net/http'
+    require 'uri'
+    require 'json'
+
+    wom = Rails.application.credentials.dig(:wom,:verificationCode)
+    uri = URI.parse("https://api.wiseoldman.net/v2/groups/2928/members")
+    request = Net::HTTP::Post.new(uri)
+    request.content_type = "application/json"
+    request.body = JSON.dump({
+      "verificationCode" => wom,
+      "members": [
+        { username: @player.name,
+          role: "member",
+        }
+      ]
+    })
+
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    puts response.code
+    puts response.body
+  end
+
+  def remove_member_from_wom
+    require 'net/http'
+    require 'uri'
+    require 'json'
+
+    wom = Rails.application.credentials.dig(:wom,:verificationCode)
+    @player = Player.find(params[:id])
+    uri = URI.parse("https://api.wiseoldman.net/v2/groups/2928/members")
+    request = Net::HTTP::Delete.new(uri)
+    request.content_type = "application/json"
+    request.body = JSON.dump({
+      "verificationCode" => wom,
+      "members": [ @player.name ]
+    })
+
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    puts response.code
+    puts response.body
   end
 
   # method to run rake task to update clan members from api
