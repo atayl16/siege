@@ -10,7 +10,7 @@ namespace :wom do
       request = Net::HTTP::Post.new(uri)
       request.content_type = "application/json"
       request.body = JSON.dump({
-        "verificationCode" => "405-187-120"
+        "verificationCode" => wom
       })
 
       req_options = {
