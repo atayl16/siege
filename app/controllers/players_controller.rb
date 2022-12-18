@@ -50,10 +50,9 @@ class PlayersController < ApplicationController
   # PATCH/PUT /players/1 or /players/1.json
   def update
 
-    call_osrs_api
-
     respond_to do |format|
       if @player.update(player_params)
+        call_osrs_api
         format.html { redirect_to players_url, notice: "Player was successfully updated." }
         format.json { render :show, status: :ok, location: @player }
       else
@@ -78,15 +77,19 @@ class PlayersController < ApplicationController
   end
 
   def call_osrs_api
+    puts "calling osrs api"
     require 'httparty'
         @url = HTTParty.get(
           "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=#{@player.name}",
           :headers =>{'Content-Type' => 'application/json'}
         )
-        if @url.split("\n")[0].split(",").map(&:to_i).last == 0 then return end
-        @player.update( current_xp: @url.split("\n")[0].split(",").map(&:to_i).last )
-        @player.update( current_lvl: @url.split("\n")[0].split(",").map(&:to_i).second )
-        puts "Updated #{@player.name}, current xp: #{@player.current_xp}, current lvl: #{@player.current_lvl}"
+        if @url.split("\n")[0].split(",").map(&:to_i).last == 0
+          puts "Skipping osrs call" && return
+        else
+          @player.update( current_xp: @url.split("\n")[0].split(",").map(&:to_i).last )
+          @player.update( current_lvl: @url.split("\n")[0].split(",").map(&:to_i).second )
+          puts "Updated #{@player.name}, current xp: #{@player.current_xp}, current lvl: #{@player.current_lvl}"
+        end
   end
 
   def add_member_to_wom
