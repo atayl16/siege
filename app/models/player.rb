@@ -4,15 +4,18 @@ class Player < ApplicationRecord
 
   def clan_xp
     if self.current_xp.to_i > 0
-      self.current_xp - self.xp
+      self.current_xp.to_i - self.xp.to_i
     else
       0
     end
-
   end
 
   def clan_lvl
-    self.current_lvl ? self.current_lvl - self.lvl : "OSRS API is down"
+    if self.current_lvl.to_i > 0
+      self.current_lvl.to_i ? self.current_lvl.to_i - self.lvl.to_i : "OSRS API is down"
+    else
+      0
+    end
   end
 
   # Set clan title icon
