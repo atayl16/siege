@@ -30,11 +30,12 @@ class PlayersController < ApplicationController
       "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=#{@player.name}",
       :headers =>{'Content-Type' => 'application/json'}
     )
-    if @player.xp == nil then @player.xp = @url.split("\n")[0].split(",").map(&:to_i).last  end
-    if @player.lvl == nil then @player.lvl = @url.split("\n")[0].split(",").map(&:to_i).second  end
 
     call_osrs_api
     add_member_to_wom
+
+    @player.first_lvl = @player.lvl
+    @player.first_xp = @player.xp
 
     respond_to do |format|
       if @player.save
@@ -50,10 +51,9 @@ class PlayersController < ApplicationController
   # PATCH/PUT /players/1 or /players/1.json
   def update
 
-    call_osrs_api
-
     respond_to do |format|
       if @player.update(player_params)
+        call_osrs_api
         format.html { redirect_to players_url, notice: "Player was successfully updated." }
         format.json { render :show, status: :ok, location: @player }
       else
@@ -78,70 +78,92 @@ class PlayersController < ApplicationController
   end
 
   def call_osrs_api
+    puts "calling osrs api"
     require 'httparty'
-    @url = HTTParty.get(
-      "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=#{@player.name}",
-      :headers =>{'Content-Type' => 'application/json'}
-    )
-    @player.update( current_xp: @url.split("\n")[0].split(",").map(&:to_i).last )
-    @player.update( current_lvl: @url.split("\n")[0].split(",").map(&:to_i).second )
+        @url = HTTParty.get(
+          "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=#{@player.name}",
+          :headers =>{'Content-Type' => 'application/json'}
+        )
+        if @url.split("\n")[0].split(",").map(&:to_i).last == 0
+          puts "Skipping osrs call" && return
+        elsif @url.response.code == "404"
+            @player.update( current_xp: 0 )
+            @player.update( current_lvl: 0 )
+            @player.update( clan_xp: 0 )
+            @player.update( clan_lvl: 0 )
+            format.html { redirect_to players_url, alert: "Player was not found." }
+        else
+          if @player.xp == nil then @player.xp = @url.split("\n")[0].split(",").map(&:to_i).last  end
+          if @player.lvl == nil then @player.lvl = @url.split("\n")[0].split(",").map(&:to_i).second  end
+          @player.update( current_xp: @url.split("\n")[0].split(",").map(&:to_i).last )
+          @player.update( current_lvl: @url.split("\n")[0].split(",").map(&:to_i).second )
+          puts "Updated #{@player.name}, current xp: #{@player.current_xp}, current lvl: #{@player.current_lvl}"
+        end
   end
 
   def add_member_to_wom
-    require 'net/http'
-    require 'uri'
-    require 'json'
+    if !Rails.env.production?
+      return
+    else
+      require 'net/http'
+      require 'uri'
+      require 'json'
 
-    wom = Rails.application.credentials.dig(:wom,:verificationCode)
-    uri = URI.parse("https://api.wiseoldman.net/v2/groups/2928/members")
-    request = Net::HTTP::Post.new(uri)
-    request.content_type = "application/json"
-    request.body = JSON.dump({
-      "verificationCode" => wom,
-      "members": [
-        { username: @player.name,
-          role: "member",
-        }
-      ]
-    })
+      wom = Rails.application.credentials.dig(:wom,:verificationCode)
+      uri = URI.parse("https://api.wiseoldman.net/v2/groups/2928/members")
+      request = Net::HTTP::Post.new(uri)
+      request.content_type = "application/json"
+      request.body = JSON.dump({
+        "verificationCode" => wom,
+        "members": [
+          { username: @player.name,
+            role: "member",
+          }
+        ]
+      })
 
-    req_options = {
-      use_ssl: uri.scheme == "https",
-    }
+      req_options = {
+        use_ssl: uri.scheme == "https",
+      }
 
-    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
+      response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+        http.request(request)
+      end
+
+      puts response.code
+      puts response.body
     end
-
-    puts response.code
-    puts response.body
   end
 
   def remove_member_from_wom
-    require 'net/http'
-    require 'uri'
-    require 'json'
+    if !Rails.env.production?
+      return
+    else
+      require 'net/http'
+      require 'uri'
+      require 'json'
 
-    wom = Rails.application.credentials.dig(:wom,:verificationCode)
-    @player = Player.find(params[:id])
-    uri = URI.parse("https://api.wiseoldman.net/v2/groups/2928/members")
-    request = Net::HTTP::Delete.new(uri)
-    request.content_type = "application/json"
-    request.body = JSON.dump({
-      "verificationCode" => wom,
-      "members": [ @player.name ]
-    })
+      wom = Rails.application.credentials.dig(:wom,:verificationCode)
+      @player = Player.find(params[:id])
+      uri = URI.parse("https://api.wiseoldman.net/v2/groups/2928/members")
+      request = Net::HTTP::Delete.new(uri)
+      request.content_type = "application/json"
+      request.body = JSON.dump({
+        "verificationCode" => wom,
+        "members": [ @player.name ]
+      })
 
-    req_options = {
-      use_ssl: uri.scheme == "https",
-    }
+      req_options = {
+        use_ssl: uri.scheme == "https",
+      }
 
-    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
+      response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+        http.request(request)
+      end
+
+      puts response.code
+      puts response.body
     end
-
-    puts response.code
-    puts response.body
   end
 
   # method to run rake task to update clan members from api

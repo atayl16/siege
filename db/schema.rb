@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_05_164924) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_19_132223) do
   create_table "players", force: :cascade do |t|
     t.string "name"
     t.integer "xp"
@@ -21,6 +21,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_05_164924) do
     t.string "rank"
     t.integer "current_lvl", default: 0
     t.integer "current_xp", default: 0
+    t.integer "first_xp"
+    t.integer "first_lvl"
   end
 
   create_table "users", force: :cascade do |t|
