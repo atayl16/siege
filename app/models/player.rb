@@ -14,7 +14,7 @@ class Player < ApplicationRecord
     if self.current_lvl.to_i > 0
       self.current_lvl.to_i - self.lvl.to_i
     else
-      "OSRS API is down"
+      "Player not found or OSRS API is down"
     end
   end
 
