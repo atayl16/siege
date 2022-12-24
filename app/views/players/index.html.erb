@@ -63,8 +63,8 @@
               <td style="text-align: center">
                 <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
               </td>
-              <td style="text-align: center">
-                <%=  number_with_delimiter(player.inactive, :delimiter => ',') %>
+              <td style="text-align: center; color: <%= player.inactive %>">
+                <%=  number_with_delimiter(player.gained_xp, :delimiter => ',') %>
               </td>
               <% if user_signed_in? %>
                 <td style="text-align: center">
@@ -101,8 +101,8 @@
               <td style="text-align: center">
                 <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
               </td>
-              <td style="text-align: center color: red">
-                <%=  number_with_delimiter(player.inactive, :delimiter => ',') %>
+              <td style="text-align: center; color: <%= player.inactive %>">
+                <%=  number_with_delimiter(player.gained_xp, :delimiter => ',') %>
               </td>
               <% if user_signed_in? %>
                 <td style="text-align: center">
