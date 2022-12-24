@@ -27,10 +27,10 @@
             <th style="text-align: center">
 							Clan Level Gained
 						</th>
+            <% if user_signed_in? %>
             <th style="text-align: center">
               Month Gained
             </th>
-            <% if user_signed_in? %>
               <th style="text-align: center">
                 Update Player
               </th>
@@ -63,10 +63,10 @@
               <td style="text-align: center">
                 <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
               </td>
+              <% if user_signed_in? %>
               <td style="text-align: center; color: <%= player.inactive %>">
                 <%=  number_with_delimiter(player.gained_xp, :delimiter => ',') %>
               </td>
-              <% if user_signed_in? %>
                 <td style="text-align: center">
                   <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
                   &nbsp;&nbsp;&nbsp;&nbsp;
@@ -101,10 +101,10 @@
               <td style="text-align: center">
                 <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
               </td>
+              <% if user_signed_in? %>
               <td style="text-align: center; color: <%= player.inactive %>">
                 <%=  number_with_delimiter(player.gained_xp, :delimiter => ',') %>
               </td>
-              <% if user_signed_in? %>
                 <td style="text-align: center">
                   <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
                   &nbsp;&nbsp;&nbsp;&nbsp;
