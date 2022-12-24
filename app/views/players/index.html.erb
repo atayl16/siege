@@ -27,6 +27,9 @@
             <th style="text-align: center">
 							Clan Level Gained
 						</th>
+            <th style="text-align: center">
+              Inactive?
+            </th>
             <% if user_signed_in? %>
               <th style="text-align: center">
                 Update Player
@@ -59,6 +62,9 @@
               </td>
               <td style="text-align: center">
                 <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
+              </td>
+              <td style="text-align: center">
+                <%=  number_with_delimiter(player.inactive, :delimiter => ',') %>
               </td>
               <% if user_signed_in? %>
                 <td style="text-align: center">
@@ -94,6 +100,9 @@
               </td>
               <td style="text-align: center">
                 <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
+              </td>
+              <td style="text-align: center color: red">
+                <%=  number_with_delimiter(player.inactive, :delimiter => ',') %>
               </td>
               <% if user_signed_in? %>
                 <td style="text-align: center">
