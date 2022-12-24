@@ -18,6 +18,15 @@ class Player < ApplicationRecord
     end
   end
 
+  def inactive
+    case self.gained_xp
+    when 0..1000000
+      self.gained_xp.to_i
+    else
+      ""
+    end
+  end
+
   # Set clan title icon
   def clan_title
     case title
