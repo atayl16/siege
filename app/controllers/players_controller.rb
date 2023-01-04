@@ -6,7 +6,7 @@ class PlayersController < ApplicationController
     @player_count = Player.all.count
     @players = Player.all
     @clan = Player.where(title: nil).sort_by {|player| player.clan_xp }.reverse
-    @officers = Player.where.not(title: nil).order(created_at: :asc)
+    @officers = Player.where.not(title: nil).in_order_of(:title, ["Owner", "Deputy Owner", "Admin", "Staff", "PvM Organizer"])
   end
 
   # GET /players/1 or /players/1.json
