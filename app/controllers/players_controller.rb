@@ -3,6 +3,7 @@ class PlayersController < ApplicationController
 
   # GET /players or /players.json
   def index
+    @player_count = Player.all.count
     @players = Player.all
     @clan = Player.where(title: nil).sort_by {|player| player.clan_xp }.reverse
     @officers = Player.where.not(title: nil).order(created_at: :asc)
