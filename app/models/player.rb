@@ -38,6 +38,8 @@ class Player < ApplicationRecord
       "🌟"
     when "Staff"
       "🛠"
+    when "PvM Organizer"
+      "🐉"
     else
       ""
     end
