@@ -1,6 +1,6 @@
 <nav class="navbar navbar-dark bg-dark" style="background-color: black">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/players"><%= image_tag "siege_hat_1.png", size: "50x50" %> Siege Clan XP Tracker</a>
+    <a class="navbar-brand" href="/players"><%= image_tag "siege_logo.png", size: "50x50" %> Siege Clan XP Tracker</a>
     <div class="btn-group">
         <% if user_signed_in? %>
         <%= link_to "Members: #{@player_count}", players_path, :class => "btn btn-dark"  %>
