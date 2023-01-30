@@ -3,10 +3,27 @@ class PlayersController < ApplicationController
 
   # GET /players or /players.json
   def index
+    @q = Player.ransack(params[:q])
     @player_count = Player.all.count
-    @players = Player.all
-    @clan = Player.where(title: nil).sort_by {|player| player.clan_xp }.reverse
+    @players = @q.result(distinct: true)
+    @clan = @q.result.where(title: nil)
     @officers = Player.where.not(title: nil).in_order_of(:title, ["Owner", "Deputy Owner", "Admin", "Staff", "PvM Organizer"])
+
+    if params[:q].present?
+      params[:q].each do |k, v|
+        if v == 'name asc'
+          @clan = @q.result.sort { |p1, p2| p1.name.downcase <=> p2.name.downcase }
+        elsif v == 'name desc'
+          @clan = @q.result.sort { |p2, p1| p1.name.downcase <=> p2.name.downcase }
+        elsif v == 'clan_xp asc'
+          @clan = @q.result.sort { |p1, p2| p1.clan_xp <=> p2.clan_xp }
+        elsif v == 'clan_xp desc'
+          @clan = @q.result.sort { |p2, p1| p1.clan_xp <=> p2.clan_xp }
+        end
+      end
+    else
+      @clan = @q.result.sort { |p2, p1| p1.clan_xp <=> p2.clan_xp }
+    end
   end
 
   # GET /players/1 or /players/1.json
