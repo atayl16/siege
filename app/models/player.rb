@@ -2,6 +2,10 @@ class Player < ApplicationRecord
   NULL_ATTRS = %w( title )
   before_save :nil_if_blank
 
+  def lower_name
+    name.downcase!
+  end
+
   def clan_xp
     if self.current_xp.to_i > 0
       self.current_xp.to_i - self.xp.to_i
