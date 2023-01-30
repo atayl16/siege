@@ -1,4 +1,10 @@
 require "active_support/core_ext/integer/time"
+require 'airbrake-ruby'
+
+Airbrake.configure do |c|
+  c.project_id = 478937
+  c.project_key = '773e457029ca66ecf824920747276cb0'
+end
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.

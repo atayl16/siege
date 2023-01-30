@@ -68,6 +68,8 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    airbrake-ruby (6.2.0)
+      rbtree3 (~> 0.5)
     bcrypt (3.1.18)
     bindex (0.8.1)
     bootsnap (1.15.0)
@@ -177,6 +179,7 @@ GEM
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
+    rbtree3 (0.7.0)
     regexp_parser (2.6.1)
     responders (3.0.1)
       actionpack (>= 5.0)
@@ -231,6 +234,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  airbrake-ruby
   bootsnap
   byebug
   capybara

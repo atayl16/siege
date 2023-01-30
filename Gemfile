@@ -19,6 +19,10 @@ gem "devise"
 gem 'devise-bootstrap-views', '~> 1.0'
 gem 'ransack'
 
+group :production do
+  gem 'airbrake-ruby'
+end
+
 group :development, :test do
     gem "debug", platforms: %i[ mri mingw x64_mingw ]
 end
