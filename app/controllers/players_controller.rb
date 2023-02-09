@@ -66,8 +66,8 @@ class PlayersController < ApplicationController
 
   # DELETE /players/1 or /players/1.json
   def destroy
-    @player.destroy
     remove_member_from_wom
+    @player.destroy
 
     respond_to do |format|
       format.html { redirect_to players_url, notice: "Player was successfully deleted." }
