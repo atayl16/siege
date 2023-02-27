@@ -1,0 +1,63 @@
+<div class="container-fluid" style="background-color: black">
+  <table class="table table-striped table-dark table-hover table-sm table-responsive">
+    <thead>
+      <tr>
+        <th><%= link_to "Player Name", :sort => "name"%> </th>
+        <th>Clan Rank</th>
+        <th>OSRS Rank</th>
+        <th>Needs Update</th>
+        <th>Starting XP</th>
+        <th>Starting Level</th>
+        <th><%= link_to "Clan XP Gained", :sort => "clan_xp"%></th>
+        <th>Clan Level Gained</th>
+        <th>Month Gained</th>
+        <th>WOM ID</th>
+        <th>Update Player</th>
+      </tr>
+    </thead>
+      <% @players.each do |player| %>
+        <tr>
+          <td style="text-align: center">
+            <%= link_to "#{player.name}", wom_url(player) %>
+          </td>
+          <td style="text-align: center">
+            <%= player.clan_rank %>
+          </td>
+          <td style="text-align: center">
+            <%= player.rank %>
+          </td>
+          <td style="text-align: center">
+            <% if player.needs_update %>
+            <%= link_to '', {:controller => "players",
+                              :action => "update_rank",
+                              :id => player.id}, method: 'post', class: "bi-exclamation-octagon-fill text-danger" %>
+            <% end %>
+          </td>
+          <td style="text-align: center">
+            <%= number_with_delimiter(player.xp, :delimiter => ',') %>
+          </td>
+          <td style="text-align: center">
+            <%= number_with_delimiter(player.lvl, :delimiter => ',') %>
+          </td>
+          <td style="text-align: center">
+            <%= number_with_delimiter(player.clan_xp, :delimiter => ',') %>
+          </td>
+          <td style="text-align: center">
+            <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
+          </td>
+          <td style="text-align: center; color: <%= player.inactive %>">
+            <%=  number_with_delimiter(player.gained_xp, :delimiter => ',') %>
+          </td>
+          <td style="text-align: center;">
+            <%= player.wom_id %>
+          </td>
+            <td style="text-align: center">
+              <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <%= link_to "", delete_player_path(player), method: :get, :class => "bi-trash text-danger" %>
+            </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

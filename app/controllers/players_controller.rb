@@ -1,5 +1,6 @@
 class PlayersController < ApplicationController
-  before_action :set_player, only: %i[ show edit update destroy delete call_osrs_api ]
+  before_action :set_player, only: %i[ show edit update destroy delete call_osrs_api update_rank ]
+  before_action :authenticate_user!, except: [:index]
 
   # GET /players or /players.json
   def index
@@ -7,6 +8,15 @@ class PlayersController < ApplicationController
     @players = Player.all
     @clan = Player.where(title: nil).sort_by {|player| player.clan_xp }.reverse
     @officers = Player.where.not(title: nil).in_order_of(:title, ["Owner", "Deputy Owner", "Admin", "Staff", "PvM Organizer"])
+  end
+
+  def table
+    @player_count = Player.all.count
+    if params[:sort] == "clan_xp"
+      @players = Player.all.sort_by{|player| player.clan_xp}.reverse
+    else
+      @players = Player.all.order("LOWER(name)")
+    end
   end
 
   # GET /players/1 or /players/1.json
@@ -55,9 +65,11 @@ class PlayersController < ApplicationController
     respond_to do |format|
       if @player.update(player_params)
         call_osrs_api
+        format.js {}
         format.html { redirect_to players_url, notice: "Player was successfully updated." }
         format.json { render :show, status: :ok, location: @player }
       else
+        format.js {}
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @player.errors, status: :unprocessable_entity }
       end
@@ -66,7 +78,11 @@ class PlayersController < ApplicationController
 
   # DELETE /players/1 or /players/1.json
   def destroy
-    remove_member_from_wom
+    if Rails.env.production?  # Only allow deletion of players in production
+      remove_member_from_wom
+    else
+      puts "Skipping wom call"
+    end
     @player.destroy
 
     respond_to do |format|
@@ -104,6 +120,7 @@ class PlayersController < ApplicationController
 
   def add_member_to_wom
     if !Rails.env.production?
+      puts "fake calling add_member_to_wom"
       return
     else
       require 'net/http'
@@ -165,6 +182,12 @@ class PlayersController < ApplicationController
       puts response.code
       puts response.body
     end
+  end
+
+  def update_rank
+    clan_rank = @player.clan_rank
+    @player.update(rank: clan_rank)
+    redirect_back(fallback_location: root_path)
   end
 
   # method to run rake task to update clan members from api

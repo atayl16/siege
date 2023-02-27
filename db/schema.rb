@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_24_170154) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_26_182305) do
   create_table "players", force: :cascade do |t|
     t.string "name"
     t.integer "xp"
@@ -25,6 +25,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_24_170154) do
     t.integer "first_lvl"
     t.integer "gained_xp"
     t.string "old_names"
+    t.integer "wom_id"
   end
 
   create_table "users", force: :cascade do |t|

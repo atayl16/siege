@@ -2,8 +2,8 @@ class Player < ApplicationRecord
   NULL_ATTRS = %w( title )
   before_save :nil_if_blank
 
-  def lower_name
-    name.downcase!
+  def self.lower_name
+    name.downcase
   end
 
   def clan_xp
@@ -31,6 +31,12 @@ class Player < ApplicationRecord
     end
   end
 
+  def needs_update
+    if self.clan_rank != self.rank
+      "❗"
+    end
+  end
+
   # Set clan title icon
   def clan_title
     case title
@@ -53,28 +59,41 @@ class Player < ApplicationRecord
   def clan_rank
     case clan_xp
     when 0..3000000
-      # "Opal"
+      "Opal"
+    when 3000000..7999999
+      "Sapphire"
+    when 8000000..14999999
+      "Emerald"
+    when 15000000..39999999
+      "Ruby"
+    when 40000000..89999999
+      "Diamond"
+    when 90000000..149999999
+      "Dragonstone"
+    when 150000000..499999999
+      "Onyx"
+    else
+      "Zenyte"
+    end
+  end
+
+  def rank_color
+    case clan_xp
+    when 0..3000000
       "moccasin"
     when 3000000..7999999
-      # "Sapphire"
       "blue"
     when 8000000..14999999
-      # "Emerald"
       "lime"
     when 15000000..39999999
-      # "Ruby"
       "red"
     when 40000000..89999999
-      # "Diamond"
       "white"
     when 90000000..149999999
-      # "Dragonstone"
       "magenta"
     when 150000000..499999999
-      # "Onyx"
       "grey"
     else
-      # "Zenyte"
       "orange"
     end
   end
