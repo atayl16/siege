@@ -45,6 +45,7 @@ class PlayersController < ApplicationController
     )
 
     call_osrs_api
+    update_member_on_wom
     add_member_to_wom
 
     @player.first_lvl = @player.lvl
@@ -153,6 +154,28 @@ class PlayersController < ApplicationController
       puts response.code
       puts response.body
     end
+  end
+
+  def update_member_on_wom
+    require 'net/http'
+    require 'uri'
+    require 'json'
+
+    wom = Rails.application.credentials.dig(:wom,:verificationCode)
+    uri = URI.parse("https://api.wiseoldman.net/v2/players/#{@player.name}")
+    request = Net::HTTP::Post.new(uri)
+    request.content_type = "application/json"
+
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+
+    puts response.code
+    puts response.body
   end
 
   def remove_member_from_wom
