@@ -1,5 +1,5 @@
 class PlayersController < ApplicationController
-  before_action :set_player, only: %i[ show edit update destroy delete call_osrs_api update_rank ]
+  before_action :set_player, only: %i[ show edit update destroy delete call_osrs_api update_rank update_member_on_wom add_member_to_wom remove_member_from_wom ]
   before_action :authenticate_user!, except: [:index]
 
   # GET /players or /players.json
@@ -159,25 +159,17 @@ class PlayersController < ApplicationController
   end
 
   def update_member_on_wom
-    require 'net/http'
-    require 'uri'
-    require 'json'
+    require 'httparty'
+    @url = HTTParty.post(
+      "https://api.wiseoldman.net/v2/players/#{@player.name.gsub(" ","%20")}",
+          :headers =>{'Content-Type' => 'application/json'}
+    )
 
-    wom = Rails.application.credentials.dig(:wom,:verificationCode)
-    uri = URI.parse("https://api.wiseoldman.net/v2/players/#{@player.name}")
-    request = Net::HTTP::Post.new(uri)
-    request.content_type = "application/json"
-
-    req_options = {
-      use_ssl: uri.scheme == "https",
-    }
-
-    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-      http.request(request)
+    if @url.response.code == "404"
+      puts "Player not found on wom"
+    else
+      puts "Player found on wom"
     end
-
-    puts response.code
-    puts response.body
   end
 
   def remove_member_from_wom
