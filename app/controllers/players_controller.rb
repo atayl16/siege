@@ -16,8 +16,10 @@ class PlayersController < ApplicationController
       @players = Player.all.sort_by{|player| player.clan_xp}.reverse
     elsif params[:sort] == "needs_update"
       @players = Player.all.sort_by{|player| player.needs_update.to_s}.reverse
-    else
+    elsif params[:sort] == "name"
       @players = Player.all.order("LOWER(name)")
+    else
+      @players = Player.all.sort_by{|player| player.needs_update.to_s}.reverse
     end
   end
 
