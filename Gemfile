@@ -37,3 +37,5 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+
+gem "airbrake", "~> 13.0"
