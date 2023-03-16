@@ -15,10 +15,13 @@ namespace :get_updates_from_wom do
       )
 
       if @hash['error'] then next end
-
-      player.gained_xp = @hash["data"]["skills"]["overall"]["experience"]["gained"]
-      player.update( gained_xp: player.gained_xp)
-      puts "Updated #{player.name}, gained xp: #{player.gained_xp}"
+        begin
+          player.gained_xp = @hash["data"]["skills"]["overall"]["experience"]["gained"]
+          player.update( gained_xp: player.gained_xp)
+          puts "Updated #{player.name}, gained xp: #{player.gained_xp}" 
+        rescue => exception
+          puts "Error updating #{player.name}"
+        end
     end
   end
 end
