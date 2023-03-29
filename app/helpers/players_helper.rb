@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module PlayersHelper
   def wom_url(player)
     "https://www.wiseoldman.net/players/#{player.name}"

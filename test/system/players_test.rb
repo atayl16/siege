@@ -1,45 +1,47 @@
-require "application_system_test_case"
+# frozen_string_literal: true
+
+require 'application_system_test_case'
 
 class PlayersTest < ApplicationSystemTestCase
   setup do
     @player = players(:one)
   end
 
-  test "visiting the index" do
+  test 'visiting the index' do
     visit players_url
-    assert_selector "h1", text: "Players"
+    assert_selector 'h1', text: 'Players'
   end
 
-  test "should create player" do
+  test 'should create player' do
     visit players_url
-    click_on "New player"
+    click_on 'New player'
 
-    fill_in "Lvl", with: @player.lvl
-    fill_in "Name", with: @player.name
-    fill_in "Xp", with: @player.xp
-    click_on "Create Player"
+    fill_in 'Lvl', with: @player.lvl
+    fill_in 'Name', with: @player.name
+    fill_in 'Xp', with: @player.xp
+    click_on 'Create Player'
 
-    assert_text "Player was successfully created"
-    click_on "Back"
+    assert_text 'Player was successfully created'
+    click_on 'Back'
   end
 
-  test "should update Player" do
+  test 'should update Player' do
     visit player_url(@player)
-    click_on "Edit this player", match: :first
+    click_on 'Edit this player', match: :first
 
-    fill_in "Lvl", with: @player.lvl
-    fill_in "Name", with: @player.name
-    fill_in "Xp", with: @player.xp
-    click_on "Update Player"
+    fill_in 'Lvl', with: @player.lvl
+    fill_in 'Name', with: @player.name
+    fill_in 'Xp', with: @player.xp
+    click_on 'Update Player'
 
-    assert_text "Player was successfully updated"
-    click_on "Back"
+    assert_text 'Player was successfully updated'
+    click_on 'Back'
   end
 
-  test "should destroy Player" do
+  test 'should destroy Player' do
     visit player_url(@player)
-    click_on "Destroy this player", match: :first
+    click_on 'Destroy this player', match: :first
 
-    assert_text "Player was successfully destroyed"
+    assert_text 'Player was successfully destroyed'
   end
 end

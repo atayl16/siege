@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
   devise_for :users
   resources :players
@@ -5,5 +7,5 @@ Rails.application.routes.draw do
   get '/table', to: 'players#table', as: 'table'
   get '/update_rank', to: 'players#update_rank', as: 'update_rank'
 
-  root "players#index"
+  root 'players#index'
 end

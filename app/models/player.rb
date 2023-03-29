@@ -1,100 +1,103 @@
+# frozen_string_literal: true
+
 class Player < ApplicationRecord
-  NULL_ATTRS = %w( title )
+  NULL_ATTRS = %w[title].freeze
   before_save :nil_if_blank
+  validates :name, presence: true, uniqueness: { message: 'already exists' } 
 
   def self.lower_name
     name.downcase
   end
 
   def clan_xp
-    if self.current_xp.to_i > 0
-      self.current_xp.to_i - self.xp.to_i
+    if current_xp.to_i.positive?
+      current_xp.to_i - xp.to_i
     else
       0
     end
   end
 
   def clan_lvl
-    if self.current_lvl.to_i > 0
-      self.current_lvl.to_i - self.lvl.to_i
+    if current_lvl.to_i.positive?
+      current_lvl.to_i - lvl.to_i
     else
-      "Player not found or OSRS API is down"
+      'Player not found or OSRS API is down'
     end
   end
 
   def inactive
-    case self.gained_xp
-    when 0..1000000
-      "red"
+    case gained_xp
+    when 0..1_000_000
+      'red'
     else
-      "white"
+      'white'
     end
   end
 
   def needs_update
-    if self.clan_rank != self.rank
-      "❗"
-    end
+    return unless clan_rank != rank
+
+    '❗'
   end
 
   # Set clan title icon
   def clan_title
     case title
-    when "Owner"
-      "👑"
-    when "Deputy Owner"
-      "🔑"
-    when "Admin"
-      "🌟"
-    when "Staff"
-      "🛠"
-    when "PvM Organizer"
-      "🐉"
+    when 'Owner'
+      '👑'
+    when 'Deputy Owner'
+      '🔑'
+    when 'Admin'
+      '🌟'
+    when 'Staff'
+      '🛠'
+    when 'PvM Organizer'
+      '🐉'
     else
-      ""
+      ''
     end
   end
 
   # Set clan rank based on clan XP using a case statement
   def clan_rank
     case clan_xp
-    when 0..3000000
-      "Opal"
-    when 3000000..7999999
-      "Sapphire"
-    when 8000000..14999999
-      "Emerald"
-    when 15000000..39999999
-      "Ruby"
-    when 40000000..89999999
-      "Diamond"
-    when 90000000..149999999
-      "Dragonstone"
-    when 150000000..499999999
-      "Onyx"
+    when 0..3_000_000
+      'Opal'
+    when 3_000_000..7_999_999
+      'Sapphire'
+    when 8_000_000..14_999_999
+      'Emerald'
+    when 15_000_000..39_999_999
+      'Ruby'
+    when 40_000_000..89_999_999
+      'Diamond'
+    when 90_000_000..149_999_999
+      'Dragonstone'
+    when 150_000_000..499_999_999
+      'Onyx'
     else
-      "Zenyte"
+      'Zenyte'
     end
   end
 
   def rank_color
     case clan_xp
-    when 0..3000000
-      "moccasin"
-    when 3000000..7999999
-      "blue"
-    when 8000000..14999999
-      "lime"
-    when 15000000..39999999
-      "red"
-    when 40000000..89999999
-      "white"
-    when 90000000..149999999
-      "magenta"
-    when 150000000..499999999
-      "grey"
+    when 0..3_000_000
+      'moccasin'
+    when 3_000_000..7_999_999
+      'blue'
+    when 8_000_000..14_999_999
+      'lime'
+    when 15_000_000..39_999_999
+      'red'
+    when 40_000_000..89_999_999
+      'white'
+    when 90_000_000..149_999_999
+      'magenta'
+    when 150_000_000..499_999_999
+      'grey'
     else
-      "orange"
+      'orange'
     end
   end
 
