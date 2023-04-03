@@ -27,7 +27,7 @@ class Player < ApplicationRecord
 
   def inactive
     case gained_xp
-    when 0..1_000_000
+    when 0..500_000
       'red'
     else
       'white'

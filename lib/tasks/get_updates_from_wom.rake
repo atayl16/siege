@@ -12,7 +12,7 @@ namespace :get_updates_from_wom do
     @players.each do |player|
       name = url_encode(player.name.strip)
       @hash = HTTParty.get(
-        "https://api.wiseoldman.net/v2/players/#{name}/gained?period=month",
+        "https://api.wiseoldman.net/v2/players/#{name}/gained?period=2m",
         headers: { 'Content-Type' => 'application/json' }
       )
 
