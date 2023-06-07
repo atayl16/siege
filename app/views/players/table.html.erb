@@ -11,6 +11,7 @@
         <th><%= link_to "Clan XP Gained", :sort => "clan_xp"%></th>
         <th>Clan Level Gained</th>
         <th>2 Months Gained</th>
+        <th>WOM ID</th>
         <th>Update Player</th>
       </tr>
     </thead>
@@ -47,11 +48,14 @@
           <td style="text-align: center; color: <%= player.inactive %>">
             <%=  number_with_delimiter(player.gained_xp, :delimiter => ',') %>
           </td>
-            <td style="text-align: center">
-              <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <%= link_to "", delete_player_path(player), method: :get, :class => "bi-trash text-danger" %>
-            </td>
+          <td style="text-align: center">
+            <%= player.wom_id %>
+          </td>
+          <td style="text-align: center">
+            <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <%= link_to "", delete_player_path(player), method: :get, :class => "bi-trash text-danger" %>
+          </td>
         </tr>
       <% end %>
     </tbody>
