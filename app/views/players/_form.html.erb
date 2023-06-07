@@ -18,6 +18,11 @@
       </div>
 
       <div class="mb-3">
+        <%= form.label :wom_id, "WOM ID", { class: "form-label"} %>
+        <%= form.number_field :wom_id, placeholder: "Optional" %>
+      </div>
+
+      <div class="mb-3">
         <%= form.label :rank, { class: "form-label"} %>
         <%= form.select :rank, ['Opal', 'Sapphire', 'Emerald', 'Ruby', 'Diamond', 'Dragonstone', 'Onyx', 'Zenyte'] %>
       </div>
