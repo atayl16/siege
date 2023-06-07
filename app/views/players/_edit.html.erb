@@ -27,6 +27,16 @@
         <%= form.select :title, ['','Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer'] %>
       </div>
 
+      <div class="mb-3">
+        <%= form.label :wom_id, "WOM ID", { class: "form-label"} %>
+        <%= form.number_field :wom_id, placeholder: "Optional" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :wom_name, "WOM Name", { class: "form-label"} %>
+        <%= form.text_field :wom_name, placeholder: "Optional" %>
+      </div>
+
       <div>
         <%= form.submit :class => "btn btn-secondary" %>
       </div>

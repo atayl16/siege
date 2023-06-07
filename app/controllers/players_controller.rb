@@ -54,6 +54,7 @@ class PlayersController < ApplicationController
     update_member_on_wom
     add_member_to_wom
     set_player_wom_id
+    set_player_wom_name
 
     @player.first_lvl = @player.lvl
     @player.first_xp = @player.xp
@@ -74,6 +75,7 @@ class PlayersController < ApplicationController
     respond_to do |format|
       if @player.update(player_params)
         call_osrs_api
+        set_player_wom_name
         format.js {}
         format.html { redirect_to players_url, notice: 'Player was successfully updated.' }
         format.json { render :show, status: :ok, location: @player }
@@ -218,17 +220,32 @@ class PlayersController < ApplicationController
 
   def set_player_wom_id
     require 'httparty'
-      @url = HTTParty.get(
-        "https://api.wiseoldman.net/v2/players/#{@player.name.gsub(" ","%20")}",
-        :headers =>{'Content-Type' => 'application/json'}
-      )
-      
-      begin
-        @player.update( wom_id: @url["id"] )
-        puts "Updated #{@player.name}, wom_id: #{@player.wom_id}"
-      rescue StandardError => e
-        puts "Error updating #{@player.name}, #{e}"
-      end
+    @url = HTTParty.get(
+      "https://api.wiseoldman.net/v2/players/#{@player.name.gsub(" ","%20")}",
+      :headers =>{'Content-Type' => 'application/json'}
+    )
+    
+    begin
+      @player.update( wom_id: @url["id"] )
+      puts "Updated #{@player.name}, wom_id: #{@player.wom_id}"
+    rescue StandardError => e
+      puts "Error updating #{@player.name}, #{e}"
+    end
+  end
+
+  def set_player_wom_name
+    require 'httparty'
+    @url = HTTParty.get(
+      "https://api.wiseoldman.net/v2/players/id/#{@player.wom_id}",
+      :headers =>{'Content-Type' => 'application/json'}
+    )
+    
+    begin
+      @player.update( wom_name: @url["displayName"] )
+      puts "Updated #{@player.name}, wom_name: #{@player.wom_name}"
+    rescue StandardError => e
+      puts "Error updating #{@player.name}, #{e}"
+    end
   end
 
   private
