@@ -53,6 +53,7 @@ class PlayersController < ApplicationController
     call_osrs_api
     update_member_on_wom
     add_member_to_wom
+    set_player_wom_id
 
     @player.first_lvl = @player.lvl
     @player.first_xp = @player.xp
@@ -213,6 +214,21 @@ class PlayersController < ApplicationController
     @players = Player.all
     Rake::Task['update_players'].invoke
     redirect_to players_url, notice: 'Players updating.'
+  end
+
+  def set_player_wom_id
+    require 'httparty'
+      @url = HTTParty.get(
+        "https://api.wiseoldman.net/v2/players/#{@player.name.gsub(" ","%20")}",
+        :headers =>{'Content-Type' => 'application/json'}
+      )
+      
+      begin
+        @player.update( wom_id: @url["id"] )
+        puts "Updated #{@player.name}, wom_id: #{@player.wom_id}"
+      rescue StandardError => e
+        puts "Error updating #{@player.name}, #{e}"
+      end
   end
 
   private
