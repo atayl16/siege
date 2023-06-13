@@ -36,6 +36,11 @@
         <%= form.label :wom_name, "WOM Name", { class: "form-label"} %>
         <%= form.text_field :wom_name, placeholder: "Optional" %>
       </div>
+      
+      <div class="mb-3">
+        <%= form.label :score, "Siege Score", { class: "form-label"} %>
+        <%= form.number_field :score, placeholder: "Optional" %>
+      </div>
 
       <div>
         <%= form.submit :class => "btn btn-secondary" %>

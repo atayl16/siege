@@ -13,6 +13,7 @@ class PlayersController < ApplicationController
     @clan = Player.where(title: nil).sort_by(&:clan_xp).reverse
     @officers = Player.where.not(title: nil).in_order_of(:title,
                                                          ['Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer'])
+    @competitors = Player.where(score: 1..).sort_by(&:score).reverse
   end
 
   def table
@@ -27,6 +28,7 @@ class PlayersController < ApplicationController
                else
                  Player.all.sort_by { |player| player.needs_update.to_s }.reverse
                end
+    @competitors = Player.where(score: 1..).sort_by(&:score).reverse
   end
 
   # GET /players/1 or /players/1.json
@@ -257,6 +259,6 @@ class PlayersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def player_params
-    params.require(:player).permit(:name, :xp, :lvl, :title, :rank, :current_xp, :current_lvl)
+    params.require(:player).permit(:name, :xp, :lvl, :title, :rank, :current_xp, :current_lvl, :score, :wom_id, :wom_name)
   end
 end

@@ -128,7 +128,45 @@
 				</tbody>
 			</table>
 		</div>
+
 		<div class="col-md-4">
+      <% if user_signed_in? %>
+        <table class="table table-dark table-hover table-responsive table-bordered">
+          <thead>
+            <tr>
+              <th style="text-align: center" colspan="3">
+                🏆 &nbsp; Leaderboard &nbsp; 🏆
+              </th>
+            </tr>
+            <tr>
+              <th style="text-align: center" class="col-mds-3">
+                Rank
+              </th>
+              <th style="text-align: left" class="col-md-6">
+                Name
+              </th>
+              <th style="text-align: center" class="col-mds-3">
+                Points
+              </th>
+          </thead>
+          <tbody>
+            <% @competitors.each_with_index do |player, index| %>
+              <tr>
+                <td style="text-align: center">
+                  <%= "#{index + 1}" %>
+                </td>
+                <td style="text-align: left">
+                  <%= player.name %>
+                </td>
+                <td style="text-align: center">
+                  <%= player.score %>
+                </td>
+              </tr>
+            <% end %>
+            
+          </tbody>
+        </table>
+      <% end %>
 			<table class="table table-dark table-hover table-sm table-responsive">
         <thead>
           <tr>

@@ -12,6 +12,7 @@
         <th>Clan Level Gained</th>
         <th>2 Months Gained</th>
         <th>WOM Name</th>
+        <th>Siege Score</th>
         <th>Update Player</th>
       </tr>
     </thead>
@@ -49,8 +50,11 @@
             <%=  number_with_delimiter(player.gained_xp, :delimiter => ',') %>
           </td>
           <td style="text-align: center">
-            <%= link_to "#{player.wom_name}", wom_api_url(player) %>
+            <%= player.wom_name %>
             <%= player.name_changed %>
+          </td>
+          <td style="text-align: center">
+            <%= player.score %>
           </td>
           <td style="text-align: center">
             <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>

@@ -41,9 +41,7 @@ class Player < ApplicationRecord
   end
 
   def name_changed
-    # n = name lowercased without spaces
     n = name.downcase.gsub(' ', '')
-    #wmn = wom_name lowercased without spaces ignore nil
     wmn = wom_name.downcase.gsub(' ', '') unless wom_name.nil?
     return unless n != wmn
 
