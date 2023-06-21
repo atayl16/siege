@@ -11,7 +11,6 @@
         <th><%= link_to "Clan XP Gained", :sort => "clan_xp"%></th>
         <th>Clan Level Gained</th>
         <th>2 Months Gained</th>
-        <th>WOM Name</th>
         <th>Siege Score</th>
         <th>Update Player</th>
       </tr>
@@ -48,10 +47,6 @@
           </td>
           <td style="text-align: center; color: <%= player.inactive %>">
             <%=  number_with_delimiter(player.gained_xp, :delimiter => ',') %>
-          </td>
-          <td style="text-align: center">
-            <%= player.wom_name %>
-            <%= player.name_changed %>
           </td>
           <td style="text-align: center">
             <%= player.score %>
