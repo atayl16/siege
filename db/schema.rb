@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_13_121848) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_23_140827) do
+  create_table "events", force: :cascade do |t|
+    t.integer "wom_id"
+    t.string "name"
+    t.datetime "starts"
+    t.datetime "ends"
+    t.string "metric"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "winner"
+  end
+
   create_table "players", force: :cascade do |t|
     t.string "name"
     t.integer "xp"

@@ -14,6 +14,8 @@ class PlayersController < ApplicationController
     @officers = Player.where.not(title: nil).in_order_of(:title,
                                                          ['Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer'])
     @competitors = Player.where(score: 1..).sort_by(&:score).reverse
+    # Use the events_for_table method from the Event model to get the events for the table
+    @events = Event.where('ends >= ?', Time.now).order('ends ASC').all + Event.where('ends < ?', Time.now).order('ends DESC').limit(2).all
   end
 
   def table

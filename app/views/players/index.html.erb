@@ -130,42 +130,80 @@
 		</div>
 
 		<div class="col-4">
-      <% if user_signed_in? %>
-        <table class="table table-dark table-hover table-responsive table-bordered">
+      <table class="table table-dark table-hover table-responsive table-bordered">
+        <thead>
+          <tr>
+            <th style="text-align: center" colspan="3">
+              🏆 &nbsp; Leaderboard &nbsp; 🏆
+            </th>
+          </tr>
+          <tr>
+            <th style="text-align: center" class="cols-3">
+              Rank
+            </th>
+            <th style="text-align: left" class="col-6">
+              Name
+            </th>
+            <th style="text-align: center" class="cols-3">
+              Points
+            </th>
+        </thead>
+        <tbody>
+          <% @competitors.each_with_index do |player, index| %>
+            <tr>
+              <td style="text-align: center">
+                <%= "#{index + 1}" %>
+              </td>
+              <td style="text-align: left">
+                <%= player.name %>
+              </td>
+              <td style="text-align: center">
+                <%= player.score %>
+              </td>
+            </tr>
+          <% end %>            
+        </tbody>
+      </table>
+      <table class="table table-dark table-hover table-responsive table-bordered">
           <thead>
             <tr>
-              <th style="text-align: center" colspan="3">
-                🏆 &nbsp; Leaderboard &nbsp; 🏆
+              <th style="text-align: center" colspan="4">
+                📅 &nbsp; Events &nbsp; 📅
               </th>
             </tr>
             <tr>
-              <th style="text-align: center" class="cols-3">
-                Rank
+              <th style="text-align: center" >
+                Time
               </th>
-              <th style="text-align: left" class="col-6">
+              <th style="text-align: left">
                 Name
               </th>
-              <th style="text-align: center" class="cols-3">
-                Points
+              <th style="text-align: center" >
+                Duration
               </th>
+              <th style="text-align: center" >
+                Status
+              </th>              
           </thead>
           <tbody>
-            <% @competitors.each_with_index do |player, index| %>
+            <% @events.each do |event| %>
               <tr>
                 <td style="text-align: center">
-                  <%= "#{index + 1}" %>
+                  <%= event.event_time %>
                 </td>
                 <td style="text-align: left">
-                  <%= player.name %>
+                  <%= event.name.humanize.titleize %>
                 </td>
                 <td style="text-align: center">
-                  <%= player.score %>
+                  <%= distance_of_time_in_words(event.starts, event.ends) %>
+                </td>                
+                <td style="text-align: center word-wrap: break-word">
+                  <%= event.status %>
                 </td>
               </tr>
-            <% end %>            
+            <% end %>
           </tbody>
-        </table>
-      <% end %>
+      </table>
 			<table class="table table-dark table-hover table-sm table-responsive">
         <thead>
           <tr>
