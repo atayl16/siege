@@ -59,7 +59,7 @@ namespace :get_updates_from_wom do
       else
         @event = Event.new
         @event.wom_id = event['id']
-        @event.name = event['metric']
+        @event.name = event['title']
         @event.starts = event['startsAt']
         @event.ends = event['endsAt']
         @event.metric = event['metric']
