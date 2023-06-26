@@ -40,7 +40,7 @@ namespace :get_updates_from_wom do
     )
     @data = JSON.parse(@events_url.body)
     @data.each do |event|
-      if Event.exists?(wom_id: event['id'])
+      if Event.exists?(wom_id: event['id'].to_s)
         @event = Event.find_by(wom_id: event['id'])
         @event.update(name: event['title'])
         @event.update(starts: event['startsAt'])
