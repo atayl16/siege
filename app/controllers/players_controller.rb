@@ -8,7 +8,6 @@ class PlayersController < ApplicationController
 
   # GET /players or /players.json
   def index
-    @player_count = Player.all.count + 2
     @players = Player.all
     @clan = Player.where(title: nil).sort_by(&:clan_xp).reverse
     @officers = Player.where.not(title: nil).in_order_of(:title,
@@ -19,7 +18,6 @@ class PlayersController < ApplicationController
   end
 
   def table
-    @player_count = Player.all.count + 2
     @players = case params[:sort]
                when 'clan_xp'
                  Player.all.sort_by(&:clan_xp).reverse
