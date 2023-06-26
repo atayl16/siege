@@ -37,7 +37,7 @@ class Event < ApplicationRecord
     if time > Time.now
       time.localtime.strftime('%b %d %I:%M %P')
     else 
-      time.localtime.strftime('%b %d')
+      time.localtime.strftime('%b %d %Y')
     end
   end
 
@@ -63,6 +63,14 @@ class Event < ApplicationRecord
 
   def utc_end_time
     utc_time(ends)
+  end
+
+  def utc_time_for_index
+    if self.future_event
+      utc_time(starts) + ' - ' + utc_time(ends) + ' UTC'
+    else
+      ""
+    end
   end
 
   def event_time

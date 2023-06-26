@@ -3,8 +3,8 @@
     <div class="card-header">
       <h5 class="card-title"> <%=  event.name %> </h5>
       <h6 class="card-subtitle mb-2 text-muted"> 
-        <%=  event.local_start_time %> - <%=  event.local_end_time %> <br>
-        <%= event.utc_start_time %> - <%= event.utc_end_time %> UTC
+        <%= event.local_start_time %> - <%=  event.local_end_time %> <br>
+        <%= event.utc_time_for_index %>
       </h6>
     </div>
     
