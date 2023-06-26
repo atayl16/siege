@@ -2,11 +2,14 @@ namespace :get_player_wom_name do
   desc 'Update players WOM ID from external API'
   task :update_players => :environment do
     require 'httparty'
+
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
     @players = Player.all
     @players.each do |player|
       @url = HTTParty.get(
         "https://api.wiseoldman.net/v2/players/id/#{player.wom_id}",
-        :headers =>{'Content-Type' => 'application/json'}
+        :headers =>{'Content-Type' => 'application/json'},
+        :data => {'verificationCode' => wom}
       )
       if @url["id"] == nil then next end
       

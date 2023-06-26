@@ -8,12 +8,14 @@ namespace :get_updates_from_wom do
     require 'erb'
     include ERB::Util
 
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
     @players = Player.all
     @players.each do |player|
       name = url_encode(player.name.strip)
       @hash = HTTParty.get(
         "https://api.wiseoldman.net/v2/players/#{name}/gained?period=2m",
-        headers: { 'Content-Type' => 'application/json' }
+        headers: { 'Content-Type' => 'application/json' },
+        data: { 'verificationCode' => wom }
       )
 
       next if @hash['error']
@@ -30,13 +32,14 @@ namespace :get_updates_from_wom do
     
   desc 'Update events from external API'
   task update_events: :environment do
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
     @events_url = HTTParty.get(
       "https://api.wiseoldman.net/v2/groups/2928/competitions?limit=1",
-      headers: { 'Content-Type' => 'application/json' }
+      headers: { 'Content-Type' => 'application/json' },
+      data: { 'verificationCode' => wom }
     )
     @data = JSON.parse(@events_url.body)
     @data.each do |event|
-      # if the event exists where the id matches a wom_id then update it else create it
       if Event.exists?(wom_id: event['id'])
         @event = Event.find_by(wom_id: event['id'])
         @event.update(name: event['title'])
