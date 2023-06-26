@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :get_updates_from_wom do
-  desc 'Update players inactove status external API'
+  desc 'Update players inactive status external API'
   task update_players: :environment do
     require 'httparty'
     require 'json'
@@ -26,7 +26,10 @@ namespace :get_updates_from_wom do
         puts "Error updating #{player.name}, #{e}"
       end
     end
-
+    end
+    
+  desc 'Update events from external API'
+  task update_events: :environment do
     @events_url = HTTParty.get(
       "https://api.wiseoldman.net/v2/groups/2928/competitions?limit=1",
       headers: { 'Content-Type' => 'application/json' }
@@ -57,6 +60,16 @@ namespace :get_updates_from_wom do
         @event.starts = event['startsAt']
         @event.ends = event['endsAt']
         @event.metric = event['metric']
+        if @event.ends < Time.now and @event.winner.nil?
+          winners_url = HTTParty.get(
+            "https://api.wiseoldman.net/v2/competitions/#{event['id']}/top-history",
+            headers: { 'Content-Type' => 'application/json' }
+          )
+          @winner_data = JSON.parse(winners_url.body)
+          @event.update(winner: @winner_data[0]['player']['displayName'])
+          puts "Updated winner for event #{event['title']} to #{@winner_data[0]['player']['displayName']}"
+        end
+        
         @event.save
         puts "Created event #{event['id']}"
       end
