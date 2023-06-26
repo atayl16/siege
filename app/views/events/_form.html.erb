@@ -1,0 +1,42 @@
+<%= form_with(model: event) do |form| %>
+
+  <div class="card-body">
+    <div class="text-white d-flex flex-column ">
+      <div class="mb-3">
+        <%= form.label :name, { class: "form-label"} %>
+        <%= form.text_field :name, :required => true %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :starts, "Start Time", { class: "form-label"} %>
+        <%= form.datetime_select :starts, :required => true, :minute_step => 15, :order => [:month, :day, :year], :datetime_separator => "at " %> UTC
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :ends, "End Time", { class: "form-label"} %>
+        <%= form.datetime_select :ends, :required => true, :minute_step => 15, :order => [:month, :day, :year], :datetime_separator => "at " %> UTC
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :metric, "Metric", { class: "form-label"} %>
+        <%= form.text_field :metric, placeholder: "Optional" %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :winner, { class: "form-label"} %>
+        <%= form.text_field :winner, placeholder: "Optional" %>
+      </div>
+
+      <div>
+        <%= form.submit :class => "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+    <% if event.errors.any? %>
+      <div class="card-footer" style="color: red">
+          <% event.errors.each do |error| %>
+            <%= error.full_message %>
+          <% end %>
+      </div>
+  <% end %>
+<% end %>

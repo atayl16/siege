@@ -1,0 +1,27 @@
+<div class="container-fluid text-white">
+  <div class="card bg-dark border-secondary" id="<%= dom_id event %>">
+    <div class="card-header">
+      <h5 class="card-title"> <%=  event.name %> </h5>
+      <h6 class="card-subtitle mb-2 text-muted"> 
+        <%=  event.local_start_time %> - <%=  event.local_end_time %> <br>
+        <%= event.utc_start_time %> - <%= event.utc_end_time %> UTC
+      </h6>
+    </div>
+    
+    <p class="card-text">
+      <%= event.status %>
+    </p>
+
+      <div class="card-footer btn-group">
+        <% if event.wom_link %>
+          <%= link_to "Open in WOM", event.wom_link, :class => "btn btn-outline-danger" %>
+          <br>
+        <% end %>
+        <% if current_user && event.wom_link.nil? %>
+          <%= link_to "View", event_path(event), :class => "btn btn-outline-light" %>
+          <%= link_to "Edit", edit_event_path(event), :class => "btn btn-outline-info" %>
+          <%= link_to "Delete", delete_event_path(event), method: :get, :class => "btn btn-outline-danger" %>
+        <% end %>
+    </div>
+  </div>
+</div>

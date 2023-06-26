@@ -12,7 +12,7 @@
           <li><a class="dropdown-item" href="https://wiseoldman.net/groups/2928/name-changes">Name Changes</a></li>
         </ul>
         <%= link_to "Admin Table", table_path, :class => "btn btn-dark"  %>
-        <%= link_to "Members: #{@player_count}", players_path, :class => "btn btn-dark"  %>
+        <%= link_to "Events", events_path, :class => "btn btn-dark"  %>
         <%= link_to "Add a new member", new_player_path, :class => "btn btn-dark" %>
         <%= button_to "Sign out", destroy_user_session_path, method: :delete, :class => "btn btn-dark" %>
       <% else %>
