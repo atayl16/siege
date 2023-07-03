@@ -43,6 +43,18 @@
               <td style="text-align: center">
                 <%= player.clan_title %>
               </td>
+              <% if user_signed_in? %>
+                <td style="text-align: center" >
+                  <% if player.needs_update %>
+                    <%= link_to '', {:controller => "players",
+                                      :action => "update_rank",
+                                      :id => player.id}, 
+                                      method: 'post', 
+                                      title: "Update Rank",
+                                      class: "bi-exclamation-octagon-fill text-danger" %>
+                  <% end %>
+                </td>
+              <% end%>
               <td style="text-align: center">
                 <%= number_with_delimiter(player.xp, :delimiter => ',') %>
               </td>
