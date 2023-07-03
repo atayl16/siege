@@ -4,7 +4,7 @@ class PlayersController < ApplicationController
   before_action :set_player,
                 only: %i[show edit update destroy delete call_osrs_api update_rank update_member_on_wom add_member_to_wom
                          remove_member_from_wom]
-  before_action :authenticate_user!, except: [:index]
+  before_action :authenticate_user!, except: [:index, :leaderboard]
 
   # GET /players or /players.json
   def index
@@ -12,9 +12,12 @@ class PlayersController < ApplicationController
     @clan = Player.where(title: nil).sort_by(&:clan_xp).reverse
     @officers = Player.where.not(title: nil).in_order_of(:title,
                                                          ['Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer'])
+    @competitors = Player.where(score: 1..).sort_by(&:score).reverse.first(3)
+    @events = Event.where('ends >= ?', Time.now).order('ends ASC').all
+  end
+
+  def leaderboard
     @competitors = Player.where(score: 1..).sort_by(&:score).reverse
-    # Use the events_for_table method from the Event model to get the events for the table
-    @events = Event.where('ends >= ?', Time.now).order('ends ASC').all + Event.where('ends < ?', Time.now).order('ends DESC').limit(2).all
   end
 
   def table

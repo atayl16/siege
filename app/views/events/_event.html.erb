@@ -14,7 +14,7 @@
 
       <div class="card-footer btn-group">
         <% if event.wom_link %>
-          <%= link_to "Open in WOM", event.wom_link, :class => "btn btn-outline-danger" %>
+          <%= external_link_to "Open in WOM", event.wom_link, :class => "btn btn-outline-danger" %>
           <br>
         <% end %>
         <% if current_user && event.wom_link.nil? %>

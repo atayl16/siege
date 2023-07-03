@@ -12,6 +12,7 @@
         <th>Clan Level Gained</th>
         <th>2 Months Gained</th>
         <th>Siege Score</th>
+        <th>Added</th>
         <th>Update Player</th>
       </tr>
     </thead>
@@ -50,6 +51,9 @@
           </td>
           <td style="text-align: center">
             <%= player.score %>
+          </td>
+          <td style="text-align: center">
+            <%= player.created %>
           </td>
           <td style="text-align: center">
             <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
