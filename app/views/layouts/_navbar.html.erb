@@ -1,25 +1,41 @@
-<nav class="navbar navbar-dark bg-dark" style="background-color: black">
+<nav class="navbar navbar-dark bg-dark navbar-expand-lg" style="background-color: black">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/players"><%= image_tag "siege_logo.png", size: "50x50" %> Siege Clan XP Tracker</a>
+    <a class="navbar-brand" href="/"><%= image_tag "siege_logo.png", size: "50x50" %> Siege Clan</a>
     <div class="btn-group">
-        <% if user_signed_in? %>
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding-top: 8px; ">
-          Wise Old Man
+      <% if user_signed_in? %>
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding-top: 8px; ">
+          Players
         </a>
-        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <li><a class="dropdown-item" href="https://wiseoldman.net/groups/2928">Members</a></li>
-          <li><a class="dropdown-item" href="https://wiseoldman.net/groups/2928/competitions">Events</a></li>
-          <li><a class="dropdown-item" href="https://wiseoldman.net/groups/2928/name-changes">Name Changes</a></li>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+          <li><a class="dropdown-item" href="/players">XP Tracker</a></li>
+          <li><a class="dropdown-item" href="/leaderboard">Leaderboard</a></li>
+          <li><a class="dropdown-item" href="/table">Admin Table</a></li>
+          <li><a class="dropdown-item" href="/players/new">Add a Player</a></li>
+          <li> <%= external_link_to "WOM Members", "https://wiseoldman.net/groups/2928", :class => "dropdown-item" %> </li>
+          <li> <%= external_link_to "WOM Name Changes", "https://wiseoldman.net/groups/2928/name-changes", :class => "dropdown-item" %> </li>
         </ul>
-        <%= link_to "Admin Table", table_path, :class => "btn btn-dark"  %>
-        <%= link_to "Events", events_path, :class => "btn btn-dark"  %>
-        <%= link_to "Members: #{player_count}", players_path, :class => "btn btn-dark" %>
-        <%= link_to "Add a new member", new_player_path, :class => "btn btn-dark" %>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown3" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding-top: 8px; ">
+          Events
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown3">
+          <li><a class="dropdown-item" href="/events">Events</a></li>
+          <li><a class="dropdown-item" href="/events/new">Add a New Event</a></li>
+          <li><a class="dropdown-item" href="/gallery">Gallery</a></li>
+          <li> <%= external_link_to "WOM Events", "https://wiseoldman.net/groups/2928/competitions", :class => "dropdown-item" %> </li>
+        </ul>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <%= link_to "Add Player", new_player_path, :class => "btn btn-dark" %>
         <%= button_to "Sign out", destroy_user_session_path, method: :delete, :class => "btn btn-dark" %>
       <% else %>
-        <a class="nav-link text-light" href="/users/sign_in">Admin?</a>
+        <%= link_to "XP Tracker", players_path, :class => "btn btn-dark"  %>
+        <%= link_to "Events", events_path, :class => "btn btn-dark"  %>
+        <%= link_to "Leaderboard", leaderboard_path, :class => "btn btn-dark"  %>
+        <%= link_to "Gallery", gallery_path, :class => "btn btn-dark"  %>
+        <%= link_to "Admin?", new_user_session_path, :class => "btn btn-dark" %>
       <% end %>
     </div>
     </div>
   </div>
 </nav>
+

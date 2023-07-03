@@ -11,12 +11,7 @@
               Clan Rank
             </th>
             <% if user_signed_in? %>
-              <th style="text-align: center">
-                OSRS Rank
-              </th>
-              <th style="text-align: center">
-                Update
-              </th>
+              <th style="text-align: center"></th>
             <% end %>
 						<th style="text-align: center">
 							Starting XP
@@ -48,12 +43,6 @@
               <td style="text-align: center">
                 <%= player.clan_title %>
               </td>
-              <% if user_signed_in? %>
-                <td style="text-align: center">
-                  <%= player.clan_title %>
-                </td>
-                <td> </td>
-              <% end %>
               <td style="text-align: center">
                 <%= number_with_delimiter(player.xp, :delimiter => ',') %>
               </td>
@@ -87,9 +76,6 @@
                 <i class="bi-gem" style="font-size: 1rem; color: <%= player.rank_color %>"></i>
               </td>
               <% if user_signed_in? %>
-                <td style="text-align: center">
-                  <%= player.rank %>
-                </td>
                 <td style="text-align: center" >
                   <% if player.needs_update %>
                     <%= link_to '', {:controller => "players",
@@ -134,7 +120,7 @@
         <thead>
           <tr>
             <th style="text-align: center" colspan="3">
-              🏆 &nbsp; Leaderboard &nbsp; 🏆
+              🏆 &nbsp; Top 3 Leaderboard &nbsp; 🏆
             </th>
           </tr>
           <tr>
