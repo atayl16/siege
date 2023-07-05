@@ -4,7 +4,7 @@
     <div class="btn-group">
       <% if user_signed_in? %>
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding-top: 8px; ">
-          Players
+          Players <%= player_count %>
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
           <li><a class="dropdown-item" href="/players">XP Tracker</a></li>
