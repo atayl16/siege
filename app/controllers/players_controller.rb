@@ -4,7 +4,8 @@ class PlayersController < ApplicationController
   before_action :set_player,
                 only: %i[show edit update destroy delete call_osrs_api update_rank update_member_on_wom add_member_to_wom
                          remove_member_from_wom]
-  before_action :authenticate_user!, except: [:index, :leaderboard]
+  before_action :authenticate_user!, except: [:index, :leaderboard, :table]
+  before_action :store_location
 
   # GET /players or /players.json
   def index
