@@ -83,7 +83,7 @@ class PlayersController < ApplicationController
         call_osrs_api
         set_player_wom_name
         format.js {}
-        format.html { redirect_to players_url, notice: 'Player was successfully updated.' }
+        format.html { redirect_to table_path, notice: 'Player was successfully updated.' }
         format.json { render :show, status: :ok, location: @player }
       else
         format.js {}
@@ -103,7 +103,7 @@ class PlayersController < ApplicationController
     @player.destroy
 
     respond_to do |format|
-      format.html { redirect_to players_url, notice: 'Player was successfully deleted.' }
+      format.html { redirect_to table_path, notice: 'Player was successfully deleted.' }
       format.json { head :no_content }
     end
   end
