@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :get_updates_from_wom do
-  desc 'Update players inactive status external API'
+  desc 'Update players kickable status external API'
   task update_players: :environment do
     require 'httparty'
     require 'json'

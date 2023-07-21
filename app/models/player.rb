@@ -25,12 +25,21 @@ class Player < ApplicationRecord
     end
   end
 
-  def inactive
-    case gained_xp
-    when 0..500_000
+  def kickable
+    if self.inactive == true
+      'yellow'
+    elsif self.gained_xp.to_i < 1000000
       'red'
     else
       'white'
+    end
+  end
+
+  def two_month_gains
+    if self.inactive == true
+      "Inactive"
+    else
+      self.gained_xp.to_i
     end
   end
 
