@@ -41,6 +41,11 @@
         <%= form.label :score, "Siege Score", { class: "form-label"} %>
         <%= form.number_field :score, placeholder: "Optional" %>
       </div>
+            
+      <div class="mb-3">
+        <%= form.label :inactive, "Inactive", { class: "form-label"} %>
+        <%= form.check_box :inactive %>
+      </div>
 
       <div>
         <%= form.submit :class => "btn btn-secondary" %>

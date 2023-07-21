@@ -46,8 +46,8 @@
           <td style="text-align: center">
             <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
           </td>
-          <td style="text-align: center; color: <%= player.inactive %>">
-            <%=  number_with_delimiter(player.gained_xp, :delimiter => ',') %>
+          <td style="text-align: center; color: <%= player.kickable %>">
+            <%=  number_with_delimiter(player.two_month_gains, :delimiter => ',') %>
           </td>
           <td style="text-align: center">
             <%= player.score %>
