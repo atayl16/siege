@@ -4,7 +4,7 @@ class PlayersController < ApplicationController
   before_action :set_player,
                 only: %i[show edit update destroy delete call_osrs_api update_rank update_member_on_wom add_member_to_wom
                          remove_member_from_wom]
-  before_action :authenticate_user!, except: [:index, :leaderboard, :table]
+  before_action :authenticate_user!, except: %i[index leaderboard table]
   before_action :store_location
 
   # GET /players or /players.json
@@ -227,12 +227,12 @@ class PlayersController < ApplicationController
   def set_player_wom_id
     require 'httparty'
     @url = HTTParty.get(
-      "https://api.wiseoldman.net/v2/players/#{@player.name.gsub(" ","%20")}",
-      :headers =>{'Content-Type' => 'application/json'}
+      "https://api.wiseoldman.net/v2/players/#{@player.name.gsub(' ', '%20')}",
+      headers: { 'Content-Type' => 'application/json' }
     )
-    
+
     begin
-      @player.update( wom_id: @url["id"] )
+      @player.update(wom_id: @url['id'])
       puts "Updated #{@player.name}, wom_id: #{@player.wom_id}"
     rescue StandardError => e
       puts "Error updating #{@player.name}, #{e}"
@@ -243,11 +243,11 @@ class PlayersController < ApplicationController
     require 'httparty'
     @url = HTTParty.get(
       "https://api.wiseoldman.net/v2/players/id/#{@player.wom_id}",
-      :headers =>{'Content-Type' => 'application/json'}
+      headers: { 'Content-Type' => 'application/json' }
     )
-    
+
     begin
-      @player.update( wom_name: @url["displayName"] )
+      @player.update(wom_name: @url['displayName'])
       puts "Updated #{@player.name}, wom_name: #{@player.wom_name}"
     rescue StandardError => e
       puts "Error updating #{@player.name}, #{e}"
@@ -263,6 +263,7 @@ class PlayersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def player_params
-    params.require(:player).permit(:name, :xp, :lvl, :title, :rank, :current_xp, :current_lvl, :score, :wom_id, :wom_name, :inactive)
+    params.require(:player).permit(:name, :xp, :lvl, :title, :rank, :current_xp, :current_lvl, :score, :wom_id,
+                                   :wom_name, :inactive)
   end
 end

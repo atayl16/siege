@@ -2,7 +2,7 @@
 
 module ApplicationHelper
   def player_count
-   Player.all.count + 2
+    Player.all.count + 2
   end
 
   def external_link_to(name = nil, options = nil, html_options = nil, &block)
