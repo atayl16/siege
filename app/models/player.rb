@@ -3,7 +3,7 @@
 class Player < ApplicationRecord
   NULL_ATTRS = %w[title].freeze
   before_save :nil_if_blank
-  validates :name, presence: true, uniqueness: { message: 'already exists' } 
+  validates :name, presence: true, uniqueness: { message: 'already exists' }
 
   def self.lower_name
     name.downcase
@@ -26,9 +26,9 @@ class Player < ApplicationRecord
   end
 
   def kickable
-    if self.inactive == true
+    if inactive == true
       'yellow'
-    elsif self.gained_xp.to_i < 1000000
+    elsif gained_xp.to_i < 2_000_000
       'red'
     else
       'white'
@@ -36,10 +36,10 @@ class Player < ApplicationRecord
   end
 
   def two_month_gains
-    if self.inactive == true
-      "Inactive"
+    if inactive == true
+      'Inactive'
     else
-      self.gained_xp.to_i
+      gained_xp.to_i
     end
   end
 
@@ -67,14 +67,13 @@ class Player < ApplicationRecord
     end
   end
 
-
   def created
-    if self.created_at > 2.months.ago
-      self.created_at.strftime('%b %d, %Y') + ' (New)'
-    elsif self.created_at < '2023-02-26'.to_date
+    if created_at > 2.months.ago
+      "#{created_at.strftime('%b %d, %Y')} (New)"
+    elsif created_at < '2023-02-26'.to_date
       'OG'
     else
-      self.created_at.strftime('%b %d, %Y')
+      created_at.strftime('%b %d, %Y')
     end
   end
 
