@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Event < ApplicationRecord
   def future_events
     Event.where('ends >= ?', Time.now)
@@ -11,7 +13,7 @@ class Event < ApplicationRecord
     future_events.order('ends ASC').all + completed_events.order('ends DESC').limit(1).all
   end
 
-  def future_event 
+  def future_event
     starts > Time.now
   end
 
@@ -29,14 +31,14 @@ class Event < ApplicationRecord
     elsif Time.now < starts
       'Upcoming'
     else
-      winner.nil? ? 'Ended' : '🥇' + winner
+      winner.nil? ? 'Ended' : "🥇#{winner}"
     end
   end
 
   def local_time(time)
     if time > Time.now
       time.localtime.strftime('%b %d %I:%M %P')
-    else 
+    else
       time.localtime.strftime('%b %d %Y')
     end
   end
@@ -44,7 +46,7 @@ class Event < ApplicationRecord
   def utc_time(time)
     if time > Time.now
       time.strftime('%b %d %I:%M %P')
-    else 
+    else
       time.strftime('%b %d %Y')
     end
   end
@@ -66,28 +68,26 @@ class Event < ApplicationRecord
   end
 
   def utc_time_for_index
-    if self.future_event
-      utc_time(starts) + ' - ' + utc_time(ends) + ' UTC'
+    if future_event
+      "#{utc_time(starts)} - #{utc_time(ends)} UTC"
     else
-      ""
+      ''
     end
   end
 
   def event_time
-    if self.future_event
-      "Starts " + local_time(starts) 
-    elsif self.past_event
-      "Ended " + local_time(ends)
+    if future_event
+      "Starts #{local_time(starts)}"
+    elsif past_event
+      "Ended #{local_time(ends)}"
     else
-      "Ends " + local_time(ends)
+      "Ends #{local_time(ends)}"
     end
   end
 
   def wom_link
-    if wom_id?
-      "https://wiseoldman.net/competitions/#{wom_id}"
-    else
-      nil
-    end
+    return unless wom_id?
+
+    "https://wiseoldman.net/competitions/#{wom_id}"
   end
 end

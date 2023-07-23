@@ -28,13 +28,13 @@ namespace :get_updates_from_wom do
         puts "Error updating #{player.name}, #{e}"
       end
     end
-    end
-    
+  end
+
   desc 'Update events from external API'
   task update_events: :environment do
     wom = Rails.application.credentials.dig(:wom, :verificationCode)
     @events_url = HTTParty.get(
-      "https://api.wiseoldman.net/v2/groups/2928/competitions?limit=1",
+      'https://api.wiseoldman.net/v2/groups/2928/competitions?limit=1',
       headers: { 'Content-Type' => 'application/json' },
       data: { 'verificationCode' => wom }
     )
@@ -47,7 +47,7 @@ namespace :get_updates_from_wom do
         @event.update(ends: event['endsAt'])
         @event.update(metric: event['metric'])
         puts "Updated event #{event['title']}"
-        if @event.ends < Time.now and @event.winner.nil?
+        if (@event.ends < Time.now) && @event.winner.nil?
           winners_url = HTTParty.get(
             "https://api.wiseoldman.net/v2/competitions/#{event['id']}/top-history",
             headers: { 'Content-Type' => 'application/json' }
@@ -63,7 +63,7 @@ namespace :get_updates_from_wom do
         @event.starts = event['startsAt']
         @event.ends = event['endsAt']
         @event.metric = event['metric']
-        if @event.ends < Time.now and @event.winner.nil?
+        if (@event.ends < Time.now) && @event.winner.nil?
           winners_url = HTTParty.get(
             "https://api.wiseoldman.net/v2/competitions/#{event['id']}/top-history",
             headers: { 'Content-Type' => 'application/json' }
@@ -72,14 +72,11 @@ namespace :get_updates_from_wom do
           @event.update(winner: @winner_data[0]['player']['displayName'])
           puts "Updated winner for event #{event['title']} to #{@winner_data[0]['player']['displayName']}"
         end
-        
+
         @event.save
         puts "Created event #{event['id']}"
       end
     end
-    
-
-
   end
 end
 

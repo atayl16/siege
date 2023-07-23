@@ -11,14 +11,14 @@ module PlayersHelper
 
   def rank(number)
     case number
-      when 1
-        '🥇 1st'
-      when 2
-        '🥈 2nd'
-      when 3
-        '🥉 3rd'
-      else
-        number.ordinalize
-      end
+    when 1
+      '🥇 1st'
+    when 2
+      '🥈 2nd'
+    when 3
+      '🥉 3rd'
+    else
+      number.ordinalize
+    end
   end
 end
