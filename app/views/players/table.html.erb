@@ -1,31 +1,30 @@
-<div class="container-fluid" style="background-color: black">
-  <table class="table table-striped table-dark table-hover table-sm table-responsive">
+<div class="container-fluid col-9" style="background-color: black">
+  <table class="table table-striped table-dark table-hover table-sm table-responsive ">
     <thead>
       <tr>
-        <th><%= link_to "Player Name", :sort => "name"%> </th>
-        <th>Clan Rank</th>
-        <th>OSRS Rank</th>
-        <th><%= link_to "Needs Update", :sort => "needs_update"%> </th>
-        <th>Starting XP</th>
-        <th>Starting Level</th>
-        <th><%= link_to "Clan XP Gained", :sort => "clan_xp"%></th>
-        <th>Clan Level Gained</th>
-        <th>2 Months Gained</th>
+        <th colspan='2'><%= link_to "Player Name", :sort => "name"%> </th>
         <th>Siege Score</th>
-        <th>Added</th>
-        <th>Update Player</th>
+        <th>Clan Rank</th>
+        <th><%= link_to "Needs Update", :sort => "needs_update"%> </th>
+        <th>2 Months Gained</th>
+        <th>Joined</th>
+        <th>Last Updated</th>
+        <th>Delete</th>
       </tr>
     </thead>
       <% @players.each do |player| %>
         <tr>
           <td style="text-align: center">
+            <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
+          </td>
+          <td style="text-align: left">
             <%= link_to "#{player.name}", wom_url(player) %>
           </td>
           <td style="text-align: center">
-            <%= player.clan_rank %>
+            <%= player.score %>
           </td>
           <td style="text-align: center">
-            <%= player.rank %>
+            <%= player.clan_rank %>
           </td>
           <td style="text-align: center">
             <% if player.needs_update %>
@@ -33,35 +32,32 @@
                               :action => "update_rank",
                               :id => player.id}, method: 'post', class: "bi-exclamation-octagon-fill text-danger" %>
             <% end %>
-          </td>
-          <td style="text-align: center">
-            <%= number_with_delimiter(player.xp, :delimiter => ',') %>
-          </td>
-          <td style="text-align: center">
-            <%= number_with_delimiter(player.lvl, :delimiter => ',') %>
-          </td>
-          <td style="text-align: center">
-            <%= number_with_delimiter(player.clan_xp, :delimiter => ',') %>
-          </td>
-          <td style="text-align: center">
-            <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
+            <%= player.rank %>
           </td>
           <td style="text-align: center; color: <%= player.kickable %>">
-            <%=  number_with_delimiter(player.two_month_gains, :delimiter => ',') %>
-          </td>
-          <td style="text-align: center">
-            <%= player.score %>
+            <%=  number_with_delimiter(player.two_month_gains, :delimiter => ',') %> <%= player.new_check %>
           </td>
           <td style="text-align: center">
             <%= player.created %>
           </td>
           <td style="text-align: center">
-            <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning" %>
-            &nbsp;&nbsp;&nbsp;&nbsp;
+            <%= time_ago_in_words(player.updated_at) %> ago
+          </td>
+          <td style="text-align: center">
             <%= link_to "", delete_player_path(player), method: :get, :class => "bi-trash text-danger" %>
           </td>
         </tr>
       <% end %>
+      <tr>
+        <td colspan='9'>
+          <div class="admin-table-footer" style="
+            text-align: left;
+            padding-left: 10px;
+            font-size: smaller;
+          ">
+            <em>*OG = Player joined before 2023-02-26</em>
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>

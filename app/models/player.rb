@@ -67,14 +67,24 @@ class Player < ApplicationRecord
     end
   end
 
-  def created
+  def new_check
     if created_at > 2.months.ago
-      "#{created_at.strftime('%b %d, %Y')} (New)"
-    elsif created_at < '2023-02-26'.to_date
-      'OG'
+      '🚸 New'
+    else
+      ''
+    end
+  end
+
+  def created
+    if og == true
+      'OG*'
     else
       created_at.strftime('%b %d, %Y')
     end
+  end
+
+  def og
+    created_at < '2023-02-26'.to_date
   end
 
   # Set clan rank based on clan XP using a case statement
