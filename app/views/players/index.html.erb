@@ -61,10 +61,10 @@
               <td style="text-align: center">
                 <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
               </td>
-              <td style="text-align: center; color: <%= player.kickable %>">
+              <td style="text-align: center">
                 <%=  number_with_delimiter(player.next_lvl, :delimiter => ',') %>
               </td>
-              <td style="text-align: center">
+              <td style="text-align: center; color: <%= player.kickable %>">
                 <%=  number_with_delimiter(player.two_month_gains, :delimiter => ',') %>
               </td>
               <% if user_signed_in? %>
