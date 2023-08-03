@@ -14,10 +14,10 @@ class Player < ApplicationRecord
     players = Player.all
 
     CSV.generate do |csv|
-      csv << %w[name lvl xp title rank current_lvl current_xp first_xp first_lvl gained_xp old_names wom_id wom_name score inactive deactivated deactivated_xp deactivated_lvl deactivated_date reactivated_xp reactivated_lvl reactivated_date]
+      csv << %w[name lvl xp title rank current_lvl current_xp first_xp first_lvl gained_xp wom_id wom_name score inactive deactivated deactivated_xp deactivated_lvl deactivated_date reactivated_xp reactivated_lvl reactivated_date]
       players.each do |player|
         csv << [player.name, player.lvl, player.xp, player.title, player.rank, player.current_lvl, player.current_xp,
-                player.first_xp, player.first_lvl, player.gained_xp, player.old_names, player.wom_id, player.wom_name,
+                player.first_xp, player.first_lvl, player.gained_xp, player.wom_id, player.wom_name,
                 player.score, player.inactive, player.deactivated, player.deactivated_xp, player.deactivated_lvl,
                 player.deactivated_date, player.reactivated_xp, player.reactivated_lvl, player.reactivated_date]
       end

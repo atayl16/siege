@@ -49,13 +49,16 @@
         </tr>
       <% end %>
       <tr>
-        <td colspan='9'>
+        <td colspan='8'>
           <div class="admin-table-footer" style="
             text-align: left;
             padding-left: 10px;
             font-size: smaller;
           ">
             <em>*OG = Player joined before 2023-02-26</em>
+        </td>
+        <td>
+          <%= link_to "Export Players to CSV", href="/export.csv", :class => "btn btn-dark btn-sm" %>
         </td>
       </tr>
     </tbody>
