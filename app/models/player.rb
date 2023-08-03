@@ -40,6 +40,27 @@ class Player < ApplicationRecord
     end
   end
 
+  def next_lvl
+    case clan_xp
+    when 0..3_000_000
+      3_000_000 - clan_xp
+    when 3_000_000..7_999_999
+      8_000_000 - clan_xp
+    when 8_000_000..14_999_999
+      15_000_000 - clan_xp
+    when 15_000_000..39_999_999
+      40_000_000 - clan_xp
+    when 40_000_000..89_999_999
+      90_000_000 - clan_xp
+    when 90_000_000..149_999_999
+      150_000_000 - clan_xp
+    when 150_000_000..499_999_999
+      500_000_000 - clan_xp
+    else
+      0
+    end
+  end
+
   def kickable
     if inactive == true
       'yellow'
