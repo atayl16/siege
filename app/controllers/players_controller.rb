@@ -4,7 +4,7 @@ class PlayersController < ApplicationController
   before_action :set_player,
                 only: %i[show edit update destroy delete call_osrs_api update_rank update_member_on_wom add_member_to_wom
                          remove_member_from_wom]
-  before_action :authenticate_user!, except: %i[index leaderboard table]
+  before_action :authenticate_user!, except: %i[index leaderboard]
   before_action :store_location
 
   # GET /players or /players.json
@@ -279,6 +279,15 @@ class PlayersController < ApplicationController
       puts "Updated #{@player.name}, wom_name: #{@player.wom_name}"
     rescue StandardError => e
       puts "Error updating #{@player.name}, #{e}"
+    end
+  end
+
+  def export
+    @players = Player.all
+    @players.to_csv
+
+    respond_to do |format|
+      format.csv { send_data @players.to_csv, filename: "players-#{Date.today}.csv" }
     end
   end
 

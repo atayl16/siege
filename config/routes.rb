@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   resources :events
   get 'players/:id/delete', to: 'players#deactivate', as: 'delete_player'
   get 'players/:id/activate', to: 'players#activate', as: 'activate_player'
+  get 'export', to: 'players#export', as: 'export'
   get 'leaderboard', to: 'players#leaderboard', as: 'leaderboard'
   get 'events/:id/delete', to: 'events#delete', as: 'delete_event'
   get '/table', to: 'players#table', as: 'table'
