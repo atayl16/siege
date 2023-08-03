@@ -9,7 +9,7 @@ namespace :get_updates_from_wom do
     include ERB::Util
 
     wom = Rails.application.credentials.dig(:wom, :verificationCode)
-    @players = Player.all
+    @players = Player.where(deactivated: false)
     @players.each do |player|
       name = url_encode(player.name.strip)
       @hash = HTTParty.get(

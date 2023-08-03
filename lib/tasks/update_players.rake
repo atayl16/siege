@@ -4,7 +4,7 @@ namespace :update_players do
   desc 'Update players current info from external API'
   task update_players: :environment do
     require 'httparty'
-    @players = Player.all
+    @players = Player.where(deactivated: false)
     @players.each do |player|
       @url = HTTParty.get(
         "https://secure.runescape.com/m=hiscore_oldschool/index_lite.ws?player=#{player.name}",
