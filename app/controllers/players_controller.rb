@@ -282,6 +282,15 @@ class PlayersController < ApplicationController
     end
   end
 
+  def export
+    @players = Player.all
+    @players.to_csv
+
+    respond_to do |format|
+      format.csv { send_data @players.to_csv, filename: "players-#{Date.today}.csv" }
+    end
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
