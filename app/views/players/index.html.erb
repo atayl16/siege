@@ -1,10 +1,10 @@
 <div class="container-fluid" style="background-color: black">
 	<div class="row">
 		<div class="col-md">
-      <table class="table table-striped table-dark table-hover table-sm table-responsive nowrap">
+      <table class="table table-striped table-dark table-hover table-sm table-responsive" style="white-space:nowrap">
 				<thead>
 					<tr>
-						<th style="text-align: center" class="nowrap">
+						<th style="text-align: center">
 							Name
 						</th>
             <th style="text-align: center">
@@ -40,7 +40,7 @@
 				</thead>
           <% @officers.each do |player| %>
             <tr>
-              <td style="text-align: center" class="nowrap">
+              <td style="text-align: center">
                 <%= player.name %>
               </td>
               <td style="text-align: center">
@@ -71,7 +71,7 @@
                 <td style="text-align: right">
                   <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning", title: "Edit Player" %>
                 </td>
-                <td style="text-align: left">
+                <td style="text-align: center">
                   <%= link_to "", delete_player_path(player), method: :get, :class => "bi-trash text-danger", title: "Delete Player" %>
                 </td>
               <% end %>
@@ -79,7 +79,7 @@
           <% end %>
           <% @clan.each do |player| %>
             <tr>
-              <td style="text-align: center" class="nowrap">
+              <td style="text-align: center">
                 <%= player.clan_title %> <%= player.name %>
               </td>
               <td style="text-align: center">
