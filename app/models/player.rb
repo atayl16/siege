@@ -98,6 +98,8 @@ class Player < ApplicationRecord
       '🛠'
     when 'PvM Organizer'
       '🐉'
+    when 'Siege Winner'
+      '🏆'
     else
       ''
     end

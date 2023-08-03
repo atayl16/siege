@@ -12,7 +12,7 @@ class PlayersController < ApplicationController
     @players = Player.where(deactivated: false)
     @clan = @players.where(title: nil).sort_by(&:clan_xp).reverse
     @officers = @players.where.not(title: nil ).in_order_of(:title,
-                                                         ['Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer'])
+                                                         ['Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer', 'Siege Winner'])
     @competitors = Player.where(score: 1..).sort_by(&:score).reverse.first(3)
     @events = Event.where('ends >= ?', Time.now).order('ends ASC').all
   end
