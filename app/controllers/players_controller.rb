@@ -285,7 +285,7 @@ class PlayersController < ApplicationController
   end
 
   def export
-    @players = Player.all
+    @players = Player.where(deactivated: false)
     @players.to_csv
 
     respond_to do |format|
