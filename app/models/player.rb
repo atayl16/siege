@@ -85,6 +85,15 @@ class Player < ApplicationRecord
     '❗'
   end
 
+
+  def join_date
+    joined_date ? joined_date : created_at    
+  end
+
+  def joined
+    join_date.strftime('%b %d, %Y')
+  end
+
   # Set clan title icon
   def clan_title
     case title

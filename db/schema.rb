@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_02_183432) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_09_191926) do
   create_table "events", force: :cascade do |t|
     t.integer "wom_id"
     t.string "name"
@@ -47,6 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_02_183432) do
     t.integer "reactivated_xp"
     t.integer "reactivated_lvl"
     t.datetime "reactivated_date"
+    t.datetime "joined_date"
   end
 
   create_table "users", force: :cascade do |t|
