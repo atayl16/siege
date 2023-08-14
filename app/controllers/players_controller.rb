@@ -18,7 +18,8 @@ class PlayersController < ApplicationController
   end
 
   def leaderboard
-    @competitors = Player.where(score: 1..).sort_by(&:score).reverse
+    @players = Player.where(deactivated: false)
+    @competitors = @players.where(score: 1..).sort_by(&:score).reverse
   end
 
   def deleted
@@ -27,17 +28,18 @@ class PlayersController < ApplicationController
   end
 
   def table
+    @clan = Player.where(deactivated: false)
     @players = case params[:sort]
                when 'clan_xp'
-                 Player.all.sort_by(&:clan_xp).reverse
+                 @clan.sort_by(&:clan_xp).reverse
                when 'needs_update'
-                 Player.all.sort_by { |player| player.needs_update.to_s }.reverse
+                 @clan.sort_by { |player| player.needs_update.to_s }.reverse
                when 'name'
-                 Player.all.order('LOWER(name)')
+                 @clan.order('LOWER(name)')
                else
-                 Player.all.sort_by { |player| player.needs_update.to_s }.reverse
+                 @clan.sort_by { |player| player.needs_update.to_s }.reverse
                end
-    @competitors = Player.where(score: 1..).sort_by(&:score).reverse
+    @competitors = @clan.where(score: 1..).sort_by(&:score).reverse
   end
 
   # GET /players/1 or /players/1.json
@@ -301,6 +303,6 @@ class PlayersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def player_params
     params.require(:player).permit(:name, :xp, :lvl, :title, :rank, :current_xp, :current_lvl, :score, :wom_id,
-                                   :wom_name, :inactive)
+                                   :wom_name, :inactive, :joined_date, :deactivated, :deactivated_xp, :deactivated_lvl)
   end
 end
