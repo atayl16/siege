@@ -301,6 +301,6 @@ class PlayersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def player_params
     params.require(:player).permit(:name, :xp, :lvl, :title, :rank, :current_xp, :current_lvl, :score, :wom_id,
-                                   :wom_name, :inactive)
+                                   :wom_name, :inactive, :joined_date, :deactivated, :deactivated_xp, :deactivated_lvl)
   end
 end
