@@ -29,6 +29,9 @@
 							Next Level
 						</th>
             <th style="text-align: center">
+              Joined              
+            </th>
+            <th style="text-align: center">
               2 Months Gained
             </th>
             <% if user_signed_in? %>
@@ -64,6 +67,9 @@
               </td>
               <td style="text-align: center">
                 <%=  number_with_delimiter(player.next_lvl, :delimiter => ',') %>
+              </td>
+              <td style="text-align: center">
+                <%= player.joined %>
               </td>
               <td style="text-align: center; color: <%= player.kickable %>">
                 <%=  number_with_delimiter(player.two_month_gains, :delimiter => ',') %>
@@ -112,6 +118,9 @@
               </td>
               <td style="text-align: center">
                 <%=  number_with_delimiter(player.next_lvl, :delimiter => ',') %>
+              </td>
+              <td style="text-align: center">
+                <%= player.joined %>
               </td>
               <td style="text-align: center; color: <%= player.kickable %>">
                 <%=  number_with_delimiter(player.two_month_gains, :delimiter => ',') %>
