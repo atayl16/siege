@@ -1,48 +1,53 @@
 <%= form_with(model: player) do |form| %>
 
-  <div class="card-body">
+
     <div class="text-white d-flex flex-column ">
-      <div class="mb-3">
+      <div >
         <%= form.label :name, { class: "form-label"} %>
         <%= form.text_field :name %>
       </div>
 
-      <div class="mb-3">
+      <div >
         <%= form.label :xp, "XP", { class: "form-label"} %>
         <%= form.number_field :xp, placeholder: "Optional" %>
       </div>
 
-      <div class="mb-3">
+      <div >
         <%= form.label :lvl, "Level", { class: "form-label"} %>
         <%= form.number_field :lvl, placeholder: "Optional" %>
       </div>
 
-      <div class="mb-3">
+      <div >
         <%= form.label :rank, { class: "form-label"} %>
         <%= form.select :rank, ['Opal', 'Sapphire', 'Emerald', 'Ruby', 'Diamond', 'Dragonstone', 'Onyx', 'Zenyte'] %>
       </div>
 
-      <div class="mb-3">
+      <div >
         <%= form.label :title, { class: "form-label"} %>
         <%= form.select :title, ['','Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer', 'Siege Winner'] %>
       </div>
 
-      <div class="mb-3">
+      <div >
+        <%= form.label :joined_date, "Join Date", { class: "form-label"} %>
+        <%= form.date_select :joined_date, order: [:month, :day, :year], include_blank: true, start_year: 2022, end_year: Date.today.year, use_short_month: true %>
+      </div>
+
+      <div >
         <%= form.label :wom_id, "WOM ID", { class: "form-label"} %>
         <%= form.number_field :wom_id, placeholder: "Optional" %>
       </div>
 
-      <div class="mb-3">
+      <div >
         <%= form.label :wom_name, "WOM Name", { class: "form-label"} %>
         <%= form.text_field :wom_name, placeholder: "Optional" %>
       </div>
       
-      <div class="mb-3">
+      <div >
         <%= form.label :score, "Siege Score", { class: "form-label"} %>
         <%= form.number_field :score, placeholder: "Optional" %>
       </div>
             
-      <div class="mb-3">
+      <div >
         <%= form.label :inactive, "Inactive", { class: "form-label"} %>
         <%= form.check_box :inactive %>
       </div>
@@ -51,7 +56,7 @@
         <%= form.submit :class => "btn btn-secondary" %>
       </div>
     </div>
-  </div>
+
     <% if player.errors.any? %>
       <div class="card-footer" style="color: red">
           <% player.errors.each do |error| %>
