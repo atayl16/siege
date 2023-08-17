@@ -1,41 +1,38 @@
 <div class="container-fluid class="text-white"">
   <div id="<%= dom_id player %>">
-    <p>
-      <strong>Starting XP:</strong>
-      <%=  number_with_delimiter(player.xp, :delimiter => ',') %>
-    </p>
-
-    <p>
-      <strong>Starting Level:</strong>
-      <%=  number_with_delimiter(player.lvl, :delimiter => ',') %>
-    </p>
-
-    <p>
-      <strong>Clan XP:</strong>
-      <%=  number_with_delimiter(player.clan_xp, :delimiter => ',') %>
-    </p>
-
-    <p>
-      <strong>Clan Level:</strong>
-      <%=  number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
-    </p>
-
-    <p>
-      <strong>Rank:</strong>
-      <%= player.rank %>
-    </p>
-
-    <% if player.title? %>
+    
+    <% if !@player.officer %>
       <p>
-        <strong>Title:</strong>
-        <%= player.title %>
+        Next Level <i class="bi-gem" style="font-size: 1rem; color: <%= player.next_rank_color %>"></i>  
+        after <strong> <%=  number_with_delimiter(player.next_lvl) %> </strong> xp.
       </p>
     <% end %>
+
+    <p>  
+      <%= player.name %> joined the clan with <strong> <%=  number_with_delimiter(player.xp, :delimiter => ',') %> </strong> xp and 
+      <strong> <%=  number_with_delimiter(player.lvl, :delimiter => ',') %> </strong> levels. 
+    </p>
+
+    <p>
+      Since then, <%= player.name %> has gained <strong> <%=  number_with_delimiter(player.clan_xp, :delimiter => ',') %> </strong> xp and
+      <strong> <%=  number_with_delimiter(player.clan_lvl, :delimiter => ',') %> </strong> levels for a total of 
+      <strong> <%=  number_with_delimiter(player.current_xp, :delimiter => ',') %> </strong> current xp and 
+      <strong> <%=  number_with_delimiter(player.current_lvl, :delimiter => ',') %> </strong> current levels.
+    </p>
+  </div>
+
+  <hr/>
+
+    <p>
+      Siege Score: <%= player.score || 0 %>
+    </p>
 
     <% if player.inactive? %>
       <p>
-        <strong style="color: red">Inactive</strong>
+        <span style="color: red">
+          <em> Player is currently inactive </em>
+        </span>
       </p>
     <% end %>
-  </div>
+
 </div>

@@ -24,6 +24,10 @@ class Player < ApplicationRecord
     end
   end
 
+  def officer
+    clan_title.present?
+  end
+
   def clan_xp
     if current_xp.to_i.positive?
       current_xp.to_i - xp.to_i
@@ -58,6 +62,25 @@ class Player < ApplicationRecord
       500_000_000 - clan_xp
     else
       0
+    end
+  end
+
+  def next_rank_color
+    case clan_xp
+    when 0..3_000_000
+      'blue'
+    when 3_000_000..7_999_999
+      'lime'
+    when 8_000_000..14_999_999
+      'red'
+    when 15_000_000..39_999_999
+      'white'
+    when 40_000_000..89_999_999
+      'magenta'
+    when 90_000_000..149_999_999
+      'grey'
+    else
+      'orange'
     end
   end
 
