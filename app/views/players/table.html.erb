@@ -1,6 +1,13 @@
+<style>
+    .header{
+        position:sticky;
+        top: 0 ;
+    }
+</style>
+
 <div class="container-fluid col-11" style="background-color: black">
   <table class="table table-striped table-dark table-hover table-sm table-responsive ">
-    <thead>
+    <thead class="header">
       <tr>
         <th colspan='2'><%= link_to "Player Name", :sort => "name"%> </th>
         <th>Siege Score</th>
@@ -49,15 +56,7 @@
         </tr>
       <% end %>
       <tr>
-        <td colspan='8'>
-          <div class="admin-table-footer" style="
-            text-align: left;
-            padding-left: 10px;
-            font-size: smaller;
-          ">
-            <em>*OG = Player joined before 2023-02-26</em>
-        </td>
-        <td>
+        <td colspan='9'>
           <%= link_to "Export Players to CSV", href="/export.csv", :class => "btn btn-dark btn-sm" %>
         </td>
       </tr>
