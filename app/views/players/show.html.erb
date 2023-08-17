@@ -1,24 +1,7 @@
 <div class="card p-1 position-absolute top-50 start-50 translate-middle bg-dark text-white">
   <h2 class="card-header text-white">
-    <% if @player.officer %>
-      <%= @player.clan_title %>
-      <%= @player.name %> 
-      <%= @player.clan_title %>
-    <% end %>
-
-    <% if !@player.officer %>
-      <i class="bi-gem" style="font-size: 2rem; color: <%= @player.rank_color %>"></i>
-       <%= @player.name %>
-      <i class="bi-gem" style="font-size: 2rem; color: <%= @player.rank_color %>"></i>
-    <% end %>
-
-    <% if @player.title? %>
-      <h5>
-        <%= @player.title %>
-      </h5>
-    <% end %>
-
-    <h6> <em>Member since <%= @player.joined %></em> </h6>
+    <%= @player.name %> 
+    <h6> <em>Member since <strong> <%= @player.joined %></em> </strong> </h6>
   <hr/>
   </h2>
 
