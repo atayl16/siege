@@ -14,7 +14,8 @@ class Player < ApplicationRecord
     players = Player.all
 
     CSV.generate do |csv|
-      csv << %w[name lvl xp title rank current_lvl current_xp first_xp first_lvl gained_xp wom_id wom_name score inactive deactivated deactivated_xp deactivated_lvl deactivated_date reactivated_xp reactivated_lvl reactivated_date]
+      csv << %w[name lvl xp title rank current_lvl current_xp first_xp first_lvl gained_xp wom_id wom_name score
+                inactive deactivated deactivated_xp deactivated_lvl deactivated_date reactivated_xp reactivated_lvl reactivated_date]
       players.each do |player|
         csv << [player.name, player.lvl, player.xp, player.title, player.rank, player.current_lvl, player.current_xp,
                 player.first_xp, player.first_lvl, player.gained_xp, player.wom_id, player.wom_name,
@@ -22,6 +23,10 @@ class Player < ApplicationRecord
                 player.deactivated_date, player.reactivated_xp, player.reactivated_lvl, player.reactivated_date]
       end
     end
+  end
+
+  def officer
+    clan_title.present?
   end
 
   def clan_xp
@@ -61,6 +66,25 @@ class Player < ApplicationRecord
     end
   end
 
+  def next_rank_color
+    case clan_xp
+    when 0..3_000_000
+      'blue'
+    when 3_000_000..7_999_999
+      'lime'
+    when 8_000_000..14_999_999
+      'red'
+    when 15_000_000..39_999_999
+      'white'
+    when 40_000_000..89_999_999
+      'magenta'
+    when 90_000_000..149_999_999
+      'grey'
+    else
+      'orange'
+    end
+  end
+
   def kickable
     if inactive == true
       'yellow'
@@ -85,9 +109,8 @@ class Player < ApplicationRecord
     '❗'
   end
 
-
   def join_date
-    joined_date ? joined_date : created_at    
+    joined_date || created_at
   end
 
   def joined

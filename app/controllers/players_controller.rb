@@ -4,15 +4,16 @@ class PlayersController < ApplicationController
   before_action :set_player,
                 only: %i[show edit update destroy delete call_osrs_api update_rank update_member_on_wom add_member_to_wom
                          remove_member_from_wom]
-  before_action :authenticate_user!, except: %i[index leaderboard]
+  before_action :authenticate_user!, except: %i[show index leaderboard]
   before_action :store_location
 
   # GET /players or /players.json
   def index
     @players = Player.where(deactivated: false)
     @clan = @players.where(title: nil).sort_by(&:clan_xp).reverse
-    @officers = @players.where.not(title: nil ).in_order_of(:title,
-                                                         ['Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer', 'Siege Winner'])
+    @officers = @players.where.not(title: nil).in_order_of(:title,
+                                                           ['Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer',
+                                                            'Siege Winner'])
     @competitors = Player.where(score: 1..).sort_by(&:score).reverse.first(3)
     @events = Event.where('ends >= ?', Time.now).order('ends ASC').all
   end
@@ -119,7 +120,8 @@ class PlayersController < ApplicationController
 
   def deactivate
     @player = Player.find(params[:id])
-    @player.update(deactivated: true, deactivated_xp: @player.current_xp, deactivated_lvl: @player.current_lvl, deactivated_date: Time.now)
+    @player.update(deactivated: true, deactivated_xp: @player.current_xp, deactivated_lvl: @player.current_lvl,
+                   deactivated_date: Time.now)
     redirect_back(fallback_location: root_path)
 
     if Rails.env.production? # Only allow deletion of players in production
@@ -136,7 +138,8 @@ class PlayersController < ApplicationController
     update_member_on_wom
     add_member_to_wom
 
-    @player.update(deactivated: false, reactivated_xp: @player.current_xp, reactivated_lvl: @player.current_lvl, reactivated_date: Time.now)
+    @player.update(deactivated: false, reactivated_xp: @player.current_xp, reactivated_lvl: @player.current_lvl,
+                   reactivated_date: Time.now)
     redirect_back(fallback_location: root_path)
   end
 
