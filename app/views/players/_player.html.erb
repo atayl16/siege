@@ -3,8 +3,15 @@
     
     <% if !@player.officer %>
       <p>
-        Next Level <i class="bi-gem" style="font-size: 1rem; color: <%= player.next_rank_color %>"></i>  
+      Current clan rank is <i class="bi-gem" style="font-size: 1rem; color: <%= @player.rank_color %>"></i> with the
+        next level of <i class="bi-gem" style="font-size: 1rem; color: <%= player.next_rank_color %>"></i>  
         after <strong> <%=  number_with_delimiter(player.next_lvl) %> </strong> xp.
+      </p>
+    <% end %>
+
+    <% if @player.officer %>
+      <p>
+        As an officer of the clan, <%= player.name %> holds the role of <strong> <%= @player.title %> </strong> <%= player.clan_title %>
       </p>
     <% end %>
 
@@ -26,6 +33,11 @@
     <p>
       Siege Score: <%= player.score || 0 %>
     </p>
+    <% if @player.siege_winner %>
+      <p>
+        <%= player.clan_title %> Previous Siege Competition Winner
+      </p>
+    <% end %>
 
     <% if player.inactive? %>
       <p>

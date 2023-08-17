@@ -26,7 +26,11 @@ class Player < ApplicationRecord
   end
 
   def officer
-    clan_title.present?
+    clan_title == '👑' || clan_title == '🔑' || clan_title == '🌟' || clan_title == '🛠' || clan_title == '🐉'
+  end
+
+  def siege_winner
+    clan_title == '🏆'
   end
 
   def clan_xp

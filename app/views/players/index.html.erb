@@ -56,7 +56,7 @@
           <% @officers.each do |player| %>
             <tr>
               <td style="text-align: center">
-                <%= player.name %>
+                <%= link_to player.name, player_path(player) %>
               </td>
               <td style="text-align: center">
                 <%= player.clan_title %>
@@ -98,7 +98,7 @@
           <% @clan.each do |player| %>
             <tr>
               <td style="text-align: center">
-                <%= player.clan_title %> <%= player.name %>
+                <%= player.clan_title %> <%= link_to player.name, player_path(player) %>
               </td>
               <td style="text-align: center">
                 <i class="bi-gem" style="font-size: 1rem; color: <%= player.rank_color %>"></i>
