@@ -8,13 +8,13 @@
   <%= render @player %>
 
   <div class="card-footer btn-group">
-    <%= link_to "Back to members", players_path, :class => "btn btn-info" %>
-    <%= external_link_to "Open in WOM", "#{wom_url(@player)}", :class => "btn btn-primary" %>
+    <%= link_to "Back to members", players_path, :class => "btn btn-outline-warning" %>
+    <%= external_link_to "Open in WOM", "#{wom_url(@player)}", :class => "btn btn-outline-warning" %>
       <% if user_signed_in? %>
         <br>
-        <%= link_to "Edit this player", edit_player_path(@player), :class => "btn btn-warning" %>
+        <%= link_to "Edit this player", edit_player_path(@player), :class => "btn btn-outline-warning" %>
         <br>  
-        <%= button_to "Delete this player", delete_player_path(@player), method: :get, :class => "btn btn-danger" %>
+        <%= button_to "Delete this player", delete_player_path(@player), method: :get, :class => "btn btn-outline-warning" %>
       <% end %>
   </div>
 </div>
