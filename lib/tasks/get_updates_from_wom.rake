@@ -158,7 +158,7 @@ namespace :get_updates_from_wom do
       begin
         @hash = JSON.parse(@hash.body)
         player.update(old_names: @hash)
-        puts "Updated #{player.name}, achievements: #{player.old_names}"
+        puts "Updated #{player.name}, names: #{player.old_names}"
       rescue StandardError => e
         puts "Error updating #{player.name}, #{e}"
       end
