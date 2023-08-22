@@ -92,7 +92,7 @@ namespace :get_updates_from_wom do
       name = url_encode(player.name.strip)
       @hash = HTTParty.get(
         "https://api.wiseoldman.net/v2/players/#{name}",
-        headers: { 'Content-Type' => 'application/json' },
+        headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
         data: { 'verificationCode' => wom }
       )
 
