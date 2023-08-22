@@ -78,45 +78,90 @@ namespace :get_updates_from_wom do
       end
     end
   end
-end
 
-# Sample Output:
-# [
-#   {
-#     "player": {
-#       "id": 127754,
-#       "username": "matiieu",
-#       "displayName": "Matiieu",
-#       "type": "ironman",
-#       "build": "main",
-#       "country": null,
-#       "status": "active",
-#       "exp": 131693581,
-#       "ehp": 636.3791899999997,
-#       "ehb": 147.17091,
-#       "ttm": 1128.26096,
-#       "tt200m": 21816.43212,
-#       "registeredAt": "2021-01-04T03:32:34.771Z",
-#       "updatedAt": "2022-10-31T07:02:47.126Z",
-#       "lastChangedAt": "2021-09-06T05:04:08.102Z",
-#       "lastImportedAt": null
-#     },
-#     "history": [
-#       {
-#         "value": 810,
-#         "date": "2021-01-31T23:51:59.079Z"
-#       },
-#       {
-#         "value": 797,
-#         "date": "2021-01-31T23:45:18.450Z"
-#       },
-#       {
-#         "value": 525,
-#         "date": "2021-01-25T14:36:57.616Z"
-#       },
-#       {
-#         "value": 485,
-#         "date": "2021-01-25T05:10:16.939Z"
-#       }
-#     ]
-#   }
+  desc 'Update player attributes from external API'
+  task update_player_attributes: :environment do
+    require 'httparty'
+    require 'json'
+    require 'erb'
+    include ERB::Util
+
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
+    @players = Player.where(deactivated: false)
+    @players.each do |player|
+      name = url_encode(player.name.strip)
+      @hash = HTTParty.get(
+        "https://api.wiseoldman.net/v2/players/#{name}",
+        headers: { 'Content-Type' => 'application/json' },
+        data: { 'verificationCode' => wom }
+      )
+
+      next if @hash['error']
+
+      begin
+        player.combat = @hash['combatLevel']
+        player.build = @hash['type']
+        player.update(combat: player.combat, build: player.build)
+        puts "Updated #{player.name}, combat: #{player.combat}, build: #{player.build}"
+      rescue StandardError => e
+        puts "Error updating #{player.name}, #{e}"
+      end
+    end
+  end
+
+  desc 'Update player achievements from external API'
+  task update_player_achievements: :environment do
+    require 'httparty'
+    require 'json'
+    require 'erb'
+    include ERB::Util
+
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
+    api_key = Rails.application.credentials.dig(:wom, :apiKey)
+    @players = Player.where(deactivated: false)
+    @players.each do |player|
+      name = url_encode(player.name.strip)
+      @hash = HTTParty.get(
+        "https://api.wiseoldman.net/v2/players/#{name}/achievements",
+        headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+        data: { 'verificationCode' => wom }
+      )
+
+      begin
+        @hash = JSON.parse(@hash.body)
+        player.update(achievements: @hash)
+        puts "Updated #{player.name}, achievements: #{player.achievements}"
+      rescue StandardError => e
+        puts "Error updating #{player.name}, #{e}"
+      end
+    end
+  end
+
+  desc 'Get old player names from external API'
+  task update_player_name_history: :environment do
+    require 'httparty'
+    require 'json'
+    require 'erb'
+    include ERB::Util
+
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
+    api_key = Rails.application.credentials.dig(:wom, :apiKey)
+    @players = Player.where(deactivated: false)
+    @players.each do |player|
+      name = url_encode(player.name.strip)
+      @hash = HTTParty.get(
+        "https://api.wiseoldman.net/v2/players/#{name}/names",
+        headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+        data: { 'verificationCode' => wom }
+      )
+
+      begin
+        @hash = JSON.parse(@hash.body)
+        player.update(old_names: @hash)
+        puts "Updated #{player.name}, achievements: #{player.old_names}"
+      rescue StandardError => e
+        puts "Error updating #{player.name}, #{e}"
+      end
+    end
+  end
+end
