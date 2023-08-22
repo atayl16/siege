@@ -10,6 +10,35 @@ class Player < ApplicationRecord
     name.downcase
   end
 
+  def achievements_exist?
+    achievements.present?
+  end
+
+  def has_3_achievements?
+    achievements[3].present?
+  end
+
+  def achievement_date_checked(achievement)
+    if achievement['createdAt'].present? && achievement['createdAt'].to_date > 5.years.ago
+      "on " + achievement['createdAt'].to_date.strftime('%b %d, %Y')
+    else
+      ''
+    end
+  end
+
+  def has_old_names?
+    old_names.present?
+  end
+
+  def name_history
+    names = old_names.map { |a| a['oldName'] }
+    names.join(', ')
+  end
+
+  def type
+    build ? build.titleize : 'Not yet updated'
+  end
+
   def self.to_csv
     players = Player.all
 

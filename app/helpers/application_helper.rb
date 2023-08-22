@@ -16,4 +16,12 @@ module ApplicationHelper
     end
     link_to(name, options, html_options, &block)
   end
+
+  def wom
+    Rails.application.credentials.dig(:wom, :verificationCode)
+  end
+
+  def api_key
+    Rails.application.credentials.dig(:wom, :apiKey)
+  end
 end

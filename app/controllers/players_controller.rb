@@ -35,10 +35,8 @@ class PlayersController < ApplicationController
                  @clan.sort_by(&:clan_xp).reverse
                when 'needs_update'
                  @clan.sort_by { |player| player.needs_update.to_s }.reverse
-               when 'name'
-                 @clan.order('LOWER(name)')
-               else
-                 @clan.sort_by { |player| player.needs_update.to_s }.reverse
+               else 'name'
+                 @clan.order('LOWER(name)')                 
                end
     @competitors = @clan.where(score: 1..).sort_by(&:score).reverse
   end

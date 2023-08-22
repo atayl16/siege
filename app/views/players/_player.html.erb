@@ -26,10 +26,20 @@
       <strong> <%=  number_with_delimiter(player.current_xp, :delimiter => ',') %> </strong> current xp and 
       <strong> <%=  number_with_delimiter(player.current_lvl, :delimiter => ',') %> </strong> current levels.
     </p>
+
+    <% if player.achievements_exist? %>
+      <p>
+        <%= player.name %> recently achieved <strong> <%= player.achievements[0]["name"] %></strong>!
+      </p>
+      <% if player.has_3_achievements? %>
+        <p>
+          Other recent achievements include <%= player.achievements[1]["name"] %>, <%= player.achievements[2]["name"] %>, and <%= player.achievements[3]["name"] %>.
+        </p>
+      <% end %>
+    <% end %>
   </div>
 
   <hr/>
-
     <p>
       Siege Score: <%= player.score || 0 %>
     </p>
@@ -39,12 +49,29 @@
       </p>
     <% end %>
 
+    <p>
+      Combat Level: <%= player.combat || "Not yet updated" %>
+    </p>
+
+    <p>
+      Build Type: <%= player.type %>
+    </p>
+
     <% if player.inactive? %>
       <p>
         <span style="color: red">
-          <em> Player is currently inactive </em>
+          <em> This player is currently inactive </em>
         </span>
       </p>
     <% end %>
 
+    <% if player.has_old_names? %>
+      <p>
+        Previous Names: <%= player.name_history %>
+      </p>
+    <% end %>
+
+    <p>
+      Last Updated: <%= time_ago_in_words(player.updated_at) %> ago
+    </p>      
 </div>
