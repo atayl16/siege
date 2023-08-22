@@ -29,11 +29,11 @@
 
     <% if player.achievements_exist? %>
       <p>
-        <%= player.name %> recently achieved <strong> <%= player.achievements[0]["name"] %></strong>!
+        On <strong> <%= player.achievements_ordered_by_date[0]["createdAt"].to_date.strftime('%b %d, %Y') %></strong>, <%= player.name %> achieved <strong> <%= player.achievements_ordered_by_date[0]["name"] %></strong>!
       </p>
       <% if player.has_3_achievements? %>
         <p>
-          Other recent achievements include <%= player.achievements[1]["name"] %>, <%= player.achievements[2]["name"] %>, and <%= player.achievements[3]["name"] %>.
+          Other recent achievements include <%= player.achievements_ordered_by_date[1]["name"] %>, <%= player.achievements_ordered_by_date[2]["name"] %>, and <%= player.achievements_ordered_by_date[3]["name"] %>.
         </p>
       <% end %>
     <% end %>

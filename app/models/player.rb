@@ -14,6 +14,10 @@ class Player < ApplicationRecord
     achievements.present?
   end
 
+  def achievements_ordered_by_date
+    achievements.sort_by { |a| a['createdAt'] }.reverse
+  end
+
   def has_3_achievements?
     achievements[3].present?
   end
