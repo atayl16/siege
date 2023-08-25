@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get 'players/:id/delete', to: 'players#deactivate', as: 'delete_player'
   get 'players/:id/activate', to: 'players#activate', as: 'activate_player'
   get 'export', to: 'players#export', as: 'export'
+  get 'reset', to: 'players#reset', as: 'reset'
+  get 'reset_siege_scores', to: 'players#reset_siege_scores', as: 'reset_siege_scores'
   get 'leaderboard', to: 'players#leaderboard', as: 'leaderboard'
   get 'events/:id/delete', to: 'events#delete', as: 'delete_event'
   get '/table', to: 'players#table', as: 'table'

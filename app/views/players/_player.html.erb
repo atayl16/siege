@@ -43,9 +43,10 @@
     <p>
       Siege Score: <%= player.score || 0 %>
     </p>
-    <% if @player.siege_winner %>
+
+    <% if player.siege_winner_place? %>
       <p>
-        <%= player.clan_title %> Previous Siege Competition Winner
+        Siege Competition Winner:  <%= player.siege_winner_place_icon %> <%= player.siege_winner_place.ordinalize %> place 
       </p>
     <% end %>
 

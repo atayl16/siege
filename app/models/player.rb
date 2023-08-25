@@ -11,11 +11,15 @@ class Player < ApplicationRecord
   end
 
   def achievements_exist?
-    achievements.present?
+    achievements.present? && achievements.count.positive? && achievements[0].present? && achievements[0]['createdAt'].present? && achievements[0]['name'].present?
   end
 
   def achievements_ordered_by_date
-    achievements.sort_by { |a| a['createdAt'] }.reverse
+    if achievements.count > 1
+      achievements.sort_by { |a| a['createdAt'] }.reverse
+    else
+      achievements
+    end
   end
 
   def has_3_achievements?
@@ -31,16 +35,46 @@ class Player < ApplicationRecord
   end
 
   def has_old_names?
-    old_names.present?
+    old_names.present? && old_names.count.positive? && old_names[0].present? && old_names[0]['name'].present?
   end
 
   def name_history
-    names = old_names.map { |a| a['oldName'] }
-    names.join(', ')
+    if has_old_names?
+      names = old_names.map { |a| a['oldName'] }
+      names.join(', ')
+    else
+        ''
+    end
   end
 
   def type
     build ? build.titleize : 'Not yet updated'
+  end
+
+  def place
+    case siege_winner_place
+    when 1
+      3
+    when 2
+      2
+    when 3
+      1
+    else
+      nil
+    end
+  end
+
+  def siege_winner_place_icon
+    case siege_winner_place
+    when 1
+      '🥇'
+    when 2
+      '🥈'
+    when 3
+      '🥉'
+    else
+      ''
+    end
   end
 
   def self.to_csv
@@ -60,10 +94,6 @@ class Player < ApplicationRecord
 
   def officer
     clan_title == '👑' || clan_title == '🔑' || clan_title == '🌟' || clan_title == '🛠' || clan_title == '🐉'
-  end
-
-  def siege_winner
-    clan_title == '🏆'
   end
 
   def clan_xp
@@ -167,8 +197,6 @@ class Player < ApplicationRecord
       '🛠'
     when 'PvM Organizer'
       '🐉'
-    when 'Siege Winner'
-      '🏆'
     else
       ''
     end
