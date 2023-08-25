@@ -76,23 +76,16 @@
               <td style="text-align: center">
                 <%= number_with_delimiter(player.clan_lvl, :delimiter => ',') %>
               </td>
-              <% unless user_signed_in? %>
-                  <td> N/A </td>
-              <% else %>
-                <td style="text-align: center">
-                  <%=  number_with_delimiter(player.next_lvl, :delimiter => ',') %>
-                </td>
-              <% end%>
+              <td style="text-align: center">
+                <%=  number_with_delimiter(player.next_lvl, :delimiter => ',') %>
+              </td>
               <td style="text-align: center">
                 <%= player.joined %>
               </td>
-              <% unless user_signed_in? %>
-                  <td> N/A </td>
-              <% end%>
+              <td style="text-align: center; color: <%= player.kickable %>">
+                <%=  number_with_delimiter(player.two_month_gains, :delimiter => ',') %>
+              </td>
               <% if user_signed_in? %>
-                <td style="text-align: center; color: <%= player.kickable %>">
-                  <%=  number_with_delimiter(player.two_month_gains, :delimiter => ',') %>
-                </td>
                 <td style="text-align: right">
                   <%= link_to "", edit_player_path(player), :class => "bi-pencil text-warning", title: "Edit Player" %>
                 </td>
