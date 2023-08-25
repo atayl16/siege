@@ -1,0 +1,14 @@
+<div class="container-fluid">
+  <h1 class="text-white">Are you sure you want to reset all Siege Scores?</h1>
+  <h2> This cannot be undone!</h2>
+
+  <br>
+  </div>
+
+  <div class="container-fluid">
+  <br>
+  <%= button_to "Yes, I'm sure!", reset_siege_scores_path, method: :get, :class => "btn btn-danger" %>
+  <br>
+  <%= link_to "Nope, go back", players_path, method: :get, :class => "btn btn-info" %>
+  <br>
+</div>

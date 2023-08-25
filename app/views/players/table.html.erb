@@ -60,9 +60,17 @@
         </tr>
       <% end %>
       <tr>
-        <td colspan='9'>
+        <td colspan='3'>
+          <%= link_to "Reset Siege Scores", reset_path, method: :get, :class => "btn btn-danger btn-sm" %>
+        
+        </td>
+        <td colspan='3'>
+          
+        </td>
+        <td colspan='3'>
           <%= link_to "Export Players to CSV", href="/export.csv", :class => "btn btn-dark btn-sm" %>
         </td>
+        
       </tr>
     </tbody>
   </table>

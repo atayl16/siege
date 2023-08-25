@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,57 +10,59 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 20_230_818_200_130) do
-  create_table 'events', force: :cascade do |t|
-    t.integer 'wom_id'
-    t.string 'name'
-    t.datetime 'starts'
-    t.datetime 'ends'
-    t.string 'metric'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.string 'winner'
+ActiveRecord::Schema[7.0].define(version: 2023_08_22_142443) do
+  create_table "events", force: :cascade do |t|
+    t.integer "wom_id"
+    t.string "name"
+    t.datetime "starts"
+    t.datetime "ends"
+    t.string "metric"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "winner"
   end
 
-  create_table 'players', force: :cascade do |t|
-    t.string 'name'
-    t.integer 'xp'
-    t.integer 'lvl'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.string 'title'
-    t.string 'rank'
-    t.integer 'current_lvl', default: 0
-    t.integer 'current_xp', default: 0
-    t.integer 'first_xp'
-    t.integer 'first_lvl'
-    t.integer 'gained_xp'
-    t.json 'old_names'
-    t.integer 'wom_id'
-    t.string 'wom_name'
-    t.integer 'score'
-    t.boolean 'inactive', default: false
-    t.boolean 'deactivated', default: false
-    t.integer 'deactivated_xp'
-    t.integer 'deactivated_lvl'
-    t.datetime 'deactivated_date'
-    t.integer 'reactivated_xp'
-    t.integer 'reactivated_lvl'
-    t.datetime 'reactivated_date'
-    t.datetime 'joined_date'
-    t.integer 'combat', default: 0
-    t.string 'build'
-    t.string 'achievement_name'
-    t.datetime 'achievement_date'
-    t.json 'achievements'
+  create_table "players", force: :cascade do |t|
+    t.string "name"
+    t.integer "xp"
+    t.integer "lvl"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "title"
+    t.string "rank"
+    t.integer "current_lvl", default: 0
+    t.integer "current_xp", default: 0
+    t.integer "first_xp"
+    t.integer "first_lvl"
+    t.integer "gained_xp"
+    t.json "old_names"
+    t.integer "wom_id"
+    t.string "wom_name"
+    t.integer "score"
+    t.boolean "inactive", default: false
+    t.boolean "deactivated", default: false
+    t.integer "deactivated_xp"
+    t.integer "deactivated_lvl"
+    t.datetime "deactivated_date"
+    t.integer "reactivated_xp"
+    t.integer "reactivated_lvl"
+    t.datetime "reactivated_date"
+    t.datetime "joined_date"
+    t.integer "combat", default: 0
+    t.string "build"
+    t.string "achievement_name"
+    t.datetime "achievement_date"
+    t.json "achievements"
+    t.integer "siege_winner_place", default: 0
   end
 
-  create_table 'users', force: :cascade do |t|
-    t.string 'encrypted_password', default: '', null: false
-    t.datetime 'remember_created_at'
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.string 'email', default: '', null: false
-    t.index ['email'], name: 'index_users_on_email', unique: true
+  create_table "users", force: :cascade do |t|
+    t.string "encrypted_password", default: "", null: false
+    t.datetime "remember_created_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "email", default: "", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
   end
+
 end

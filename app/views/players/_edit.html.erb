@@ -24,7 +24,7 @@
 
       <div >
         <%= form.label :title, { class: "form-label"} %>
-        <%= form.select :title, ['','Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer', 'Siege Winner'] %>
+        <%= form.select :title, ['','Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer'] %>
       </div>
 
       <div >
@@ -45,6 +45,11 @@
       <div >
         <%= form.label :score, "Siege Score", { class: "form-label"} %>
         <%= form.number_field :score, placeholder: "Optional" %>
+      </div>   
+
+      <div >
+        <%= form.label :siege_winner_place, "Siege Competition Final Place", { class: "form-label"} %>
+        <%= form.select :siege_winner_place, ['', '1', '2', '3'] %>
       </div>
             
       <div >

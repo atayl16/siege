@@ -5,14 +5,14 @@
     }
 </style>
 
-<div class="container-fluid col-9" style="background-color: black">
+<div class="container-fluid" style="background-color: black">
 	<div class="row">
-		<div class="col-md">
+		<div class="col-md-8">
       <table class="table table-dark table-hover table-responsive table-bordered">
         <thead class="header">
           <tr>
             <th style="text-align: center" colspan="3">
-              🏆 &nbsp; Leaderboard &nbsp; 🏆
+              💥 &nbsp; Current Leaderboard &nbsp; 💥
             </th>
           </tr>
           <tr>
@@ -42,6 +42,27 @@
           <% end %>            
         </tbody>
       </table>
-		</div>
+    </div>
+
+    <div class="col-md-4">
+      <table class="table table-dark table-hover table-responsive table-bordered">
+        <thead class="header">
+          <tr>
+            <th style="text-align: center">
+              🏆 &nbsp; Previous Winners &nbsp; 🏆
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @winners.each do |player| %>
+            <tr>
+              <td style="text-align: center">
+                <%= player.siege_winner_place_icon %> <%= player.name %>
+              </td>
+            </tr>
+          <% end %>            
+        </tbody>
+      </table>     
+    </div>
   </div>
 </div>

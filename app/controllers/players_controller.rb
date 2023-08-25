@@ -10,10 +10,10 @@ class PlayersController < ApplicationController
   # GET /players or /players.json
   def index
     @players = Player.where(deactivated: false)
-    @clan = @players.where(title: nil).sort_by(&:clan_xp).reverse
+    # Sorty by siege winner place asc, then by clan_xp desc
+    @clan = @players.where(title: nil).sort_by { |player| [player.place.to_i, player.clan_xp.to_i] }.reverse
     @officers = @players.where.not(title: nil).in_order_of(:title,
-                                                           ['Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer',
-                                                            'Siege Winner'])
+                                                           ['Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer'])
     @competitors = Player.where(score: 1..).sort_by(&:score).reverse.first(3)
     @events = Event.where('ends >= ?', Time.now).order('ends ASC').all
   end
@@ -21,6 +21,7 @@ class PlayersController < ApplicationController
   def leaderboard
     @players = Player.where(deactivated: false)
     @competitors = @players.where(score: 1..).sort_by(&:score).reverse
+    @winners = @players.where(siege_winner_place: 1..3).sort_by(&:siege_winner_place)
   end
 
   def deleted
@@ -115,6 +116,14 @@ class PlayersController < ApplicationController
   end
 
   def delete; end
+
+  def reset; end
+
+  def reset_siege_scores
+    @players = Player.all
+    @players.update_all(score: 0)
+    redirect_to players_url, notice: 'Siege scores reset.'
+  end
 
   def deactivate
     @player = Player.find(params[:id])
@@ -304,6 +313,7 @@ class PlayersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def player_params
     params.require(:player).permit(:name, :xp, :lvl, :title, :rank, :current_xp, :current_lvl, :score, :wom_id,
-                                   :wom_name, :inactive, :joined_date, :deactivated, :deactivated_xp, :deactivated_lvl)
+                                   :wom_name, :inactive, :joined_date, :deactivated, :deactivated_xp, :deactivated_lvl,
+                                   :siege_winner_place, :reactivated_xp, :reactivated_lvl)
   end
 end
