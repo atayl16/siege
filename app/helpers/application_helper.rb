@@ -2,7 +2,7 @@
 
 module ApplicationHelper
   def player_count
-    Player.where(deactivated: false).count + 2
+    Player.where(deactivated: false).count + 1
   end
 
   def external_link_to(name = nil, options = nil, html_options = nil, &block)
