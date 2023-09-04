@@ -133,7 +133,6 @@ namespace :get_updates_from_wom do
         player.update(achievements: @hash)
         puts "Updated #{player.name}, achievements: #{player.achievements}"
       rescue StandardError => e
-        puts "Error updating #{player.name}, #{e}"
       end
     end
   end
