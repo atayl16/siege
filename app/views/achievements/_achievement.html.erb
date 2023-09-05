@@ -1,0 +1,36 @@
+<style>
+  @media (max-width: 768px) {
+    .card-title {
+      white-space: normal;
+    }
+    .card-text {
+      white-space: normal;
+    }
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .card::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .card {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+</style>
+
+<div class="container-fluid text-white">
+  <div class="card bg-dark border-secondary" style="white-space:nowrap; overflow:auto" id="<%= dom_id achievement %>">
+    <div class="card-header">
+      <h5 class="card-title"> <%=  achievement.name %> </h5>
+      <h6 class="card-subtitle mb-2 text-muted"> 
+        <%= achievement.date.strftime('%b %d %Y') %> <br>
+      </h6>
+    </div>
+    
+    <p class="card-text" style="padding-bottom: 10px;">
+      🎖 <%= achievement.player_name %>
+    </p>
+  </div>
+</div>

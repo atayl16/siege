@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_22_142443) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_05_153217) do
+  create_table "achievements", force: :cascade do |t|
+    t.integer "wom_id"
+    t.string "name"
+    t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "player_name"
+  end
+
   create_table "events", force: :cascade do |t|
     t.integer "wom_id"
     t.string "name"
@@ -63,6 +72,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_22_142443) do
     t.datetime "updated_at", null: false
     t.string "email", default: "", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
+  end
+
+  create_table "vars", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.string "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

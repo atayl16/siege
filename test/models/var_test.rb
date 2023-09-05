@@ -1,6 +1,6 @@
 require "test_helper"
 
-class AchievementTest < ActiveSupport::TestCase
+class VarTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

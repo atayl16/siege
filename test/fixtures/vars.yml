@@ -1,11 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  wom_id: 1
   name: MyString
-  date: 2023-09-05 15:06:24
+  description: MyText
+  value: MyString
 
 two:
-  wom_id: 1
   name: MyString
-  date: 2023-09-05 15:06:24
+  description: MyText
+  value: MyString

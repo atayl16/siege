@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  resources :vars
   devise_for :users
   resources :players
   resources :events
+  resources :achievements
   get 'players/:id/delete', to: 'players#deactivate', as: 'delete_player'
   get 'players/:id/activate', to: 'players#activate', as: 'activate_player'
   get 'export', to: 'players#export', as: 'export'
