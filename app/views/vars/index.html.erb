@@ -1,14 +1,40 @@
-<p style="color: green"><%= notice %></p>
+<style>
+  .header{
+      position:sticky;
+      top: 0 ;
+  }
 
-<h1>Vars</h1>
+  a:link { 
+    text-decoration:none; 
+  }
+</style>
 
-<div id="vars">
-  <% @vars.each do |var| %>
-    <%= render var %>
-    <p>
-      <%= link_to "Show this var", var %>
-    </p>
-  <% end %>
+<div class="container-fluid col-11" style="background-color: black">
+  <table class="table table-striped table-dark table-hover table-sm table-responsive ">
+    <thead class="header">
+      <tr>
+        <th colspan='4'> <h3> Website Variables </h3> </th>
+      </tr>
+    </thead>
+    <thead class="header">
+      <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Description</th>
+        <th>Value</th>
+      </tr>
+    <tbody>
+      <tr>
+        <td> <%= link_to "", logo_var_path, :class => "bi-pencil text-warning", :title => "Edit Logo" %> </td>
+        <td> <%= @logo_var.name %> </td>
+        <td> <%= @logo_var.description %> </td>
+        <td> <%= @logo_var.value %> </td>
+      </tr>
+      <tr>
+        <td> <%= link_to "", hidden_players_var_path, :class => "bi-pencil text-warning", :title => "Edit Hidden Players" %> </td>
+        <td> <%= @hidden_players_var.name %> </td>
+        <td> <%= @hidden_players_var.description %> </td>
+        <td> <%= @hidden_players_var.value %> </td>
+    </tbody>
+  </table>
 </div>
-
-<%= link_to "New var", new_var_path %>

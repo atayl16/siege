@@ -8,6 +8,8 @@ class VarsController < ApplicationController
   # GET /vars or /vars.json
   def index
     @vars = Var.all
+    @logo_var = Var.find_by(name: 'logo')
+    @hidden_players_var = Var.find_by(name: 'hidden_players')
   end
 
   # GET /vars/1 or /vars/1.json
@@ -20,6 +22,14 @@ class VarsController < ApplicationController
 
   # GET /vars/1/edit
   def edit; end
+
+  def logo_var
+    @logo_var = Var.find_by(name: 'logo')
+  end
+
+  def hidden_players_var
+    @hidden_players_var = Var.find_by(name: 'hidden_players')
+  end
 
   # POST /vars or /vars.json
   def create
@@ -40,7 +50,7 @@ class VarsController < ApplicationController
   def update
     respond_to do |format|
       if @var.update(var_params)
-        format.html { redirect_to var_url(@var), notice: 'Var was successfully updated.' }
+        format.html { redirect_to vars_path, notice: 'Var was successfully updated.' }
         format.json { render :show, status: :ok, location: @var }
       else
         format.html { render :edit, status: :unprocessable_entity }

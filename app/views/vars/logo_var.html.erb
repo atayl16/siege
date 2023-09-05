@@ -1,0 +1,14 @@
+<%= form_for(@logo_var) do |f| %>
+  <div class="field">
+    <%= f.label :logo %><br />
+    <%= f.select :value, ['siege_logo.png', 'siege_hat_1.png'] %>
+  </div>
+  <br/>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_area :description, cols: 30, rows: 5 %>
+  </div>
+  <div class="actions">
+    <%= f.submit :class => "btn btn-secondary" %> &nbsp; <%= link_to "Back to Vars", vars_path, :class => "btn btn-secondary" %>
+  </div>
+<% end %>

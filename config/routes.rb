@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   get '/update_rank', to: 'players#update_rank', as: 'update_rank'
   get 'welcome', to: 'welcome#index', as: 'welcome'
   get '/gallery', to: 'events#gallery', as: 'gallery'
+  get 'logo_var', to: 'vars#logo_var', as: 'logo_var'
+  get 'hidden_players_var', to: 'vars#hidden_players_var', as: 'hidden_players_var'
 
   root 'welcome#index'
 end

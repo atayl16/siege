@@ -2,11 +2,11 @@
 
 module ApplicationHelper
   def player_count
-    Player.where(deactivated: false).count + 1
+    Player.where(deactivated: false).count + (Var.find_by(name: 'hidden_players').value.to_i || 0)
   end
 
   def logo
-    'siege_logo.png'
+    Var.find_by(name: 'logo').value || 'siege_logo.png'
   end
 
   def external_link_to(name = nil, options = nil, html_options = nil, &block)
