@@ -28,7 +28,7 @@ class Player < ApplicationRecord
 
   def achievement_date_checked(achievement)
     if achievement['createdAt'].present? && achievement['createdAt'].to_date > 5.years.ago
-      "on " + achievement['createdAt'].to_date.strftime('%b %d, %Y')
+      "on #{achievement['createdAt'].to_date.strftime('%b %d, %Y')}"
     else
       ''
     end
@@ -43,7 +43,7 @@ class Player < ApplicationRecord
       names = old_names.map { |a| a['oldName'] }
       names.join(', ')
     else
-        ''
+      ''
     end
   end
 
@@ -59,8 +59,6 @@ class Player < ApplicationRecord
       2
     when 3
       1
-    else
-      nil
     end
   end
 

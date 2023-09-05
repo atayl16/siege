@@ -180,20 +180,20 @@ namespace :get_updates_from_wom do
       headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
       data: { 'verificationCode' => wom }
     )
-      begin
-        Achievement.delete_all
-        @hash = JSON.parse(@hash.body)
-        @hash.each do |achievement|          
-            @achievement = Achievement.new
-            @achievement.wom_id = achievement['playerId']
-            @achievement.name = achievement['name']
-            @achievement.date = achievement['createdAt']
-            @achievement.player_name = achievement['player']['displayName']
-            @achievement.save
-            puts "Created group achievement #{achievement['name']}"
-        end
-      rescue StandardError => e
-        puts "Error updating group achievements, #{e}"
+    begin
+      Achievement.delete_all
+      @hash = JSON.parse(@hash.body)
+      @hash.each do |achievement|
+        @achievement = Achievement.new
+        @achievement.wom_id = achievement['playerId']
+        @achievement.name = achievement['name']
+        @achievement.date = achievement['createdAt']
+        @achievement.player_name = achievement['player']['displayName']
+        @achievement.save
+        puts "Created group achievement #{achievement['name']}"
       end
+    rescue StandardError => e
+      puts "Error updating group achievements, #{e}"
+    end
   end
 end

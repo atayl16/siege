@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class VarsController < ApplicationController
-  before_action :set_var, only: %i[ show edit update destroy ]
+  before_action :set_var, only: %i[show edit update destroy]
   before_action :store_location
   before_action :authenticate_user!
 
@@ -9,8 +11,7 @@ class VarsController < ApplicationController
   end
 
   # GET /vars/1 or /vars/1.json
-  def show
-  end
+  def show; end
 
   # GET /vars/new
   def new
@@ -18,8 +19,7 @@ class VarsController < ApplicationController
   end
 
   # GET /vars/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /vars or /vars.json
   def create
@@ -27,7 +27,7 @@ class VarsController < ApplicationController
 
     respond_to do |format|
       if @var.save
-        format.html { redirect_to var_url(@var), notice: "Var was successfully created." }
+        format.html { redirect_to var_url(@var), notice: 'Var was successfully created.' }
         format.json { render :show, status: :created, location: @var }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +40,7 @@ class VarsController < ApplicationController
   def update
     respond_to do |format|
       if @var.update(var_params)
-        format.html { redirect_to var_url(@var), notice: "Var was successfully updated." }
+        format.html { redirect_to var_url(@var), notice: 'Var was successfully updated.' }
         format.json { render :show, status: :ok, location: @var }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -54,19 +54,20 @@ class VarsController < ApplicationController
     @var.destroy
 
     respond_to do |format|
-      format.html { redirect_to vars_url, notice: "Var was successfully destroyed." }
+      format.html { redirect_to vars_url, notice: 'Var was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_var
-      @var = Var.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def var_params
-      params.require(:var).permit(:name, :description, :value)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_var
+    @var = Var.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def var_params
+    params.require(:var).permit(:name, :description, :value)
+  end
 end

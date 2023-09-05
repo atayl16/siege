@@ -9,7 +9,7 @@ module ApplicationHelper
     if Var.where(name: 'logo').first.value && File.exist?("app/assets/images/#{Var.where(name: 'logo').first.value}")
       Var.where(name: 'logo').first.value
     else
-      "siege_logo.png"
+      'siege_logo.png'
     end
   end
 
