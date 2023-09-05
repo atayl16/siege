@@ -9,6 +9,7 @@
         <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
           <li><a class="dropdown-item" href="/players">XP Tracker</a></li>
           <li><a class="dropdown-item" href="/leaderboard">Leaderboard</a></li>
+          <li><a class="dropdown-item" href="/achievements">Achievements</a></li>
           <li><a class="dropdown-item" href="/table">Admin Table</a></li>
           <li><a class="dropdown-item" href="/players/new">Add a Player</a></li>
           <li><a class="dropdown-item" href="/deleted">Deleted Players</a></li>
@@ -33,6 +34,7 @@
         <%= link_to "XP Tracker", players_path, :class => "btn btn-dark"  %>
         <%= link_to "Events", events_path, :class => "btn btn-dark"  %>
         <%= link_to "Leaderboard", leaderboard_path, :class => "btn btn-dark"  %>
+        <%= link_to "Achievements", achievements_path, :class => "btn btn-dark"  %>
         <%= link_to "Gallery", gallery_path, :class => "btn btn-dark"  %>
         <%= link_to "Admin?", new_user_session_path, :class => "btn btn-dark" %>
       <% end %>
