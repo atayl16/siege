@@ -164,4 +164,36 @@ namespace :get_updates_from_wom do
       end
     end
   end
+
+  desc 'Update group achievements from external API'
+  task update_group_achievements: :environment do
+    require 'httparty'
+    require 'json'
+    require 'erb'
+    include ERB::Util
+
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
+    api_key = Rails.application.credentials.dig(:wom, :apiKey)
+    url = 'https://api.wiseoldman.net/v2/groups/2928/achievements?limit=15'
+    @hash = HTTParty.get(
+      url,
+      headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+      data: { 'verificationCode' => wom }
+    )
+    begin
+      Achievement.delete_all
+      @hash = JSON.parse(@hash.body)
+      @hash.each do |achievement|
+        @achievement = Achievement.new
+        @achievement.wom_id = achievement['playerId']
+        @achievement.name = achievement['name']
+        @achievement.date = achievement['createdAt']
+        @achievement.player_name = achievement['player']['displayName']
+        @achievement.save
+        puts "Created group achievement #{achievement['name']}"
+      end
+    rescue StandardError => e
+      puts "Error updating group achievements, #{e}"
+    end
+  end
 end
