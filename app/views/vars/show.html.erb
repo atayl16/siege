@@ -2,9 +2,9 @@
 
 <%= render @var %>
 
-<div>
-  <%= link_to "Edit this var", edit_var_path(@var) %> |
-  <%= link_to "Back to vars", vars_path %>
+<br/>
 
-  <%= button_to "Destroy this var", @var, method: :delete %>
+<div>
+  <%= link_to "Edit this var", edit_var_path(@var), :class => "btn btn-secondary" %>
+  <%= link_to "Back to vars", vars_path, :class => "btn btn-secondary" %>
 </div>

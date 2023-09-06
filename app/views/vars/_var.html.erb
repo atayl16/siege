@@ -1,17 +1,16 @@
-<div id="<%= dom_id var %>">
-  <p>
-    <strong>Name:</strong>
-    <%= var.name %>
-  </p>
+<div class="container-fluid text-white">
+  <div class="card bg-dark border-secondary" id="<%= dom_id var %>">
+    <div class="card-header">
+      <h5 class="card-title"> <%=  var.name %> </h5>
 
-  <p>
-    <strong>Description:</strong>
-    <%= var.description %>
-  </p>
-
-  <p>
-    <strong>Value:</strong>
-    <%= var.value %>
-  </p>
-
+    </div>
+    <div class="card-body">
+      <p class="card-text">
+        Description: <%= var.description %>
+      </p>
+      <p class="card-text">
+        Value: <%= var.value %>
+      </p>
+    </div>
+  </div>
 </div>
