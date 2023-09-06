@@ -2,11 +2,15 @@
 
 module ApplicationHelper
   def player_count
-    Player.where(deactivated: false).count + (Var.find_by(name: 'hidden_players').value.to_i || 0)
+    Player.where(deactivated: false).count + (Var.where(name: 'hidden_players').first.value.to_i || 0)
   end
 
   def logo
-    Var.find_by(name: 'logo').value || 'siege_logo.png'
+    if Var.where(name: 'logo').first.value && File.exist?("app/assets/images/#{Var.where(name: 'logo').first.value}")
+      Var.where(name: 'logo').first.value
+    else
+      'siege_logo.png'
+    end
   end
 
   def external_link_to(name = nil, options = nil, html_options = nil, &block)
