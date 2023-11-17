@@ -17,7 +17,6 @@
         <th>Siege Score</th>
         <th>Clan Rank</th>
         <th><%= link_to "Needs Update", :sort => "needs_update"%> </th>
-        <th>2 Months Gained</th>
         <th>Joined</th>
         <th>Last Updated</th>
         <th>Delete</th>
@@ -44,9 +43,6 @@
                               :id => player.id}, method: 'post', class: "bi-exclamation-octagon-fill text-danger" %>
             <% end %>
             <%= player.rank %>
-          </td>
-          <td style="text-align: center; color: <%= player.kickable %>">
-            <%=  number_with_delimiter(player.two_month_gains, :delimiter => ',') %> <%= player.new_check %>
           </td>
           <td style="text-align: center">
             <%= player.joined %>
