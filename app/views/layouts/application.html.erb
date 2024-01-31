@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Siege</title>
+    <title>Siege<%= content_for?(:title) ? " | #{content_for(:title)}" : "" %></title>
     <%= favicon_link_tag asset_path(logo) %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
