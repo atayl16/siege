@@ -90,7 +90,7 @@ class PlayersController < ApplicationController
         call_osrs_api
         set_player_wom_name
         format.js {}
-        format.html { redirect_to players_path, notice: 'Player was successfully updated.' }
+        format.html { redirect_to table_path, notice: 'Player was successfully updated.' }
         format.json { render :show, status: :ok, location: @player }
       else
         format.js {}
