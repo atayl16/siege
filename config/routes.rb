@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get '/table', to: 'players#table', as: 'table'
   get '/deleted', to: 'players#deleted', as: 'deleted'
   get '/update_rank', to: 'players#update_rank', as: 'update_rank'
+  get '/add_siege_score', to: 'players#add_siege_score', as: 'add_siege_score'
   get 'welcome', to: 'welcome#index', as: 'welcome'
   get '/gallery', to: 'events#gallery', as: 'gallery'
   get 'logo_var', to: 'vars#logo_var', as: 'logo_var'
