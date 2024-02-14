@@ -2,7 +2,7 @@
 
 class PlayersController < ApplicationController
   before_action :set_player,
-                only: %i[show edit update destroy delete call_osrs_api update_rank update_member_on_wom add_member_to_wom
+                only: %i[show edit update destroy delete call_osrs_api update_rank add_siege_score update_member_on_wom add_member_to_wom
                          remove_member_from_wom]
   before_action :authenticate_user!, except: %i[show index leaderboard]
   before_action :store_location
@@ -36,8 +36,10 @@ class PlayersController < ApplicationController
                  @clan.sort_by(&:clan_xp).reverse
                when 'needs_update'
                  @clan.sort_by { |player| player.needs_update.to_s }.reverse
+               when 'last_update'
+                 @clan.sort_by(&:updated_at).reverse
                else 'name'
-                    @clan.order('LOWER(name)')
+                 @clan.order('LOWER(name)')
                end
     @competitors = @clan.where(score: 1..).sort_by(&:score).reverse
   end
@@ -254,6 +256,12 @@ class PlayersController < ApplicationController
   def update_rank
     clan_rank = @player.clan_rank
     @player.update(rank: clan_rank)
+    redirect_back(fallback_location: root_path)
+  end
+
+  def add_siege_score
+    new_score = @player.score + 2
+    @player.update(score: new_score)
     redirect_back(fallback_location: root_path)
   end
 
