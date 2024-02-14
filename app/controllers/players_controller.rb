@@ -260,7 +260,7 @@ class PlayersController < ApplicationController
   end
 
   def add_siege_score
-    new_score = @player.score + 2
+    new_score = @player.score ? @player.score + 2 : 2
     @player.update(score: new_score)
     redirect_back(fallback_location: root_path)
   end
