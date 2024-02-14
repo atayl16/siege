@@ -32,9 +32,11 @@
             <%= link_to player.name, player_path(player) %>
           </td>
           <td style="text-align: center">
-            <%= link_to '', {:controller => "players",
-                              :action => "add_siege_score",
-                              :id => player.id}, method: 'post', class: "bi bi-2-circle-fill text-warning" %>
+            <% if player.updated_at < 5.minutes.ago %>              
+              <%= link_to '', {:controller => "players",
+                                :action => "add_siege_score",
+                                :id => player.id}, method: 'post', class: "bi bi-2-circle-fill text-warning" %>
+            <% end %>
             <%= player.score %>
           </td>
           <td style="text-align: center">
