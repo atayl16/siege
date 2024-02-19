@@ -73,6 +73,7 @@ class PlayersController < ApplicationController
 
     @player.first_lvl = @player.lvl
     @player.first_xp = @player.xp
+    @player.score = 0 if @player.score.nil?
 
     respond_to do |format|
       if @player.save
