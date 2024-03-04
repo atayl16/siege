@@ -91,6 +91,7 @@ class PlayersController < ApplicationController
     respond_to do |format|
       if @player.update(player_params)
         call_osrs_api
+        set_player_wom_id
         set_player_wom_name
         format.js {}
         format.html { redirect_to table_path, notice: 'Player was successfully updated.' }
