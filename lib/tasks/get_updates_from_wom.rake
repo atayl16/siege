@@ -18,6 +18,12 @@ namespace :get_updates_from_wom do
         data: { 'verificationCode' => wom }
       )
 
+      if @hash.code == 429
+        puts "Rate limit exceeded, sleeping for 60 seconds"
+        sleep(60)
+        redo
+      end
+
       next if @hash['error']
 
       begin
@@ -52,6 +58,13 @@ namespace :get_updates_from_wom do
             "https://api.wiseoldman.net/v2/competitions/#{event['id']}/top-history",
             headers: { 'Content-Type' => 'application/json' }
           )
+
+          if winners_url.code == 429
+            puts "Rate limit exceeded, sleeping for 60 seconds"
+            sleep(60)
+            redo
+          end
+
           @winner_data = JSON.parse(winners_url.body)
           @event.update(winner: @winner_data[0]['player']['displayName'])
           puts "Updated winner for event #{event['title']} to #{@winner_data[0]['player']['displayName']}"
@@ -68,6 +81,13 @@ namespace :get_updates_from_wom do
             "https://api.wiseoldman.net/v2/competitions/#{event['id']}/top-history",
             headers: { 'Content-Type' => 'application/json' }
           )
+
+          if winners_url.code == 429
+            puts "Rate limit exceeded, sleeping for 60 seconds"
+            sleep(60)
+            redo
+          end
+
           @winner_data = JSON.parse(winners_url.body)
           @event.update(winner: @winner_data[0]['player']['displayName'])
           puts "Updated winner for event #{event['title']} to #{@winner_data[0]['player']['displayName']}"
@@ -91,19 +111,27 @@ namespace :get_updates_from_wom do
     @players = Player.where(deactivated: false)
     @players.each do |player|
       name = url_encode(player.name.strip)
-      @hash = HTTParty.get(
-        "https://api.wiseoldman.net/v2/players/#{name}",
-        headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
-        data: { 'verificationCode' => wom }
-      )
-
-      next if @hash['error']
-
       begin
+        response = HTTParty.get(
+          "https://api.wiseoldman.net/v2/players/#{name}",
+          headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+          data: { 'verificationCode' => wom }
+        )
+
+        if response.code == 429
+          puts "Rate limit exceeded, sleeping for 60 seconds"
+          sleep(60)
+          redo
+        end
+
+        @hash = response.parsed_response
+        next if @hash['error']
+
         player.combat = @hash['combatLevel']
         player.build = @hash['type']
-        player.update(combat: player.combat, build: player.build)
-        puts "Updated #{player.name}, combat: #{player.combat}, build: #{player.build}"
+        if player.update(combat: player.combat, build: player.build)
+          puts "Updated #{player.name}, combat: #{player.combat}, build: #{player.build}"
+        end
       rescue StandardError => e
         puts "Error updating #{player.name}, #{e}"
       end
@@ -122,17 +150,24 @@ namespace :get_updates_from_wom do
     @players = Player.where(deactivated: false)
     @players.each do |player|
       name = url_encode(player.name.strip)
-      @hash = HTTParty.get(
-        "https://api.wiseoldman.net/v2/players/#{name}/achievements",
-        headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
-        data: { 'verificationCode' => wom }
-      )
-
       begin
-        @hash = JSON.parse(@hash.body)
+        response = HTTParty.get(
+          "https://api.wiseoldman.net/v2/players/#{name}/achievements",
+          headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+          data: { 'verificationCode' => wom }
+        )
+
+        if response.code == 429
+          puts "Rate limit exceeded, sleeping for 60 seconds"
+          sleep(60)
+          redo
+        end
+
+        @hash = JSON.parse(response.body)
         player.update(achievements: @hash)
         puts "Updated #{player.name}, achievements: #{player.achievements}"
       rescue StandardError => e
+        puts "Error updating #{player.name}, #{e}"
       end
     end
   end
@@ -149,14 +184,20 @@ namespace :get_updates_from_wom do
     @players = Player.where(deactivated: false)
     @players.each do |player|
       name = url_encode(player.name.strip)
-      @hash = HTTParty.get(
-        "https://api.wiseoldman.net/v2/players/#{name}/names",
-        headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
-        data: { 'verificationCode' => wom }
-      )
-
       begin
-        @hash = JSON.parse(@hash.body)
+        response = HTTParty.get(
+          "https://api.wiseoldman.net/v2/players/#{name}/names",
+          headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+          data: { 'verificationCode' => wom }
+        )
+
+        if response.code == 429
+          puts "Rate limit exceeded, sleeping for 60 seconds"
+          sleep(60)
+          redo
+        end
+
+        @hash = JSON.parse(response.body)
         player.update(old_names: @hash)
         puts "Updated #{player.name}, names: #{player.old_names}"
       rescue StandardError => e
@@ -181,8 +222,20 @@ namespace :get_updates_from_wom do
       data: { 'verificationCode' => wom }
     )
     begin
+      response = HTTParty.get(
+        url,
+        headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+        data: { 'verificationCode' => wom }
+      )
+
+      if response.code == 429
+        puts "Rate limit exceeded, sleeping for 60 seconds"
+        sleep(60)
+        redo
+      end
+
       Achievement.delete_all
-      @hash = JSON.parse(@hash.body)
+      @hash = JSON.parse(response.body)
       @hash.each do |achievement|
         @achievement = Achievement.new
         @achievement.wom_id = achievement['playerId']
