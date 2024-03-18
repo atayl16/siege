@@ -6,7 +6,7 @@ namespace :get_player_wom_name do
     require 'httparty'
 
     wom = Rails.application.credentials.dig(:wom, :verificationCode)
-    @players = Player.all
+    @players = Player.where(deactivated: false)
     @players.each do |player|
       response = HTTParty.get(
         "https://api.wiseoldman.net/v2/players/id/#{player.wom_id}",
