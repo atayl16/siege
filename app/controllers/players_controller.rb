@@ -25,7 +25,7 @@ class PlayersController < ApplicationController
   end
 
   def deleted
-    @deleted_players = Player.where(deactivated: true)
+    @deleted_players = Player.where(deactivated: true).order('deactivated_date DESC')
     @reactivated_players = Player.where(reactivated_date: ..Time.now.end_of_month)
   end
 
