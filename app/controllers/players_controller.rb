@@ -44,6 +44,34 @@ class PlayersController < ApplicationController
     @competitors = @clan.where(score: 1..).sort_by(&:score).reverse
   end
 
+  def competition
+    @clan = Player.where(deactivated: false, build: 'ironman')
+    # return the first key from the key, value pair in @clan.competition_1 that is not nil if one exists
+    @titles = (1..6).map do |i|
+      competition = @clan.first.send("competition_#{i}")
+      if competition
+        competition.keys.find { |key| competition[key] }
+      end
+    end.compact
+    @players = case params[:sort]
+               when 'beginner_clues'
+                  @clan.sort_by(&:competition_1).reverse
+                when 'easy_clues'
+                  @clan.sort_by(&:competition_2).reverse
+                when 'medium_clues'
+                  @clan.sort_by(&:competition_3).reverse
+                when 'hard_clues'
+                  @clan.sort_by(&:competition_4).reverse
+                when 'elite_clues'
+                  @clan.sort_by(&:competition_5).reverse
+                when 'master_clues'
+                  @clan.sort_by(&:competition_6).reverse
+               else 'name'
+                 @clan.order('LOWER(name)')
+               end
+
+  end
+
   # GET /players/1 or /players/1.json
   def show; end
 

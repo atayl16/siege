@@ -129,6 +129,7 @@ namespace :get_updates_from_wom do
 
         player.combat = @hash['combatLevel']
         player.build = @hash['type']
+
         if player.update(combat: player.combat, build: player.build)
           puts "Updated #{player.name}, combat: #{player.combat}, build: #{player.build}"
         end
@@ -249,4 +250,50 @@ namespace :get_updates_from_wom do
       puts "Error updating group achievements, #{e}"
     end
   end
+
+  desc 'Update player competition score from external API'
+  task update_player_competition_score: :environment do
+    require 'httparty'
+    require 'json'
+    require 'erb'
+    include ERB::Util
+
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
+    api_key = Rails.application.credentials.dig(:wom, :apiKey)
+    @players = Player.where(deactivated: false, build: 'ironman')
+    @players.each do |player|
+      name = url_encode(player.name.strip)
+      begin
+        response = HTTParty.get(
+          "https://api.wiseoldman.net/v2/players/#{name}/competitions/standings?status=ongoing",
+          headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+          data: { 'verificationCode' => wom }
+        )
+
+        if response.code == 429
+          puts "Rate limit exceeded, sleeping for 60 seconds"
+          sleep(60)
+          redo
+        end
+
+        @hash = JSON.parse(response.body)
+        (0..5).each do |i|
+          if @hash[i]
+            competition = {
+              @hash[i]['competition']['metric'] => @hash[i]['progress']['gained']
+            }
+            player.update("competition_#{i+1}".to_sym => competition)
+          else
+            player.update("competition_#{i+1}".to_sym => nil)
+          end
+        end
+
+        puts "Updated #{player.name}"
+      rescue StandardError => e
+        puts "Error updating #{player.name}, #{e}"
+      end
+    end
+
+  end
+    
 end
