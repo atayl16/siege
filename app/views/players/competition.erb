@@ -1,0 +1,50 @@
+<% content_for :title, "Admin Table" %>
+<style>
+  .header{
+      position:sticky;
+      top: 0 ;
+  }
+
+  a:link { 
+    text-decoration:none; 
+  }
+</style>
+
+<div class="container-fluid col-11" style="background-color: black">
+      <table class="table table-dark table-hover table-responsive table-bordered">
+    <thead class="header">
+      <tr>
+        <th style="text-align: center" colspan="8">
+          🎉 &nbsp; Ironman Competition Standings &nbsp; 🎉
+        </th>
+      </tr>
+      <tr>
+        <th><%= link_to "Player Name", :sort => "name"%> </th>
+        <% @titles.each_with_index do |title, index| %>
+          <% if title.present? %>
+            <th><%= link_to title.to_s.titleize, :sort => "competition_#{index + 1}"%> </th>
+          <% end %>
+        <% end %>
+      </tr>
+    </thead>
+      <% @players.each do |player| %>
+        <tr>
+          <td style="text-align: left">
+            <%= player.name %>
+          </td>
+          <% @titles.each_with_index do |title, index| %>
+            <% if title.present? %>
+              <td style="text-align: center">
+                <% competition = player.send("competition_#{index + 1}") %>
+                <% if competition %>
+                  <% key, value = competition.first %>
+                  <%= "#{value}" %>
+                <% end %>
+              </td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

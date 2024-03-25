@@ -129,6 +129,7 @@ namespace :get_updates_from_wom do
 
         player.combat = @hash['combatLevel']
         player.build = @hash['type']
+
         if player.update(combat: player.combat, build: player.build)
           puts "Updated #{player.name}, combat: #{player.combat}, build: #{player.build}"
         end
@@ -249,4 +250,101 @@ namespace :get_updates_from_wom do
       puts "Error updating group achievements, #{e}"
     end
   end
+
+  desc 'Update player competition score from external API'
+  task update_player_competition_score: :environment do
+    require 'httparty'
+    require 'json'
+    require 'erb'
+    include ERB::Util
+
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
+    api_key = Rails.application.credentials.dig(:wom, :apiKey)
+    @players = Player.where(deactivated: false, build: 'ironman')
+    @players.each do |player|
+      name = url_encode(player.name.strip)
+      begin
+        response = HTTParty.get(
+          "https://api.wiseoldman.net/v2/players/#{name}/competitions/standings?status=ongoing",
+          headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+          data: { 'verificationCode' => wom }
+        )
+
+        if response.code == 429
+          puts "Rate limit exceeded, sleeping for 60 seconds"
+          sleep(60)
+          redo
+        end
+
+        @hash = JSON.parse(response.body)
+        (0..5).each do |i|
+          if @hash[i]
+            competition = {
+              @hash[i]['competition']['metric'] => @hash[i]['progress']['gained']
+            }
+            player.update("competition_#{i+1}".to_sym => competition)
+          else
+            player.update("competition_#{i+1}".to_sym => nil)
+          end
+        end
+
+        puts "Updated #{player.name}"
+      rescue StandardError => e
+        puts "Error updating #{player.name}, #{e}"
+      end
+    end
+
+  end
+    
 end
+
+# curl -X GET https://api.wiseoldman.net/v2/players/zezima/competitions/standings?status=ongoing \
+  #-H "Content-Type: application/json"
+# [
+#   {
+#     "playerId": 36994,
+#     "competitionId": 16583,
+#     "teamName": null,
+#     "createdAt": "2022-10-24T14:16:37.339Z",
+#     "updatedAt": "2022-10-28T09:53:31.638Z",
+#     "progress": {
+#       "gained": 4332129,
+#       "start": 2097664,
+#       "end": 6429793
+#     },
+#     "levels": {
+#       "gained": 11,
+#       "start": 80,
+#       "end": 91
+#     },
+#     "rank": 1,
+#     "competition": {
+#       "id": 16583,
+#       "title": "Skill of the Week #60: Thieving",
+#       "metric": "thieving",
+#       "type": "classic",
+#       "startsAt": "2022-10-24T22:00:00.000Z",
+#       "endsAt": "2022-10-30T22:00:00.000Z",
+#       "groupId": 1088,
+#       "score": 626,
+#       "createdAt": "2022-10-24T14:16:37.339Z",
+#       "updatedAt": "2022-10-26T20:20:05.150Z",
+#       "group": {
+#         "id": 1088,
+#         "name": "Wild",
+#         "clanChat": "Wild",
+#         "description": "Clan Wild, Created from the community of The Wilderness Podcast",
+#         "homeworld": 386,
+#         "verified": true,
+#         "patron": false,
+#         "profileImage": null,
+#         "bannerImage": null,
+#         "score": 440,
+#         "createdAt": "2021-05-04T13:03:02.851Z",
+#         "updatedAt": "2022-10-25T15:46:55.761Z",
+#         "memberCount": 729
+#       },
+#       "participantCount": 729
+#     }
+#   }
+# ]

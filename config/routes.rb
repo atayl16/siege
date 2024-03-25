@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get '/gallery', to: 'events#gallery', as: 'gallery'
   get 'logo_var', to: 'vars#logo_var', as: 'logo_var'
   get 'hidden_players_var', to: 'vars#hidden_players_var', as: 'hidden_players_var'
+  get '/competition', to: 'players#competition', as: 'competition'
 
   root 'welcome#index'
 end
