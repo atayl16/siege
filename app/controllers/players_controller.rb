@@ -46,7 +46,6 @@ class PlayersController < ApplicationController
 
   def competition
     @clan = Player.where(deactivated: false, build: 'ironman')
-    # return the first key from the key, value pair in @clan.competition_1 that is not nil if one exists
     @titles = (1..6).map do |i|
       competition = @clan.first.send("competition_#{i}")
       if competition
@@ -54,22 +53,21 @@ class PlayersController < ApplicationController
       end
     end.compact.reverse
     @players = case params[:sort]
-               when 'beginner_clues'
-                  @clan.sort_by(&:competition_1).reverse
-                when 'easy_clues'
-                  @clan.sort_by(&:competition_2).reverse
-                when 'medium_clues'
-                  @clan.sort_by(&:competition_3).reverse
-                when 'hard_clues'
-                  @clan.sort_by(&:competition_4).reverse
-                when 'elite_clues'
-                  @clan.sort_by(&:competition_5).reverse
-                when 'master_clues'
-                  @clan.sort_by(&:competition_6).reverse
-               else 'name'
+               when 'competition_1'
+                  @clan.sort_by { |player| (player.competition_1 || {})['score'] }.reverse
+                when 'competition_2'
+                  @clan.sort_by { |player| (player.competition_2 || {})['score'] }.reverse
+                when 'competition_3'
+                  @clan.sort_by { |player| (player.competition_3 || {})['score'] }.reverse
+                when 'competition_4'
+                  @clan.sort_by { |player| (player.competition_4 || {})['score'] }.reverse
+                when 'competition_5'
+                  @clan.sort_by { |player| (player.competition_5 || {})['score'] }.reverse
+                when 'competition_6'
+                  @clan.sort_by { |player| (player.competition_6 || {})['score'] }.reverse
+               else
                  @clan.order('LOWER(name)')
                end
-
   end
 
   # GET /players/1 or /players/1.json
