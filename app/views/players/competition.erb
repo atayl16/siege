@@ -32,10 +32,10 @@
           <td style="text-align: left">
             <%= player.name %>
           </td>
-          <% @titles.each_with_index do |title, index| %>
+          <% @titles.reverse.each_with_index do |title, index| %>
             <% if title.present? %>
               <td style="text-align: center">
-                <% competition = player.send("competition_#{index + 1}") %>
+                <% competition = player.send("competition_#{6 - index}") %>
                 <% if competition %>
                   <% key, value = competition.first %>
                   <%= "#{value}" %>
