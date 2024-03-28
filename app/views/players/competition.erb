@@ -20,9 +20,9 @@
       </tr>
       <tr>
         <th><%= link_to "Player Name", :sort => "name"%> </th>
-        <% @titles.each_with_index do |title, index| %>
+        <% @titles.reverse.each_with_index do |title, index| %>
           <% if title.present? %>
-            <th><%= link_to title.to_s.titleize, :sort => "competition_#{index + 1}"%> </th>
+            <th><%= link_to title.to_s.titleize, :sort => "competition_#{6 - index}"%> </th>
           <% end %>
         <% end %>
       </tr>

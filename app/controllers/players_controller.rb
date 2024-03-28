@@ -51,7 +51,7 @@ class PlayersController < ApplicationController
       if competition
         competition.keys.find { |key| competition[key] }
       end
-    end.compact.reverse
+    end.compact
     @players = case params[:sort]
                when 'competition_1'
                   @clan.sort_by { |player| player.competition_1.present? ? player.competition_1.first[1].to_i : 0 }.reverse
