@@ -54,17 +54,17 @@ class PlayersController < ApplicationController
     end.compact.reverse
     @players = case params[:sort]
                when 'competition_1'
-                  @clan.sort_by { |player| (player.competition_1 || {})['score'] }.reverse
+                  @clan.sort_by { |player| (player.competition_1 || {})['score'].to_i }.reverse
                 when 'competition_2'
-                  @clan.sort_by { |player| (player.competition_2 || {})['score'] }.reverse
+                  @clan.sort_by { |player| (player.competition_2 || {})['score'].to_i }.reverse
                 when 'competition_3'
-                  @clan.sort_by { |player| (player.competition_3 || {})['score'] }.reverse
+                  @clan.sort_by { |player| (player.competition_3 || {})['score'].to_i }.reverse
                 when 'competition_4'
-                  @clan.sort_by { |player| (player.competition_4 || {})['score'] }.reverse
+                  @clan.sort_by { |player| (player.competition_4 || {})['score'].to_i }.reverse
                 when 'competition_5'
-                  @clan.sort_by { |player| (player.competition_5 || {})['score'] }.reverse
+                  @clan.sort_by { |player| (player.competition_5 || {})['score'].to_i }.reverse
                 when 'competition_6'
-                  @clan.sort_by { |player| (player.competition_6 || {})['score'] }.reverse
+                  @clan.sort_by { |player| (player.competition_6 || {})['score'].to_i }.reverse
                else
                  @clan.order('LOWER(name)')
                end
