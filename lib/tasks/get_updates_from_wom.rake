@@ -263,9 +263,10 @@ namespace :get_updates_from_wom do
     @players = Player.where(deactivated: false, build: 'ironman')
     @players.each do |player|
       name = url_encode(player.name.strip)
+      status = Var.where(name: 'competition_state').first.value
       begin
         response = HTTParty.get(
-          "https://api.wiseoldman.net/v2/players/#{name}/competitions/standings?status=ongoing",
+          "https://api.wiseoldman.net/v2/players/#{name}/competitions/standings?status=#{status}",
           headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
           data: { 'verificationCode' => wom }
         )
@@ -293,7 +294,5 @@ namespace :get_updates_from_wom do
         puts "Error updating #{player.name}, #{e}"
       end
     end
-
   end
-    
 end

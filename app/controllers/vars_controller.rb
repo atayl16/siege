@@ -10,6 +10,7 @@ class VarsController < ApplicationController
     @vars = Var.all
     @logo_var = Var.find_by(name: 'logo')
     @hidden_players_var = Var.find_by(name: 'hidden_players')
+    @competition_state_var = Var.find_by(name: 'competition_state')
   end
 
   # GET /vars/1 or /vars/1.json
@@ -29,6 +30,10 @@ class VarsController < ApplicationController
 
   def hidden_players_var
     @hidden_players_var = Var.find_by(name: 'hidden_players')
+  end
+
+  def competition_state_var
+    @competition_state_var = Var.find_by(name: 'competition_state')
   end
 
   # POST /vars or /vars.json

@@ -40,6 +40,12 @@
         <td> <%= @hidden_players_var.description %> </td>
         <td> <%= @hidden_players_var.value %> </td>
       </tr>
+      <tr>
+        <td> <%= link_to "", competition_state_var_path, :class => "bi-pencil text-warning", :title => "Edit Hidden Players" %> </td>
+        <td> <%= @competition_state_var.name %> </td>
+        <td> <%= @competition_state_var.description %> </td>
+        <td> <%= @competition_state_var.value %> </td>
+      </tr>
     </tbody>
   </table>
 </div>
@@ -47,14 +53,14 @@
 <br/>
 <br/>
 
-<% if @vars.count > 2 %>
+<% if @vars.count > 3 %>
   <div class="container-fluid col-11" style="background-color: black">
     <table class="table table-striped table-dark table-hover table-sm table-responsive ">
         <tr>
           <th colspan='4' >Unused Vars</th>
         </tr>
         <% @vars.each do |var| %>
-          <% if var.name != @logo_var.name && var.name != @hidden_players_var.name %>
+          <% if var.name != @logo_var.name && var.name != @hidden_players_var.name && var.name != @competition_state_var.name %>
             <tr>
               <td> <%= link_to "", var_path(var), :class => "bi-pencil text-warning", :title => "Edit #{var.name}" %> </td>
               <td> <%= var.name %> </td>
