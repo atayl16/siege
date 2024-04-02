@@ -284,6 +284,7 @@ namespace :get_updates_from_wom do
               @hash[i]['competition']['metric'] => @hash[i]['progress']['gained']
             }
             player.update("competition_#{i+1}".to_sym => competition)
+            puts "Updated #{player.name}, competition_#{i+1}: #{competition}"
           else
             player.update("competition_#{i+1}".to_sym => nil)
           end
