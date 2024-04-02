@@ -22,7 +22,7 @@
         <th><%= link_to "Player Name", :sort => "name"%> </th>
         <% @titles.reverse.each_with_index do |title, index| %>
           <% if title.present? %>
-            <th><%= link_to title.to_s.titleize, :sort => "competition_#{6 - index}"%> </th>
+            <th><%= link_to title.to_s.titleize, :sort => "competition_#{index + 1}"%> </th>
           <% end %>
         <% end %>
       </tr>
@@ -32,10 +32,10 @@
           <td style="text-align: left">
             <%= player.name %>
           </td>
-          <% @titles.reverse.each_with_index do |title, index| %>
+          <% @titles.each_with_index do |title, index| %>
             <% if title.present? %>
               <td style="text-align: center">
-                <% competition = player.send("competition_#{6 - index}") %>
+                <% competition = player.send("competition_#{index + 1}") %>
                 <% if competition %>
                   <% key, value = competition.first %>
                   <%= "#{value}" %>

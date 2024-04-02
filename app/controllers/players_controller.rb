@@ -54,17 +54,17 @@ class PlayersController < ApplicationController
     end.compact
     @players = case params[:sort]
                when 'competition_1'
-                  @clan.sort_by { |player| player.competition_1.present? ? player.competition_1.first[1].to_i : 0 }.reverse
+                  @clan.sort_by { |player| player.competition_1.present? ? player.competition_1.first[1].to_i : 0 }
                 when 'competition_2'
-                  @clan.sort_by { |player| player.competition_2.present? ? player.competition_2.first[1].to_i : 0 }.reverse
+                  @clan.sort_by { |player| player.competition_2.present? ? player.competition_2.first[1].to_i : 0 }
                 when 'competition_3'
-                  @clan.sort_by { |player| player.competition_3.present? ? player.competition_3.first[1].to_i : 0 }.reverse
+                  @clan.sort_by { |player| player.competition_3.present? ? player.competition_3.first[1].to_i : 0 }
                 when 'competition_4'
-                  @clan.sort_by { |player| player.competition_4.present? ? player.competition_4.first[1].to_i : 0 }.reverse
+                  @clan.sort_by { |player| player.competition_4.present? ? player.competition_4.first[1].to_i : 0 }
                 when 'competition_5'
-                  @clan.sort_by { |player| player.competition_5.present? ? player.competition_5.first[1].to_i : 0 }.reverse
+                  @clan.sort_by { |player| player.competition_5.present? ? player.competition_5.first[1].to_i : 0 }
                 when 'competition_6'
-                  @clan.sort_by { |player| player.competition_6.present? ? player.competition_6.first[1].to_i : 0 }.reverse
+                  @clan.sort_by { |player| player.competition_6.present? ? player.competition_6.first[1].to_i : 0 }
                else
                  @clan.order('LOWER(name)')
                end
