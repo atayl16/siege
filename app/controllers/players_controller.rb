@@ -65,8 +65,10 @@ class PlayersController < ApplicationController
                   @clan.sort_by { |player| player.competition_5.present? ? player.competition_5.first[1].to_i : 0 }.reverse
                 when 'competition_6'
                   @clan.sort_by { |player| player.competition_6.present? ? player.competition_6.first[1].to_i : 0 }.reverse
+                when 'name'
+                  @clan.order('LOWER(name)')
                else
-                 @clan.order('LOWER(name)')
+                 @clan.sort_by { |player| player.competition_1.present? ? player.competition_1.first[1].to_i : 0 }.reverse
                end
   end
 

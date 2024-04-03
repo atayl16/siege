@@ -38,7 +38,7 @@
                 <% competition = player.send("competition_#{index + 1}") %>
                 <% if competition %>
                   <% key, value = competition.first %>
-                  <%= "#{value}" %>
+                  <%= number_with_delimiter(value.to_i) %>
                 <% end %>
               </td>
             <% end %>
