@@ -14,7 +14,7 @@ class PlayersController < ApplicationController
     @clan = @players.where(title: nil).sort_by { |player| [player.place.to_i, player.clan_xp.to_i] }.reverse
     @officers = @players.where.not(title: nil).in_order_of(:title,
                                                            ['Owner', 'Deputy Owner', 'Admin', 'Staff', 'PvM Organizer'])
-    @competitors = Player.where(score: 1..).sort_by(&:score).reverse.first(3)
+    @competitors = Player.where(score: 1.., deactivated: false).sort_by(&:score).reverse.first(3)
     @events = Event.where('ends >= ?', Time.now).order('ends ASC').all
   end
 
