@@ -49,7 +49,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_09_180210) do
     t.integer "current_xp", default: 0
     t.integer "first_xp"
     t.integer "first_lvl"
-    t.integer "gained_xp"
+    t.bigint "gained_xp"
     t.json "old_names"
     t.integer "wom_id"
     t.string "wom_name"
