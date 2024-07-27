@@ -45,7 +45,7 @@ class PlayersController < ApplicationController
   end
 
   def competition
-    @clan = Player.where(deactivated: false, build: 'ironman')
+    @clan = Player.where(deactivated: false, build: ['ironman', 'ultimate'])
     @titles = (1..6).map do |i|
       competition = @clan.first.send("competition_#{i}")
       if competition
