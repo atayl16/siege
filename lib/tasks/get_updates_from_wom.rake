@@ -260,7 +260,7 @@ namespace :get_updates_from_wom do
 
     wom = Rails.application.credentials.dig(:wom, :verificationCode)
     api_key = Rails.application.credentials.dig(:wom, :apiKey)
-    @players = Player.where(deactivated: false, build: 'ironman')
+    @players = Player.where(deactivated: false, build: ['ironman', 'ultimate'])
     @players.each do |player|
       name = url_encode(player.name.strip)
       status = Var.where(name: 'competition_state').first.value
