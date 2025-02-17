@@ -73,6 +73,20 @@ class Player < ApplicationRecord
     end
   end
 
+  def switch_role
+    if skiller?
+      new_role = FIGHTER_RANKS.keys.find { |rank| FIGHTER_RANKS[rank].include?(clan_ehb) }
+      self.womrole = new_role.capitalize if new_role
+    elsif fighter?
+      new_role = SKILLER_RANKS.keys.find { |rank| SKILLER_RANKS[rank].include?(clan_xp) }
+      self.womrole = new_role.capitalize if new_role
+    else
+      return false
+    end
+  
+    save
+  end
+
   def achievements_exist?
     achievements.present? && achievements.count.positive? && achievements[0].present? && achievements[0]['createdAt'].present? && achievements[0]['name'].present?
   end

@@ -4,7 +4,7 @@ class PlayersController < ApplicationController
   include ERB::Util
   before_action :set_player,
                 only: %i[show edit update destroy delete call_osrs_api update_rank add_siege_score update_member_on_wom add_member_to_wom
-                         remove_member_from_wom]
+                         remove_member_from_wom switch_role]
   before_action :authenticate_user!, except: %i[show index leaderboard competition]
   before_action :store_location
 
@@ -295,6 +295,12 @@ class PlayersController < ApplicationController
   def add_siege_score
     new_score = @player.score ? @player.score + 2 : 2
     @player.update(score: new_score)
+    redirect_back(fallback_location: root_path)
+  end
+
+  def switch_role
+    @player.switch_role
+    update_member_on_wom
     redirect_back(fallback_location: root_path)
   end
 
