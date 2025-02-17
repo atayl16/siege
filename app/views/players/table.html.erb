@@ -62,7 +62,10 @@
             <%= time_ago_in_words(player.updated_at) %> ago
           </td>
           <td style="text-align: center">
-                        <%= link_to '', { controller: 'players', action: 'switch_role', id: player.id }, method: 'post', class: 'bi-arrow-repeat text-danger' %>
+            <% unless player.admin? %>
+              <%= link_to '', { controller: 'players', action: 'switch_role', id: player.id }, method: 'post', class: 'bi-arrow-repeat text-danger' %>
+              <%= player.opposing_role %>
+            <% end %>
           </td>
           <td style="text-align: center">
             <%= link_to "", delete_player_path(player), method: :get, :class => "bi-trash text-danger" %>

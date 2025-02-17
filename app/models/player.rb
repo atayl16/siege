@@ -87,6 +87,16 @@ class Player < ApplicationRecord
     save
   end
 
+  def opposing_role
+    if skiller?
+      FIGHTER_RANKS.keys.find { |rank| FIGHTER_RANKS[rank].include?(clan_ehb) }&.titleize
+    elsif fighter?
+      SKILLER_RANKS.keys.find { |rank| SKILLER_RANKS[rank].include?(clan_xp) }&.titleize
+    else
+      ''
+    end
+  end
+
   def achievements_exist?
     achievements.present? && achievements.count.positive? && achievements[0].present? && achievements[0]['createdAt'].present? && achievements[0]['name'].present?
   end
