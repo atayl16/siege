@@ -40,7 +40,7 @@ class Player < ApplicationRecord
   end
 
   def admin?
-    ADMIN_RANKS.include?(title)
+    title
   end
 
   def rank_icon
