@@ -6,7 +6,7 @@ class Player < ApplicationRecord
   validates :name, presence: true, uniqueness: { message: 'already exists' }
   require 'csv'
 
-  ADMIN_RANKS = %w[Owner Deputy\ Owner Admin Staff PvM\ Organizer].freeze
+  ADMIN_RANKS = %w[Owner Deputy\ Owner General Captain PvM\ Organizer].freeze
 
   SKILLER_RANKS = {
     'opal' => 0..2_999_999,
