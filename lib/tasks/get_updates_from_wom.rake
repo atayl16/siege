@@ -129,9 +129,10 @@ namespace :get_updates_from_wom do
 
         player.combat = @hash['combatLevel']
         player.build = @hash['type']
+        player.ehb = @hash['ehb']
 
-        if player.update(combat: player.combat, build: player.build)
-          puts "Updated #{player.name}, combat: #{player.combat}, build: #{player.build}"
+        if player.update(combat: player.combat, build: player.build, ehb: player.ehb)
+          puts "Updated #{player.name}, combat: #{player.combat}, build: #{player.build}, ehb: #{player.ehb}"
         end
       rescue StandardError => e
         puts "Error updating #{player.name}, #{e}"
@@ -291,6 +292,45 @@ namespace :get_updates_from_wom do
         end
 
         puts "Updated #{player.name}"
+      rescue StandardError => e
+        puts "Error updating #{player.name}, #{e}"
+      end
+    end
+  end
+
+  desc 'Update player wom role from external API'
+  task update_player_womrole: :environment do
+    require 'httparty'
+    require 'json'
+    require 'erb'
+    include ERB::Util
+
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
+    api_key = Rails.application.credentials.dig(:wom, :apiKey)
+    @players = Player.where(deactivated: false)
+    @players.each do |player|
+      name = url_encode(player.name.strip)
+      begin
+        response = HTTParty.get(
+          "https://api.wiseoldman.net/v2/players/#{name}/groups",
+          headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+          data: { 'verificationCode' => wom }
+        )
+    
+        if response.code == 429
+          puts "Rate limit exceeded, sleeping for 60 seconds"
+          sleep(60)
+          redo
+        end
+    
+        @hash = JSON.parse(response.body)
+        if @hash.any?
+          role = @hash.first['role']
+          player.update(womrole: role)
+          puts "Updated #{player.name}, womrole: #{player.womrole}"
+        else
+          puts "No group data found for #{player.name}"
+        end
       rescue StandardError => e
         puts "Error updating #{player.name}, #{e}"
       end

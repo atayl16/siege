@@ -18,6 +18,7 @@
         <th>Siege Score</th>
         <th>Clan Rank</th>
         <th><%= link_to "Needs Update", :sort => "needs_update"%> </th>
+        <th>EHB</th>
         <th>Joined</th>
         <th><%= link_to "Updated", :sort => "last_update"%> </th>
         <th>Delete</th>
@@ -40,7 +41,7 @@
             <%= player.score %>
           </td>
           <td style="text-align: center">
-            <%= player.clan_rank %>
+            <%= player.current_wom_rank %>
           </td>
           <td style="text-align: center">
             <% if player.needs_update %>
@@ -48,7 +49,10 @@
                               :action => "update_rank",
                               :id => player.id}, method: 'post', class: "bi-exclamation-octagon-fill text-danger" %>
             <% end %>
-            <%= player.rank %>
+            <%= player.clan_rank %>
+          </td>
+          <td style="text-align: center">
+            <%= player.ehb %>
           </td>
           <td style="text-align: center">
             <%= player.joined %>

@@ -6,8 +6,71 @@ class Player < ApplicationRecord
   validates :name, presence: true, uniqueness: { message: 'already exists' }
   require 'csv'
 
-  def self.lower_name
-    name.downcase
+  ADMIN_RANKS = %w[Owner Deputy\ Owner Admin Staff PvM\ Organizer].freeze
+
+  SKILLER_RANKS = {
+    'opal' => 0..2_999_999,
+    'sapphire' => 3_000_000..7_999_999,
+    'emerald' => 8_000_000..14_999_999,
+    'ruby' => 15_000_000..39_999_999,
+    'diamond' => 40_000_000..89_999_999,
+    'dragonstone' => 90_000_000..149_999_999,
+    'onyx' => 150_000_000..499_999_999,
+    'zenyte' => 500_000_000..Float::INFINITY
+  }.freeze
+  
+  FIGHTER_RANKS = {
+    'mentor' => 0..199,
+    'prefect' => 200..499,
+    'leader' => 500..699,
+    'supervisor' => 700..899,
+    'superior' => 900..1199,
+    'executive' => 1200..1499,
+    'senator' => 1500..1749,
+    'monarch' => 1750..1999,
+    'tzkal' => 2000..Float::INFINITY
+  }.freeze
+
+  def skiller?
+    SKILLER_RANKS.key?(womrole&.downcase)
+  end
+
+  def fighter?
+    FIGHTER_RANKS.key?(womrole&.downcase)
+  end
+
+  def admin?
+    ADMIN_RANKS.include?(title)
+  end
+
+  def rank_icon
+    if skiller?
+      "<i class='bi-gem' style='font-size: 1rem; color: #{rank_color}'></i>".html_safe
+    elsif fighter?
+      image_file = fighter_image_file(womrole)
+      ActionController::Base.helpers.image_tag(image_file, alt: 'Fighter Icon', style: 'width: 1rem; height: 1rem;')
+    else
+      "<i class='bi-question-circle' style='font-size: 1rem; color: grey;'></i>".html_safe
+    end
+  end
+
+  def needs_update
+    if skiller?
+      current_xp = clan_xp
+      rank_threshold = SKILLER_RANKS[womrole&.downcase]
+    elsif fighter?
+      current_xp = clan_ehb
+      rank_threshold = FIGHTER_RANKS[womrole&.downcase]
+    else
+      return false
+    end
+  
+    if rank_threshold && !rank_threshold.include?(current_xp)
+      self.womrole = next_rank.downcase
+      '❗'
+    else
+      nil
+    end
   end
 
   def achievements_exist?
@@ -91,7 +154,7 @@ class Player < ApplicationRecord
   end
 
   def officer
-    clan_title == '👑' || clan_title == '🔑' || clan_title == '🌟' || clan_title == '🛠' || clan_title == '🐉'
+    admin_icon == '👑' || admin_icon == '🔑' || admin_icon == '🌟' || admin_icon == '🛠' || admin_icon == '🐉'
   end
 
   def clan_xp
@@ -110,80 +173,50 @@ class Player < ApplicationRecord
     end
   end
 
-  def next_lvl
-    case clan_xp
-    when 0..3_000_000
-      3_000_000 - clan_xp
-    when 3_000_000..7_999_999
-      8_000_000 - clan_xp
-    when 8_000_000..14_999_999
-      15_000_000 - clan_xp
-    when 15_000_000..39_999_999
-      40_000_000 - clan_xp
-    when 40_000_000..89_999_999
-      90_000_000 - clan_xp
-    when 90_000_000..149_999_999
-      150_000_000 - clan_xp
-    when 150_000_000..499_999_999
-      500_000_000 - clan_xp
+  def clan_ehb
+    if ehb.to_i.positive?
+      ehb.to_i
     else
       0
     end
   end
 
-  def next_rank_color
-    case clan_xp
-    when 0..3_000_000
-      'blue'
-    when 3_000_000..7_999_999
-      'lime'
-    when 8_000_000..14_999_999
-      'red'
-    when 15_000_000..39_999_999
-      'white'
-    when 40_000_000..89_999_999
-      'magenta'
-    when 90_000_000..149_999_999
-      'grey'
+  def next_level
+    if skiller?
+      SKILLER_RANKS.each do |_, range|
+        return range.end - clan_xp if range.include?(clan_xp)
+      end
+    elsif fighter?
+      FIGHTER_RANKS.each do |_, range|
+        return range.end - clan_ehb if range.include?(clan_ehb)
+      end
     else
-      'orange'
+      0
     end
   end
 
-  def kickable
-    if inactive == true
-      'yellow'
-    elsif gained_xp.to_i < 2_000_000
-      'red'
+  def clan_rank
+    if skiller?
+      SKILLER_RANKS.each do |rank, range|
+        return rank.capitalize if range.include?(clan_xp)
+      end
+    elsif fighter?
+      FIGHTER_RANKS.each do |rank, range|
+        return rank.capitalize if range.include?(clan_ehb)
+      end
+    elsif admin?
+      title.titleize
     else
-      'white'
+      'Unknown'
     end
   end
 
-  def two_month_gains
-    if inactive == true
-      'Inactive'
-    else
-      gained_xp.to_i
-    end
-  end
-
-  def needs_update
-    return unless clan_rank != rank
-
-    '❗'
-  end
-
-  def join_date
-    joined_date || created_at
-  end
-
-  def joined
-    join_date.strftime('%b %d, %Y')
+  def current_wom_rank
+    womrole&.titleize
   end
 
   # Set clan title icon
-  def clan_title
+  def admin_icon
     case title
     when 'Owner'
       '👑'
@@ -197,48 +230,6 @@ class Player < ApplicationRecord
       '🐉'
     else
       ''
-    end
-  end
-
-  def new_check
-    if created_at > 2.months.ago
-      '🚸 New'
-    else
-      ''
-    end
-  end
-
-  def created
-    if og == true
-      'OG*'
-    else
-      created_at.strftime('%b %d, %Y')
-    end
-  end
-
-  def og
-    created_at < '2023-02-26'.to_date
-  end
-
-  # Set clan rank based on clan XP using a case statement
-  def clan_rank
-    case clan_xp
-    when 0..3_000_000
-      'Opal'
-    when 3_000_000..7_999_999
-      'Sapphire'
-    when 8_000_000..14_999_999
-      'Emerald'
-    when 15_000_000..39_999_999
-      'Ruby'
-    when 40_000_000..89_999_999
-      'Diamond'
-    when 90_000_000..149_999_999
-      'Dragonstone'
-    when 150_000_000..499_999_999
-      'Onyx'
-    else
-      'Zenyte'
     end
   end
 
@@ -263,8 +254,82 @@ class Player < ApplicationRecord
     end
   end
 
+  def next_rank
+    if skiller?
+      SKILLER_RANKS.each do |rank, range|
+        return rank.capitalize if range.include?(clan_xp)
+      end
+      'Zenyte'
+    elsif fighter?
+      FIGHTER_RANKS.each do |rank, range|
+        return rank.capitalize if range.include?(clan_ehb)
+      end
+      'TzKal'
+    else
+      'Unknown'
+    end
+  end
+
+  def kickable
+    if inactive == true
+      'yellow'
+    elsif gained_xp.to_i < 2_000_000
+      'red'
+    else
+      'white'
+    end
+  end
+
+  def two_month_gains
+    if inactive == true
+      'Inactive'
+    else
+      gained_xp.to_i
+    end
+  end
+
+  def needs_update
+    return unless current_wom_rank != clan_rank
+
+    '❗'
+  end
+
+  def join_date
+    joined_date || created_at
+  end
+
+  def joined
+    join_date.strftime('%b %d, %Y')
+  end
+
+  def new_check
+    if created_at > 2.months.ago
+      '🚸 New'
+    else
+      ''
+    end
+  end
+
+  def created
+    if og == true
+      'OG*'
+    else
+      created_at.strftime('%b %d, %Y')
+    end
+  end
+
+  def og
+    created_at < '2023-02-26'.to_date
+  end
+
   # Set blanks to nil
   def nil_if_blank
     NULL_ATTRS.each { |attr| self[attr] = nil if self[attr].blank? }
+  end
+
+  private
+
+  def fighter_image_file(womrole)
+    "Clan_icon_-_#{womrole.titleize.gsub(' ', '_')}.png"
   end
 end

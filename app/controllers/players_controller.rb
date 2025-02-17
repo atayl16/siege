@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class PlayersController < ApplicationController
+  include ERB::Util
   before_action :set_player,
                 only: %i[show edit update destroy delete call_osrs_api update_rank add_siege_score update_member_on_wom add_member_to_wom
                          remove_member_from_wom]
@@ -98,6 +99,7 @@ class PlayersController < ApplicationController
     add_member_to_wom
     set_player_wom_id
     set_player_wom_name
+    set_player_womrole
 
     @player.first_lvl = @player.lvl
     @player.first_xp = @player.xp
@@ -121,6 +123,7 @@ class PlayersController < ApplicationController
         call_osrs_api
         set_player_wom_id
         set_player_wom_name
+        set_player_womrole
         format.js {}
         format.html { redirect_to table_path, notice: 'Player was successfully updated.' }
         format.json { render :show, status: :ok, location: @player }
@@ -284,8 +287,8 @@ class PlayersController < ApplicationController
   end
 
   def update_rank
-    clan_rank = @player.clan_rank
-    @player.update(rank: clan_rank)
+    womrole = @player.womrole
+    @player.update(rank: womrole)
     redirect_back(fallback_location: root_path)
   end
 
@@ -304,13 +307,24 @@ class PlayersController < ApplicationController
 
   def set_player_wom_id
     require 'httparty'
-    @url = HTTParty.get(
-      "https://api.wiseoldman.net/v2/players/#{@player.name.gsub(' ', '%20')}",
-      headers: { 'Content-Type' => 'application/json' }
-    )
-
+    name = url_encode(@player.name.strip)
+  
     begin
-      @player.update(wom_id: @url['id'])
+      response = nil
+      loop do
+        response = HTTParty.get(
+          "https://api.wiseoldman.net/v2/players/#{name}",
+          headers: { 'Content-Type' => 'application/json' }
+        )
+  
+        break unless response.code == 429
+  
+        puts "Rate limit exceeded, sleeping for 60 seconds"
+        sleep(60)
+      end
+  
+      @player.update(wom_id: response['id'])
+      @player.update(ehb: response['ehb'])
       puts "Updated #{@player.name}, wom_id: #{@player.wom_id}"
     rescue StandardError => e
       puts "Error updating #{@player.name}, #{e}"
@@ -319,14 +333,60 @@ class PlayersController < ApplicationController
 
   def set_player_wom_name
     require 'httparty'
-    @url = HTTParty.get(
-      "https://api.wiseoldman.net/v2/players/id/#{@player.wom_id}",
-      headers: { 'Content-Type' => 'application/json' }
-    )
+  
+    begin
+      response = nil
+      loop do
+        response = HTTParty.get(
+          "https://api.wiseoldman.net/v2/players/id/#{@player.wom_id}",
+          headers: { 'Content-Type' => 'application/json' }
+        )
+  
+        break unless response.code == 429
+  
+        puts "Rate limit exceeded, sleeping for 60 seconds"
+        sleep(60)
+      end
+  
+      @player.update(wom_name: response['displayName'])
+      puts "Updated #{@player.name}, wom_name: #{@player.wom_name}"
+    rescue StandardError => e
+      puts "Error updating #{@player.name}, #{e}"
+    end
+  end
+
+  def set_player_womrole
+    require 'httparty'
+    require 'json'
+    require 'erb'
+
+    wom = Rails.application.credentials.dig(:wom, :verificationCode)
+    api_key = Rails.application.credentials.dig(:wom, :apiKey)
+    name = url_encode(@player.name.strip)
 
     begin
-      @player.update(wom_name: @url['displayName'])
-      puts "Updated #{@player.name}, wom_name: #{@player.wom_name}"
+      response = nil
+      loop do
+        response = HTTParty.get(
+          "https://api.wiseoldman.net/v2/players/#{name}/groups",
+          headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
+          data: { 'verificationCode' => wom }
+        )
+
+        break unless response.code == 429
+
+        puts "Rate limit exceeded, sleeping for 60 seconds"
+        sleep(60)
+      end
+
+      @hash = JSON.parse(response.body)
+      if @hash.any?
+        role = @hash.first['role']
+        @player.update(womrole: role)
+        puts "Updated #{@player.name}, womrole: #{@player.womrole}"
+      else
+        puts "No group data found for #{@player.name}"
+      end
     rescue StandardError => e
       puts "Error updating #{@player.name}, #{e}"
     end
@@ -352,6 +412,6 @@ class PlayersController < ApplicationController
   def player_params
     params.require(:player).permit(:name, :xp, :lvl, :title, :rank, :current_xp, :current_lvl, :score, :wom_id,
                                    :wom_name, :inactive, :joined_date, :deactivated, :deactivated_xp, :deactivated_lvl,
-                                   :siege_winner_place, :reactivated_xp, :reactivated_lvl)
+                                   :siege_winner_place, :reactivated_xp, :reactivated_lvl, :womrole, :ehb)
   end
 end

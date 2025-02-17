@@ -3,15 +3,13 @@
     
     <% if !@player.officer %>
       <p>
-      Current clan rank is <i class="bi-gem" style="font-size: 1rem; color: <%= @player.rank_color %>"></i> with the
-        next level of <i class="bi-gem" style="font-size: 1rem; color: <%= player.next_rank_color %>"></i>  
-        after <strong> <%=  number_with_delimiter(player.next_lvl) %> </strong> xp.
+      Current clan rank is <%= @player.rank_icon %></i>.
       </p>
     <% end %>
 
     <% if @player.officer %>
       <p>
-        As an officer of the clan, <%= player.name %> holds the role of <strong> <%= @player.title %> </strong> <%= player.clan_title %>
+        As an officer of the clan, <%= player.name %> holds the role of <strong> <%= @player.title %> </strong> <%= player.admin_icon %>
       </p>
     <% end %>
 

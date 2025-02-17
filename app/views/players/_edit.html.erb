@@ -17,7 +17,7 @@
 
       <div >
         <%= form.label :rank, { class: "form-label"} %>
-        <%= form.select :rank, ['Opal', 'Sapphire', 'Emerald', 'Ruby', 'Diamond', 'Dragonstone', 'Onyx', 'Zenyte'] %>
+                <%= form.select :rank, options_for_select(Player::SKILLER_RANKS.keys.map(&:capitalize) + Player::FIGHTER_RANKS.keys.map(&:capitalize), player.womrole&.capitalize), id: 'rank_select' %>
       </div>
 
       <div >

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_09_182231) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_17_151006) do
   create_table "achievements", force: :cascade do |t|
     t.integer "wom_id"
     t.string "name"
@@ -76,6 +76,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_09_182231) do
     t.json "competition_4", default: {}
     t.json "competition_5", default: {}
     t.json "competition_6", default: {}
+    t.integer "ehb", default: 0
+    t.string "womrole"
   end
 
   create_table "teams", force: :cascade do |t|
