@@ -359,11 +359,11 @@ class PlayersController < ApplicationController
     require 'httparty'
     require 'json'
     require 'erb'
-
+  
     wom = Rails.application.credentials.dig(:wom, :verificationCode)
     api_key = Rails.application.credentials.dig(:wom, :apiKey)
     name = url_encode(@player.name.strip)
-
+  
     begin
       response = nil
       loop do
@@ -372,18 +372,23 @@ class PlayersController < ApplicationController
           headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
           data: { 'verificationCode' => wom }
         )
-
+  
         break unless response.code == 429
-
+  
         puts "Rate limit exceeded, sleeping for 60 seconds"
         sleep(60)
       end
-
+  
       @hash = JSON.parse(response.body)
       if @hash.any?
-        role = @hash.first['role']
-        @player.update(womrole: role)
-        puts "Updated #{@player.name}, womrole: #{@player.womrole}"
+        group = @hash.find { |g| g['groupId'] == 2928 }
+        if group
+          role = group['role']
+          @player.update(womrole: role)
+          puts "Updated #{@player.name}, womrole: #{@player.womrole}"
+        else
+          puts "No group data found for #{@player.name} in group 2928"
+        end
       else
         puts "No group data found for #{@player.name}"
       end

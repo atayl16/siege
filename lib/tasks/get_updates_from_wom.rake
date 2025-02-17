@@ -304,7 +304,7 @@ namespace :get_updates_from_wom do
     require 'json'
     require 'erb'
     include ERB::Util
-
+  
     wom = Rails.application.credentials.dig(:wom, :verificationCode)
     api_key = Rails.application.credentials.dig(:wom, :apiKey)
     @players = Player.where(deactivated: false)
@@ -316,18 +316,23 @@ namespace :get_updates_from_wom do
           headers: { 'Content-Type' => 'application/json', "x-api-key": api_key },
           data: { 'verificationCode' => wom }
         )
-    
+  
         if response.code == 429
           puts "Rate limit exceeded, sleeping for 60 seconds"
           sleep(60)
           redo
         end
-    
+  
         @hash = JSON.parse(response.body)
         if @hash.any?
-          role = @hash.first['role']
-          player.update(womrole: role)
-          puts "Updated #{player.name}, womrole: #{player.womrole}"
+          group = @hash.find { |g| g['groupId'] == 2928 }
+          if group
+            role = group['role']
+            player.update(womrole: role)
+            puts "Updated #{player.name}, womrole: #{player.womrole}"
+          else
+            puts "No group data found for #{player.name} in group 2928"
+          end
         else
           puts "No group data found for #{player.name}"
         end
