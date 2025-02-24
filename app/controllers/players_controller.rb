@@ -287,8 +287,7 @@ class PlayersController < ApplicationController
   end
 
   def update_rank
-    womrole = @player.womrole
-    @player.update(rank: womrole)
+    @player.update(womrole: @player.clan_rank)
     redirect_back(fallback_location: root_path)
   end
 
