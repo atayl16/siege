@@ -21,14 +21,14 @@ class Player < ApplicationRecord
   
   FIGHTER_RANKS = {
     'mentor' => 0..199,
-    'prefect' => 200..499,
-    'leader' => 500..699,
-    'supervisor' => 700..899,
-    'superior' => 900..1199,
-    'executive' => 1200..1499,
-    'senator' => 1500..1749,
-    'monarch' => 1750..1999,
-    'tzkal' => 2000..Float::INFINITY
+    'prefect' => 100..299,
+    'leader' => 300..499,
+    'supervisor' => 500..699,
+    'superior' => 700..899,
+    'executive' => 900..1099,
+    'senator' => 1100..1299,
+    'monarch' => 1300..1499,
+    'tzkal' => 1500..Float::INFINITY
   }.freeze
 
   def skiller?
