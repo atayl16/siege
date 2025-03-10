@@ -47,8 +47,18 @@ class Player < ApplicationRecord
     if skiller?
       "<i class='bi-gem' style='font-size: 1rem; color: #{rank_color}'></i>".html_safe
     elsif fighter?
-      image_file = fighter_image_file(womrole)
-      ActionController::Base.helpers.image_tag(image_file, alt: 'Fighter Icon', style: 'width: 1rem; height: 1rem;')
+      begin
+        image_file = fighter_image_file(womrole)
+        if Rails.application.assets.find_asset(image_file) || Rails.application.assets_manifest.assets[image_file]
+          ActionController::Base.helpers.image_tag(image_file, alt: 'Fighter Icon', style: 'width: 1rem; height: 1rem;')
+        else
+          # Fallback for missing images
+          "<i class='bi-trophy' style='font-size: 1rem; color: gold;'></i>".html_safe
+        end
+      rescue => e
+        # Handle any errors and provide a fallback
+        "<i class='bi-trophy' style='font-size: 1rem; color: gold;'></i>".html_safe
+      end
     else
       "<i class='bi-question-circle' style='font-size: 1rem; color: grey;'></i>".html_safe
     end
