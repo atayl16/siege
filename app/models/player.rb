@@ -49,15 +49,10 @@ class Player < ApplicationRecord
     elsif fighter?
       begin
         image_file = fighter_image_file(womrole)
-        if Rails.application.assets.find_asset(image_file) || Rails.application.assets_manifest.assets[image_file]
-          ActionController::Base.helpers.image_tag(image_file, alt: 'Fighter Icon', style: 'width: 1rem; height: 1rem;')
-        else
-          # Fallback for missing images
-          "<i class='bi-trophy' style='font-size: 1rem; color: gold;'></i>".html_safe
-        end
+        ActionController::Base.helpers.image_tag(image_file, alt: 'Fighter Icon', style: 'width: 1rem; height: 1rem;')
       rescue => e
-        # Handle any errors and provide a fallback
-        "<i class='bi-trophy' style='font-size: 1rem; color: gold;'></i>".html_safe
+        # Fallback if image fails to load
+        "<i class='bi bi-trophy-fill' style='font-size: 1rem; color: gold;'></i>".html_safe
       end
     else
       "<i class='bi-question-circle' style='font-size: 1rem; color: grey;'></i>".html_safe
@@ -364,6 +359,12 @@ class Player < ApplicationRecord
   private
 
   def fighter_image_file(womrole)
-    "Clan_icon_-_#{womrole.titleize.gsub(' ', '_')}.png"
+    # Special case for TzKal
+    if womrole.downcase == "tzkal"
+      "Clan_icon_-_TzKal.png"
+    else
+      # For other ranks: Capitalize first letter, keep "Clan_icon_-_" capitalized
+      "Clan_icon_-_#{womrole.capitalize}.png"
+    end
   end
 end
