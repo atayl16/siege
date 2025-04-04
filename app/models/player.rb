@@ -64,13 +64,13 @@ class Player < ApplicationRecord
       current_xp = clan_xp
       rank_threshold = SKILLER_RANKS[womrole&.downcase]
     elsif fighter?
-      current_xp = clan_ehb
+      current_ehb = ehb
       rank_threshold = FIGHTER_RANKS[womrole&.downcase]
     else
       return false
     end
   
-    if rank_threshold && !rank_threshold.include?(current_xp)
+    if rank_threshold && !rank_threshold.include?(current_xp || current_ehb)
       self.womrole = next_rank.downcase
       '❗'
     else
