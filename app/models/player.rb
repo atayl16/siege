@@ -20,7 +20,7 @@ class Player < ApplicationRecord
   }.freeze
   
   FIGHTER_RANKS = {
-    'mentor' => 0..100,
+    'mentor' => 0..99,
     'prefect' => 100..299,
     'leader' => 300..499,
     'supervisor' => 500..699,
