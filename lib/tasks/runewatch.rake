@@ -173,9 +173,58 @@ namespace :runewatch do
       reported
     end
 
+    # --- Send Discord notification for reported clan members ---
+    def send_discord_notification(reported_clan_members)
+      return if reported_clan_members.empty?
+      
+      webhook_url = Rails.application.credentials.discordBotChannelWebhook
+      return puts "⚠️ Discord webhook URL not configured" unless webhook_url.present?
+      
+      uri = URI(webhook_url)
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = (uri.scheme == 'https')
+      
+      # Create a formatted message
+      message = {
+        content: "🚨 **RuneWatch Alert: Reported Players Found**",
+        embeds: [{
+          title: "Reported Players in Clan",
+          description: "The following clan members have been found on RuneWatch:",
+          color: 15158332, # Red color
+          fields: [{
+            name: "Players",
+            value: reported_clan_members.map { |name| "• #{name}" }.join("\n")
+          }, {
+            name: "Action Required",
+            value: "Please review these players on the Admin Dashboard"
+          }],
+          footer: {
+            text: "Generated on #{Time.now.strftime('%Y-%m-%d %H:%M')}"
+          }
+        }]
+      }
+      
+      request = Net::HTTP::Post.new(uri.request_uri)
+      request['Content-Type'] = 'application/json'
+      request.body = message.to_json
+      
+      begin
+        response = http.request(request)
+        if response.code.to_i == 204 # Discord returns 204 on success
+          puts "✅ Discord notification sent successfully!"
+        else
+          puts "⚠️ Failed to send Discord notification: HTTP #{response.code}"
+          puts response.body
+        end
+      rescue => e
+        puts "⚠️ Error sending Discord notification: #{e.message}"
+      end
+    end
+
     # --- Find reported clan members function ---    
     def find_reported_clan_members(clan_members_with_names, reported_users)
       reported_clan_members = []
+      new_reported_members = [] # For Discord notifications
       
       # Convert original set to one with space-normalized versions too
       reported_with_spaces = Set.new
@@ -198,11 +247,23 @@ namespace :runewatch do
                       reported_users.any? { |r| r.downcase.gsub(/\s+/, '') == normalized_name }
         
         if is_reported
+          player = Player.find(id)
+          was_already_reported = player.runewatch_reported
+          
           reported_clan_members << name
+          
+          # Add to new list only if not already reported and not whitelisted
+          if !was_already_reported && !player.runewatch_whitelisted
+            new_reported_members << name
+          end
+          
           # Update the player's reported status in the database
-          Player.find(id).update_column(:runewatch_reported, true)
+          player.update_column(:runewatch_reported, true)
         end
       end
+      
+      # Send Discord notification only for newly reported members
+      send_discord_notification(new_reported_members) if new_reported_members.any?
       
       reported_clan_members
     end
