@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_02_17_151006) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_14_134502) do
   create_table "achievements", force: :cascade do |t|
     t.integer "wom_id"
     t.string "name"
@@ -78,6 +78,10 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_17_151006) do
     t.json "competition_6", default: {}
     t.integer "ehb", default: 0
     t.string "womrole"
+    t.boolean "runewatch_reported", default: false
+    t.boolean "runewatch_whitelisted", default: false
+    t.text "runewatch_whitelist_reason"
+    t.datetime "runewatch_whitelisted_at"
   end
 
   create_table "teams", force: :cascade do |t|

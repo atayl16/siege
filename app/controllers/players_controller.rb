@@ -43,6 +43,7 @@ class PlayersController < ApplicationController
                  @clan.order('LOWER(name)')
                end
     @competitors = @clan.where(score: 1..).sort_by(&:score).reverse
+    @reported_clan_members = fetch_reported_clan_members
   end
 
   def competition
@@ -303,6 +304,36 @@ class PlayersController < ApplicationController
     redirect_back(fallback_location: root_path)
   end
 
+  def whitelist_runewatch
+    username = params[:username].downcase
+    player = Player.find_by("LOWER(name) = ?", username)
+    
+    # Debug output
+    Rails.logger.info "Whitelisting player: #{username}"
+    Rails.logger.info "Found player: #{player.inspect}" if player
+    
+    if player
+      # Log before state
+      Rails.logger.info "Before update: whitelisted=#{player.runewatch_whitelisted}, reported=#{player.runewatch_reported}"
+      
+      result = player.update(
+        runewatch_whitelisted: true,
+        runewatch_whitelist_reason: params[:reason],
+        runewatch_whitelisted_at: Time.current
+      )
+      
+      # Reload and log after state
+      player.reload
+      Rails.logger.info "Update result: #{result}"
+      Rails.logger.info "After update: whitelisted=#{player.runewatch_whitelisted}, reported=#{player.runewatch_reported}"
+      
+      redirect_back fallback_location: table_path, notice: "#{player.name} has been whitelisted from RuneWatch alerts (whitelisted=#{player.runewatch_whitelisted})."
+    else
+      Rails.logger.info "Player not found: #{username}"
+      redirect_back fallback_location: table_path, alert: "Player not found: #{username}"
+    end
+  end
+
   # method to run rake task to update clan members from api
   def update_players
     @players = Player.all
@@ -412,6 +443,39 @@ class PlayersController < ApplicationController
   end
 
   private
+  
+  def fetch_reported_clan_members
+    # Check against cached RuneWatch data
+    cache_file = Rails.root.join('tmp', 'runewatch_cache.json')
+    
+    if File.exist?(cache_file)
+      reported_users = Set.new(JSON.parse(File.read(cache_file)))
+      
+      # First, update the reported status for all players with IMPROVED MATCHING
+      Player.where(deactivated: false).each do |player|
+        # Normalize player name by removing all spaces
+        normalized_name = player.name.downcase.gsub(/\s+/, '')
+        
+        # Check if this player's normalized name matches any reported normalized name
+        is_reported = reported_users.any? do |reported|
+          reported.downcase.gsub(/\s+/, '') == normalized_name
+        end
+        
+        # Update the database if needed
+        player.update_column(:runewatch_reported, is_reported) if player.runewatch_reported != is_reported
+      end
+      
+      # Then, get ONLY players who are reported AND NOT whitelisted
+      return Player.where(
+        deactivated: false, 
+        runewatch_reported: true,
+        runewatch_whitelisted: false
+      ).pluck(:name)
+    end
+    
+    # Return empty array if no cache found
+    []
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_player
