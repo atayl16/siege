@@ -24,6 +24,6 @@ Rails.application.routes.draw do
   get 'hidden_players_var', to: 'vars#hidden_players_var', as: 'hidden_players_var'
   get 'competition_state_var', to: 'vars#competition_state_var', as: 'competition_state_var'
   get '/competition', to: 'players#competition', as: 'competition'
-
+  post 'whitelist_runewatch', to: 'players#whitelist_runewatch'
   root 'welcome#index'
 end

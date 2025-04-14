@@ -7,5 +7,6 @@ namespace :daily_tasks do
 	Rake::Task['get_updates_from_wom:update_player_name_history'].invoke
 	Rake::Task['get_updates_from_wom:update_group_achievements'].invoke
 	Rake::Task['get_updates_from_wom:update_player_competition_score'].invoke
+	Rake::Task['runewatch:check_reported_members'].invoke
   end
 end
