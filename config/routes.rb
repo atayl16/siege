@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  get 'redirect_notice', to: 'welcome#redirect_notice'
+  get 'staying', to: 'application#staying'
   resources :vars
   devise_for :users
   resources :players

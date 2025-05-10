@@ -1,0 +1,46 @@
+<% content_for :title, "We've Moved!" %>
+
+<div class="container text-center my-5">
+  <div class="card bg-dark text-white border-warning p-4">
+    <h1 class="display-4">
+      <%= image_tag "#{logo}", size: "50x50", class: "me-2" %> 
+      Siege Clan Has Moved!
+    </h1>
+    
+    <div class="my-4">
+      <p class="lead">
+        We've moved to a new website with improved performance and features.
+      </p>
+      <p>
+        Please update your bookmarks to our new address:
+      </p>
+      <div class="d-grid gap-2 col-md-6 mx-auto my-4">
+        <a href="<%= @new_site_url %>" class="btn btn-warning btn-lg">
+          Go to our new site
+        </a>
+        <p class="text-muted mt-2">You will be redirected automatically in <span id="countdown">10</span> seconds...</p>
+      </div>
+      <p>
+        <small>
+          Need to access this site temporarily? 
+          <%= link_to "Continue to old site", staying_path, class: "text-warning" %>
+        </small>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Auto redirect after countdown
+  let seconds = 10;
+  const countdown = document.getElementById('countdown');
+  
+  const timer = setInterval(function() {
+    seconds--;
+    countdown.textContent = seconds;
+    if (seconds <= 0) {
+      clearInterval(timer);
+      window.location.href = "<%= @new_site_url %>";
+    }
+  }, 1000);
+</script>
