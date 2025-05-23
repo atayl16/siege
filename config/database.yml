@@ -21,5 +21,10 @@ test:
   database: db/test.sqlite3
 
 production:
+  adapter: postgresql
+  database: siege_production
+  pool: 5
+  timeout: 5000
+
+nulldb:
   adapter: nulldb
-  url: null

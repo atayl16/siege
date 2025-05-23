@@ -44,4 +44,4 @@ end
 gem 'airbrake', '~> 13.0'
 gem 'http', '~> 5.1'       # For HTTP requests
 gem 'nokogiri', '~> 1.14'  # For HTML parsing
-gem 'activerecord-nulldb-adapter', group: :production
+gem 'activerecord-nulldb-adapter'
